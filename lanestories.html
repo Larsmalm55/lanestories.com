@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lane Stories – Every city has lanes. Every lane has a story.</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0C0B09;
+    --paper: #F5F0E8;
+    --warm: #EDE5D8;
+    --stone: #2A2520;
+    --amber: #B8813A;
+    --amber2: #D4A05C;
+    --amber3: #F0C07A;
+    --muted: #7A6E64;
+    --line: rgba(184,129,58,0.18);
+    --white: #FAF7F2;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* grain */
+  body::after {
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events:none;
+    z-index:9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-logo {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.15rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-logo span { color: var(--amber); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-link {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--ink); }
+
+  .nav-cta {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 9px 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--stone); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 61px;
+  }
+
+  @media(max-width:760px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 5vw 80px 5vw;
+    position: relative;
+  }
+
+  .hero-kicker {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: up 0.7s 0.1s forwards;
+  }
+
+  .hero-h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: up 0.7s 0.2s forwards;
+  }
+
+  .hero-h1 em {
+    font-style: italic;
+    color: var(--amber);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 44ch;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: up 0.7s 0.3s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: up 0.7s 0.4s forwards;
+  }
+
+  .btn-primary {
+    background: var(--amber);
+    color: var(--white);
+    border: none;
+    padding: 16px 32px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--amber2); }
+
+  .btn-ghost {
+    background: none;
+    color: var(--ink);
+    border: 1px solid rgba(12,11,9,0.2);
+    padding: 16px 32px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+  .hero-visual {
+    background: var(--stone);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-visual-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(184,129,58,0.15) 0%, transparent 60%),
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(184,129,58,0.03) 40px,
+        rgba(184,129,58,0.03) 41px
+      );
+  }
+
+  .hero-map-ui {
+    position: relative;
+    z-index: 2;
+    width: 80%;
+    max-width: 380px;
+  }
+
+  .map-card {
+    background: rgba(245,240,232,0.06);
+    border: 1px solid rgba(184,129,58,0.2);
+    backdrop-filter: blur(4px);
+    padding: 28px;
+    margin-bottom: 12px;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .map-card:nth-child(2) { animation-delay: -2s; margin-left: 24px; }
+  .map-card:nth-child(3) { animation-delay: -4s; margin-left: 48px; }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .mc-route {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber2);
+    margin-bottom: 8px;
+  }
+
+  .mc-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.1rem;
+    color: var(--paper);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+
+  .mc-meta {
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.45);
+    display: flex;
+    gap: 14px;
+  }
+
+  .mc-price {
+    margin-left: auto;
+    color: var(--amber2);
+    font-weight: 500;
+  }
+
+  /* ── STRIP ── */
+  .strip {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 18px 5vw;
+    display: flex;
+    gap: 48px;
+    align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .strip-item {
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.5);
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+
+  .strip-item strong { color: var(--paper); font-weight: 400; }
+
+  /* ── SECTION WRAPPER ── */
+  .section {
+    padding: 100px 5vw;
+  }
+
+  .sec-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 16px;
+  }
+
+  .sec-h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  .sec-h2 em { font-style: italic; color: var(--amber); }
+
+  .sec-sub {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 48ch;
+    margin-bottom: 56px;
+  }
+
+  /* ── CITY SELECTOR ── */
+  .city-section { background: var(--warm); }
+
+  .city-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  /* Step */
+  .step-row {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .step-n {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 2.5rem;
+    color: rgba(184,129,58,0.2);
+    line-height: 1;
+    font-weight: 700;
+    padding-top: 4px;
+  }
+
+  .step-content {}
+
+  .step-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+
+  .step-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+
+  /* City pills */
+  .city-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .city-pill {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 10px 18px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .city-pill:hover { border-color: var(--amber); color: var(--amber); }
+  .city-pill.selected { background: var(--amber); color: var(--white); border-color: var(--amber); }
+
+  /* Interest pills */
+  .interest-pills {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+  }
+
+  .interest-pill {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 14px 16px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+  }
+  .interest-pill:hover { border-color: var(--amber); }
+  .interest-pill.selected { border-color: var(--amber); background: rgba(184,129,58,0.06); }
+  .interest-pill .ip-icon { font-size: 1.1rem; }
+  .interest-pill .ip-check { margin-left: auto; color: var(--amber); opacity: 0; transition: opacity 0.2s; font-size: 0.8rem; }
+  .interest-pill.selected .ip-check { opacity: 1; }
+
+  /* Route cards */
+  .routes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 3px;
+  }
+
+  .route-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 28px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: none;
+  }
+
+  .route-card.visible { display: block; }
+  .route-card:hover { border-color: var(--amber); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(184,129,58,0.08); }
+
+  .rc-tag {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+
+  .rc-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .rc-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .rc-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .rc-meta-item {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .rc-meta-item strong { display: block; color: var(--ink); font-weight: 400; font-size: 0.8rem; }
+
+  .rc-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .rc-price {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.4rem;
+    color: var(--amber);
+    font-weight: 700;
+  }
+
+  .rc-price-note { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+
+  .rc-buy {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 11px 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .rc-buy:hover { background: var(--amber); }
+
+  .rc-interests {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .rc-int-tag {
+    font-size: 0.6rem;
+    background: rgba(184,129,58,0.08);
+    border: 1px solid rgba(184,129,58,0.15);
+    color: var(--amber);
+    padding: 3px 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .no-routes {
+    display: none;
+    grid-column: 1/-1;
+    padding: 40px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    border: 1px dashed var(--line);
+  }
+
+  /* Step 3 hidden until city selected */
+  #step-interest { opacity: 0.3; pointer-events: none; transition: opacity 0.3s; }
+  #step-interest.active { opacity: 1; pointer-events: all; }
+  #step-routes { opacity: 0.3; pointer-events: none; transition: opacity 0.3s; }
+  #step-routes.active { opacity: 1; pointer-events: all; }
+
+  /* ── HOW ── */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+  }
+
+  .how-item {
+    background: var(--warm);
+    padding: 40px 32px;
+  }
+
+  .how-num {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 3rem;
+    color: rgba(184,129,58,0.12);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .how-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .how-body {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  /* ── CITIES TEASER ── */
+  .cities-section { background: var(--ink); color: var(--paper); }
+
+  .cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2px;
+    margin-top: 56px;
+  }
+
+  .city-block {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .city-block:hover { background: rgba(184,129,58,0.08); }
+
+  .city-block-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  .city-block-country {
+    font-size: 0.68rem;
+    color: rgba(245,240,232,0.35);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .city-block-routes {
+    font-size: 0.75rem;
+    color: var(--amber2);
+  }
+
+  .city-block-soon {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: rgba(184,129,58,0.15);
+    color: var(--amber2);
+    padding: 3px 8px;
+  }
+
+  /* ── BOTTOM CTA ── */
+  .bottom-cta {
+    padding: 120px 5vw;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bottom-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(184,129,58,0.07) 0%, transparent 70%);
+  }
+
+  .bottom-cta h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .bottom-cta h2 em { font-style: italic; color: var(--amber); }
+
+  .bottom-cta p {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 42ch;
+    margin: 0 auto 40px;
+    line-height: 1.75;
+    position: relative;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 40px 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-logo {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    color: var(--paper);
+  }
+  .footer-logo span { color: var(--amber); }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-link {
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.35);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .footer-link:hover { color: var(--amber); }
+
+  .footer-copy {
+    font-size: 0.68rem;
+    color: rgba(245,240,232,0.25);
+  }
+
+  /* ── ANIM ── */
+  @keyframes up {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Lane<span>Stories</span></a>
+  <div class="nav-right">
+    <a href="#how" class="nav-link">How it works</a>
+    <a href="#cities" class="nav-link">Cities</a>
+    <a href="#explore" class="nav-cta">Start exploring</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-kicker">Guided city experiences</p>
+    <h1 class="hero-h1">Every city<br>has <em>lanes.</em><br>Every lane<br>has a story.</h1>
+    <p class="hero-sub">You're new in town. Or you've lived here for years and stopped seeing it. Lane Stories gives you a route, a guide, and the stories hiding in plain sight.</p>
+    <div class="hero-actions">
+      <a href="#explore" class="btn-primary">Find your route</a>
+      <a href="#how" class="btn-ghost">How it works</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-visual-bg"></div>
+    <div class="hero-map-ui">
+      <div class="map-card">
+        <p class="mc-route">Bergen · Wine & History</p>
+        <p class="mc-title">The Wine Evening</p>
+        <div class="mc-meta">
+          <span>4 stops</span>
+          <span>3–4 hrs</span>
+          <span class="mc-price">49 kr</span>
+        </div>
+      </div>
+      <div class="map-card">
+        <p class="mc-route">Bergen · Dark History</p>
+        <p class="mc-title">The Dark Lanes</p>
+        <div class="mc-meta">
+          <span>5 stops</span>
+          <span>2–3 hrs</span>
+          <span class="mc-price">49 kr</span>
+        </div>
+      </div>
+      <div class="map-card">
+        <p class="mc-route">Bergen · Food & Taste</p>
+        <p class="mc-title">Bergen on a Plate</p>
+        <div class="mc-meta">
+          <span>4 stops</span>
+          <span>3–5 hrs</span>
+          <span class="mc-price">49 kr</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-item"><strong>GPS-guided</strong> walks</div>
+  <div class="strip-item"><strong>AI storytelling</strong> at every stop</div>
+  <div class="strip-item"><strong>Text & audio</strong> narration</div>
+  <div class="strip-item"><strong>Instant access</strong> after purchase</div>
+  <div class="strip-item"><strong>No app</strong> to download</div>
+  <div class="strip-item"><strong>Works on</strong> any phone</div>
+</div>
+
+<!-- EXPLORE / SELECTOR -->
+<section class="section city-section" id="explore">
+  <p class="sec-label">Find your route</p>
+  <h2 class="sec-h2">New in town.<br>Or <em>tired</em> of the same places.</h2>
+  <p class="sec-sub">Pick your city, choose what you're in the mood for, and we'll show you routes that match. Buy instantly, start walking.</p>
+
+  <div class="city-flow">
+
+    <!-- STEP 1: CITY -->
+    <div class="step-row" id="step-city">
+      <div class="step-n">1</div>
+      <div class="step-content">
+        <p class="step-label">Choose your city</p>
+        <p class="step-title">Where are you?</p>
+        <div class="city-pills">
+          <div class="city-pill" onclick="selectCity(this,'bergen')">🇳🇴 Bergen</div>
+          <div class="city-pill" onclick="selectCity(this,'oslo')">🇳🇴 Oslo</div>
+          <div class="city-pill" onclick="selectCity(this,'edinburgh')">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Edinburgh <span style="font-size:.65rem;opacity:.5;margin-left:4px">soon</span></div>
+          <div class="city-pill" onclick="selectCity(this,'lisbon')">🇵🇹 Lisbon <span style="font-size:.65rem;opacity:.5;margin-left:4px">soon</span></div>
+          <div class="city-pill" onclick="selectCity(this,'amsterdam')">🇳🇱 Amsterdam <span style="font-size:.65rem;opacity:.5;margin-left:4px">soon</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: INTEREST -->
+    <div class="step-row" id="step-interest">
+      <div class="step-n">2</div>
+      <div class="step-content">
+        <p class="step-label">Choose your mood</p>
+        <p class="step-title">What are you looking for?</p>
+        <div class="interest-pills">
+          <div class="interest-pill" onclick="toggleInterest(this,'wine')">
+            <span class="ip-icon">🍷</span> Wine & bars
+            <span class="ip-check">✓</span>
+          </div>
+          <div class="interest-pill" onclick="toggleInterest(this,'history')">
+            <span class="ip-icon">🕯️</span> Dark history
+            <span class="ip-check">✓</span>
+          </div>
+          <div class="interest-pill" onclick="toggleInterest(this,'food')">
+            <span class="ip-icon">🐟</span> Food & taste
+            <span class="ip-check">✓</span>
+          </div>
+          <div class="interest-pill" onclick="toggleInterest(this,'music')">
+            <span class="ip-icon">🎵</span> Music & culture
+            <span class="ip-check">✓</span>
+          </div>
+          <div class="interest-pill" onclick="toggleInterest(this,'hidden')">
+            <span class="ip-icon">💎</span> Hidden places
+            <span class="ip-check">✓</span>
+          </div>
+          <div class="interest-pill" onclick="toggleInterest(this,'family')">
+            <span class="ip-icon">👨‍👩‍👧</span> Family
+            <span class="ip-check">✓</span>
+          </div>
+          <div class="interest-pill" onclick="toggleInterest(this,'romance')">
+            <span class="ip-icon">👫</span> Romance
+            <span class="ip-check">✓</span>
+          </div>
+          <div class="interest-pill" onclick="toggleInterest(this,'architecture')">
+            <span class="ip-icon">🏛️</span> Architecture
+            <span class="ip-check">✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: ROUTES -->
+    <div class="step-row" id="step-routes">
+      <div class="step-n">3</div>
+      <div class="step-content">
+        <p class="step-label">Your routes</p>
+        <p class="step-title">Pick a route and start walking</p>
+        <div class="routes-grid" id="routes-grid">
+          <div class="no-routes" id="no-routes">Select your interests above to see matching routes.</div>
+
+          <!-- BERGEN ROUTES -->
+          <div class="route-card" data-city="bergen" data-interests="wine,romance">
+            <p class="rc-tag">Bergen · Evening</p>
+            <h3 class="rc-title">The Wine Evening</h3>
+            <p class="rc-desc">Four bars, four centuries of history. Starting at a 16th-century cellar, ending by the sea.</p>
+            <div class="rc-interests">
+              <span class="rc-int-tag">🍷 Wine</span>
+              <span class="rc-int-tag">👫 Romance</span>
+            </div>
+            <div class="rc-meta">
+              <div class="rc-meta-item"><strong>4 stops</strong>3–4 hours</div>
+              <div class="rc-meta-item"><strong>Starts</strong>Bryggen</div>
+              <div class="rc-meta-item"><strong>GPS + Audio</strong>included</div>
+            </div>
+            <div class="rc-footer">
+              <div>
+                <div class="rc-price">49 kr</div>
+                <div class="rc-price-note">one-time · instant access</div>
+              </div>
+              <button class="rc-buy" onclick="buyRoute('The Wine Evening','49 kr')">Buy & walk →</button>
+            </div>
+          </div>
+
+          <div class="route-card" data-city="bergen" data-interests="history,hidden">
+            <p class="rc-tag">Bergen · Evening</p>
+            <h3 class="rc-title">The Dark Lanes</h3>
+            <p class="rc-desc">From Viking kings to Nazi occupation — and ending with dinner in a Hanseatic feast hall that's been feeding Bergen since 1708.</p>
+            <div class="rc-interests">
+              <span class="rc-int-tag">🕯️ Dark history</span>
+              <span class="rc-int-tag">💎 Hidden</span>
+              <span class="rc-int-tag">🍽️ Ends at restaurant</span>
+            </div>
+            <div class="rc-meta">
+              <div class="rc-meta-item"><strong>4 stops</strong>2–3 hours</div>
+              <div class="rc-meta-item"><strong>Starts</strong>Bergenhus</div>
+              <div class="rc-meta-item"><strong>GPS + Audio</strong>included</div>
+            </div>
+            <div class="rc-footer">
+              <div>
+                <div class="rc-price">49 kr</div>
+                <div class="rc-price-note">one-time · instant access</div>
+              </div>
+              <button class="rc-buy" onclick="openTour('dark-lanes')">Start walking →</button>
+            </div>
+          </div>
+
+          <div class="route-card" data-city="bergen" data-interests="food,romance">
+            <p class="rc-tag">Bergen · Daytime</p>
+            <h3 class="rc-title">Bergen on a Plate</h3>
+            <p class="rc-desc">From the fish market to a Michelin table. Taste your way through 800 years of food culture.</p>
+            <div class="rc-interests">
+              <span class="rc-int-tag">🐟 Food</span>
+              <span class="rc-int-tag">👫 Romance</span>
+            </div>
+            <div class="rc-meta">
+              <div class="rc-meta-item"><strong>4 stops</strong>3–5 hours</div>
+              <div class="rc-meta-item"><strong>Starts</strong>Fisketorget</div>
+              <div class="rc-meta-item"><strong>GPS + Audio</strong>included</div>
+            </div>
+            <div class="rc-footer">
+              <div>
+                <div class="rc-price">49 kr</div>
+                <div class="rc-price-note">one-time · instant access</div>
+              </div>
+              <button class="rc-buy" onclick="buyRoute('Bergen on a Plate','49 kr')">Buy & walk →</button>
+            </div>
+          </div>
+
+          <div class="route-card" data-city="bergen" data-interests="music,hidden">
+            <p class="rc-tag">Bergen · Evening</p>
+            <h3 class="rc-title">Music Bergen</h3>
+            <p class="rc-desc">From Grieg's city to a bomb shelter turned concert cave. Bergen's music is written into its stones.</p>
+            <div class="rc-interests">
+              <span class="rc-int-tag">🎵 Music</span>
+              <span class="rc-int-tag">💎 Hidden</span>
+            </div>
+            <div class="rc-meta">
+              <div class="rc-meta-item"><strong>4 stops</strong>2–3 hours</div>
+              <div class="rc-meta-item"><strong>Starts</strong>Torgallmenningen</div>
+              <div class="rc-meta-item"><strong>GPS + Audio</strong>included</div>
+            </div>
+            <div class="rc-footer">
+              <div>
+                <div class="rc-price">49 kr</div>
+                <div class="rc-price-note">one-time · instant access</div>
+              </div>
+              <button class="rc-buy" onclick="buyRoute('Music Bergen','49 kr')">Buy & walk →</button>
+            </div>
+          </div>
+
+          <div class="route-card" data-city="bergen" data-interests="family,hidden">
+            <p class="rc-tag">Bergen · All day</p>
+            <h3 class="rc-title">Family Lanes</h3>
+            <p class="rc-desc">Secret beaches, trolls and free adventures. Bergen through the eyes of those who see everything.</p>
+            <div class="rc-interests">
+              <span class="rc-int-tag">👨‍👩‍👧 Family</span>
+              <span class="rc-int-tag">💎 Hidden</span>
+            </div>
+            <div class="rc-meta">
+              <div class="rc-meta-item"><strong>5 stops</strong>3–5 hours</div>
+              <div class="rc-meta-item"><strong>Starts</strong>Bryggen</div>
+              <div class="rc-meta-item"><strong>GPS + Audio</strong>included</div>
+            </div>
+            <div class="rc-footer">
+              <div>
+                <div class="rc-price">49 kr</div>
+                <div class="rc-price-note">one-time · instant access</div>
+              </div>
+              <button class="rc-buy" onclick="buyRoute('Family Lanes','49 kr')">Buy & walk →</button>
+            </div>
+          </div>
+
+          <div class="route-card" data-city="bergen" data-interests="architecture,history">
+            <p class="rc-tag">Bergen · Morning</p>
+            <h3 class="rc-title">The Hanseatic Walk</h3>
+            <p class="rc-desc">UNESCO buildings, medieval warehouses and a city shaped by trade winds. Bergen as it was built.</p>
+            <div class="rc-interests">
+              <span class="rc-int-tag">🏛️ Architecture</span>
+              <span class="rc-int-tag">🕯️ History</span>
+            </div>
+            <div class="rc-meta">
+              <div class="rc-meta-item"><strong>4 stops</strong>2–3 hours</div>
+              <div class="rc-meta-item"><strong>Starts</strong>Bryggen</div>
+              <div class="rc-meta-item"><strong>GPS + Audio</strong>included</div>
+            </div>
+            <div class="rc-footer">
+              <div>
+                <div class="rc-price">49 kr</div>
+                <div class="rc-price-note">one-time · instant access</div>
+              </div>
+              <button class="rc-buy" onclick="buyRoute('The Hanseatic Walk','49 kr')">Buy & walk →</button>
+            </div>
+          </div>
+
+          <!-- OSLO ROUTES -->
+          <div class="route-card" data-city="oslo" data-interests="history,hidden">
+            <p class="rc-tag">Oslo · Evening</p>
+            <h3 class="rc-title">The Other Oslo</h3>
+            <p class="rc-desc">Grünerløkka backstreets, hidden murals and a bar that opens only if you know the password.</p>
+            <div class="rc-interests">
+              <span class="rc-int-tag">🕯️ Dark history</span>
+              <span class="rc-int-tag">💎 Hidden</span>
+            </div>
+            <div class="rc-meta">
+              <div class="rc-meta-item"><strong>4 stops</strong>2–3 hours</div>
+              <div class="rc-meta-item"><strong>Starts</strong>Grünerløkka</div>
+              <div class="rc-meta-item"><strong>GPS + Audio</strong>included</div>
+            </div>
+            <div class="rc-footer">
+              <div>
+                <div class="rc-price">49 kr</div>
+                <div class="rc-price-note">one-time · instant access</div>
+              </div>
+              <button class="rc-buy" onclick="buyRoute('The Other Oslo','49 kr')">Buy & walk →</button>
+            </div>
+          </div>
+
+          <div class="route-card" data-city="oslo" data-interests="food,wine">
+            <p class="rc-tag">Oslo · Evening</p>
+            <h3 class="rc-title">Oslo After Dark</h3>
+            <p class="rc-desc">Natural wine, fermented things and the chefs who changed Norwegian food. The real food scene.</p>
+            <div class="rc-interests">
+              <span class="rc-int-tag">🐟 Food</span>
+              <span class="rc-int-tag">🍷 Wine</span>
+            </div>
+            <div class="rc-meta">
+              <div class="rc-meta-item"><strong>4 stops</strong>3–4 hours</div>
+              <div class="rc-meta-item"><strong>Starts</strong>Mathallen</div>
+              <div class="rc-meta-item"><strong>GPS + Audio</strong>included</div>
+            </div>
+            <div class="rc-footer">
+              <div>
+                <div class="rc-price">49 kr</div>
+                <div class="rc-price-note">one-time · instant access</div>
+              </div>
+              <button class="rc-buy" onclick="buyRoute('Oslo After Dark','49 kr')">Buy & walk →</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <p class="sec-label">How it works</p>
+  <h2 class="sec-h2">Buy a route.<br><em>Walk</em> out the door.</h2>
+  <p class="sec-sub">No app to download. No account to create. Pay once, get instant access, start walking.</p>
+  <div class="how-grid">
+    <div class="how-item">
+      <div class="how-num">1</div>
+      <div class="how-title">Choose your route</div>
+      <div class="how-body">Pick your city, your mood, your interests. We show you the routes that match.</div>
+    </div>
+    <div class="how-item">
+      <div class="how-num">2</div>
+      <div class="how-title">Pay once — 49 kr</div>
+      <div class="how-body">Secure payment. No subscription. No account. Instant access on your phone.</div>
+    </div>
+    <div class="how-item">
+      <div class="how-num">3</div>
+      <div class="how-title">GPS guides you</div>
+      <div class="how-body">The route knows where you are. When you're close to a stop, the story begins.</div>
+    </div>
+    <div class="how-item">
+      <div class="how-num">4</div>
+      <div class="how-title">Read or listen</div>
+      <div class="how-body">Every stop has a story — text to read or audio to listen to as you walk. Your pace, your choice.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CITIES -->
+<section class="section cities-section" id="cities">
+  <p class="sec-label" style="color:var(--amber2)">Available cities</p>
+  <h2 class="sec-h2" style="color:var(--paper)">Start in <em>Bergen.</em><br>See the world next.</h2>
+  <p class="sec-sub" style="color:rgba(245,240,232,0.45)">Lane Stories launches in Bergen. More cities added regularly — by locals who know their lanes.</p>
+  <div class="cities-grid">
+    <div class="city-block">
+      <div class="city-block-name">Bergen</div>
+      <div class="city-block-country">Norway</div>
+      <div class="city-block-routes">6 routes available</div>
+    </div>
+    <div class="city-block">
+      <div class="city-block-name">Oslo</div>
+      <div class="city-block-country">Norway</div>
+      <div class="city-block-routes">2 routes available</div>
+    </div>
+    <div class="city-block">
+      <div class="city-block-soon">Soon</div>
+      <div class="city-block-name">Edinburgh</div>
+      <div class="city-block-country">Scotland</div>
+      <div class="city-block-routes" style="color:rgba(212,160,92,0.4)">Coming 2025</div>
+    </div>
+    <div class="city-block">
+      <div class="city-block-soon">Soon</div>
+      <div class="city-block-name">Lisbon</div>
+      <div class="city-block-country">Portugal</div>
+      <div class="city-block-routes" style="color:rgba(212,160,92,0.4)">Coming 2025</div>
+    </div>
+    <div class="city-block">
+      <div class="city-block-soon">Soon</div>
+      <div class="city-block-name">Amsterdam</div>
+      <div class="city-block-country">Netherlands</div>
+      <div class="city-block-routes" style="color:rgba(212,160,92,0.4)">Coming 2025</div>
+    </div>
+    <div class="city-block" style="border-style:dashed;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="alert('Route creator coming soon!')">
+      <div style="text-align:center;color:rgba(245,240,232,0.2);font-size:.8rem;letter-spacing:.1em">+ YOUR CITY</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="bottom-cta">
+  <h2>You already live<br>in a <em>story.</em></h2>
+  <p>You just haven't read it yet. Pick your city, pick your mood, and walk into it.</p>
+  <a href="#explore" class="btn-primary">Find your route →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Lane<span>Stories</span></span>
+  <div class="footer-links">
+    <a href="#" class="footer-link">About</a>
+    <a href="#" class="footer-link">Create a route</a>
+    <a href="#" class="footer-link">For cities</a>
+    <a href="#" class="footer-link">Contact</a>
+  </div>
+  <span class="footer-copy">© 2025 LaneStories.com</span>
+</footer>
+
+<!-- PURCHASE MODAL -->
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(12,11,9,0.7);z-index:500;align-items:center;justify-content:center;">
+  <div style="background:var(--paper);max-width:420px;width:90%;padding:40px;position:relative;">
+    <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);">✕</button>
+    <p style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin-bottom:12px;">Ready to walk</p>
+    <h3 id="modal-title" style="font-family:'Libre Baskerville',serif;font-size:1.6rem;font-weight:400;font-style:italic;margin-bottom:8px;"></h3>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:24px;line-height:1.6;">Instant access after payment. Works on any phone. No app needed.</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:var(--warm);margin-bottom:20px;">
+      <span style="font-size:.8rem;color:var(--muted);">One-time payment</span>
+      <span id="modal-price" style="font-family:'Libre Baskerville',serif;font-size:1.4rem;color:var(--amber);font-weight:700;"></span>
+    </div>
+    <button onclick="goToPayment()" style="width:100%;background:var(--amber);border:none;color:white;padding:16px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;">Pay & start walking →</button>
+    <p style="font-size:.68rem;color:var(--muted);text-align:center;margin-top:12px;">Secure payment via Gumroad</p>
+  </div>
+</div>
+
+<script>
+let selectedCity = '';
+let selectedInterests = new Set();
+
+function selectCity(el, city) {
+  document.querySelectorAll('.city-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCity = city;
+  document.getElementById('step-interest').classList.add('active');
+  document.getElementById('step-routes').classList.add('active');
+  filterRoutes();
+  setTimeout(() => document.getElementById('step-interest').scrollIntoView({behavior:'smooth',block:'center'}), 200);
+}
+
+function toggleInterest(el, interest) {
+  el.classList.toggle('selected');
+  if (selectedInterests.has(interest)) {
+    selectedInterests.delete(interest);
+  } else {
+    selectedInterests.add(interest);
+  }
+  filterRoutes();
+}
+
+function filterRoutes() {
+  const cards = document.querySelectorAll('.route-card');
+  const noRoutes = document.getElementById('no-routes');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const cardCity = card.dataset.city;
+    const cardInterests = card.dataset.interests.split(',');
+    const cityMatch = cardCity === selectedCity;
+    const interestMatch = selectedInterests.size === 0 || cardInterests.some(i => selectedInterests.has(i));
+
+    if (cityMatch && interestMatch) {
+      card.classList.add('visible');
+      visible++;
+    } else {
+      card.classList.remove('visible');
+    }
+  });
+
+  noRoutes.style.display = visible === 0 ? 'block' : 'none';
+
+  if (selectedCity) {
+    setTimeout(() => document.getElementById('step-routes').scrollIntoView({behavior:'smooth',block:'start'}), 100);
+  }
+}
+
+function buyRoute(name, price) {
+  document.getElementById('modal-title').textContent = name;
+  document.getElementById('modal-price').textContent = price;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
+}
+
+function goToPayment() {
+  // Link to Gumroad product
+  window.open('https://gumroad.com/l/lanestories', '_blank');
+  closeModal();
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ── TOUR LAUNCHER ──
+function openTour(routeId) {
+  if (routeId === 'dark-lanes') {
+    document.getElementById('tour-overlay').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    showTourScreen('ts-intro');
+  }
+}
+
+function closeTour() {
+  document.getElementById('tour-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  stopTourAudio();
+  if (tourWatchId) navigator.geolocation.clearWatch(tourWatchId);
+}
+</script>
+
+<!-- ══════════════════════════════════════
+     THE DARK LANES — FULL TOUR OVERLAY
+══════════════════════════════════════ -->
+<style>
+#tour-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #080706;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.tour-wrap {
+  width: 100%;
+  max-width: 430px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tscreen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s;
+  overflow: hidden;
+}
+.tscreen.tactive { opacity: 1; pointer-events: all; }
+
+/* close btn */
+.tour-close {
+  position: absolute;
+  top: 14px; right: 16px;
+  z-index: 10;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(240,232,220,0.5);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.tour-close:hover { color: #fff; background: rgba(255,255,255,0.12); }
+
+/* ── INTRO ── */
+#ts-intro { background: #080706; justify-content: flex-end; }
+
+.ti-atm { position: absolute; inset: 0; overflow: hidden; }
+.ti-glow {
+  position: absolute; top: 14%; left: 50%; transform: translateX(-50%);
+  width: 280px; height: 280px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,58,42,.45) 0%, rgba(100,20,20,.15) 45%, transparent 70%);
+  animation: tibreathe 5s ease-in-out infinite;
+}
+.ti-icon {
+  position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+  font-size: 5rem;
+  animation: tifloat 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 28px rgba(139,58,42,.9));
+}
+.ti-lines {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 58px, rgba(196,150,90,.012) 58px, rgba(196,150,90,.012) 59px);
+}
+@keyframes tibreathe { 0%,100%{transform:translateX(-50%) scale(1);opacity:.6;} 50%{transform:translateX(-50%) scale(1.14);opacity:1;} }
+@keyframes tifloat { 0%,100%{top:10%;} 50%{top:8%;} }
+
+.ti-body {
+  position: relative; z-index: 2;
+  padding: 56px 26px 48px;
+  background: linear-gradient(to top, #080706 58%, transparent);
+}
+.ti-kicker { font-size:.56rem; letter-spacing:.28em; text-transform:uppercase; color:#B04A36; margin-bottom:12px; font-family:'Outfit',sans-serif; font-weight:300; }
+.ti-title { font-family:'Libre Baskerville',serif; font-size:3rem; font-weight:400; line-height:1.0; margin-bottom:14px; color:#F0E8DC; }
+.ti-title em { font-style:italic; color:#C4965A; }
+.ti-desc { font-size:.83rem; color:#6A5A50; line-height:1.75; margin-bottom:24px; max-width:30ch; font-family:'Outfit',sans-serif; font-weight:300; }
+.ti-meta { display:flex; gap:18px; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid rgba(196,150,90,.12); }
+.ti-pill { font-size:.7rem; color:#6A5A50; font-family:'Outfit',sans-serif; font-weight:300; }
+.ti-pill strong { display:block; color:#F0E8DC; font-weight:400; margin-bottom:1px; }
+.ti-stops { display:flex; gap:8px; margin-bottom:24px; }
+.ti-stop { flex:1; background:rgba(255,255,255,.03); border:1px solid rgba(196,150,90,.1); padding:9px 10px; }
+.ti-stop-n { font-size:.55rem; color:#B04A36; letter-spacing:.15em; margin-bottom:3px; font-family:'Outfit',sans-serif; }
+.ti-stop-name { font-family:'Libre Baskerville',serif; font-size:.75rem; font-style:italic; color:rgba(240,232,220,.65); line-height:1.2; }
+.ti-btn {
+  width:100%; background:#8B3A2A; border:none; color:#F0E8DC;
+  padding:15px; font-family:'Outfit',sans-serif; font-size:.8rem;
+  font-weight:500; letter-spacing:.12em; text-transform:uppercase;
+  cursor:pointer; transition:background .2s;
+}
+.ti-btn:hover { background:#B04A36; }
+
+/* ── STOP SCREEN ── */
+#ts-stop { background: #0F0D0C; display: flex; flex-direction: column; }
+
+.ts-bar {
+  flex-shrink:0; padding:14px 20px 12px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(196,150,90,.1);
+}
+.ts-dots { display:flex; gap:5px; }
+.ts-dot { width:24px; height:2px; border-radius:1px; background:rgba(196,150,90,.1); transition:background .4s; }
+.ts-dot.tdone { background:#C4965A; }
+.ts-dot.tnow  { background:#B04A36; }
+.ts-lbl { font-size:.56rem; letter-spacing:.2em; text-transform:uppercase; color:#6A5A50; font-family:'Outfit',sans-serif; }
+
+.ts-gps {
+  flex-shrink:0; padding:8px 20px;
+  display:flex; align-items:center; gap:7px;
+  background:rgba(139,58,42,.03);
+  border-bottom:1px solid rgba(196,150,90,.1);
+}
+.ts-gps-dot { width:5px; height:5px; border-radius:50%; background:#6A5A50; flex-shrink:0; transition:background .3s; }
+.ts-gps-dot.tnear { background:#4CAF50; animation:tgpsp 1.5s ease-in-out infinite; }
+.ts-gps-dot.ttrack { background:#C4965A; }
+@keyframes tgpsp { 0%,100%{box-shadow:0 0 0 0 rgba(76,175,80,.4);} 50%{box-shadow:0 0 0 4px rgba(76,175,80,0);} }
+.ts-gps-txt { font-size:.68rem; color:#6A5A50; font-family:'Outfit',sans-serif; }
+.ts-gps-dist { margin-left:auto; font-size:.68rem; color:#C4965A; font-weight:500; font-family:'Outfit',sans-serif; }
+
+.ts-content { flex:1; overflow-y:auto; padding:22px 20px 20px; -webkit-overflow-scrolling:touch; }
+
+.ts-eyebrow { font-size:.52rem; letter-spacing:.22em; text-transform:uppercase; color:#B04A36; margin-bottom:7px; font-family:'Outfit',sans-serif; }
+.ts-title { font-family:'Libre Baskerville',serif; font-size:1.8rem; font-weight:400; line-height:1.1; margin-bottom:4px; color:#F0E8DC; }
+.ts-addr { font-size:.7rem; color:#6A5A50; margin-bottom:20px; font-family:'Outfit',sans-serif; }
+
+.ts-story-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.ts-story-lbl { font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:#6A5A50; display:flex; align-items:center; gap:5px; font-family:'Outfit',sans-serif; }
+.ts-ind { width:4px; height:4px; border-radius:50%; background:#B04A36; }
+
+.ts-audio {
+  display:flex; align-items:center; gap:5px;
+  background:rgba(139,58,42,.1); border:1px solid rgba(139,58,42,.25);
+  color:#B04A36; padding:5px 10px;
+  font-family:'Outfit',sans-serif; font-size:.66rem;
+  cursor:pointer; transition:background .2s; border-radius:2px;
+}
+.ts-audio:hover { background:rgba(139,58,42,.2); }
+.ts-audio.tplaying { background:rgba(139,58,42,.28); color:#F0E8DC; }
+.ts-audio:disabled { opacity:.3; cursor:not-allowed; }
+
+.ts-story {
+  background:#141210; border-left:2px solid #8B3A2A;
+  padding:16px 16px; margin-bottom:14px; min-height:80px;
+}
+.ts-sp { font-size:.855rem; line-height:1.88; color:rgba(240,232,220,.82); margin-bottom:10px; font-family:'Outfit',sans-serif; font-weight:300; }
+.ts-sp:last-child { margin-bottom:0; }
+
+/* detail box */
+.ts-detail {
+  background:rgba(100,20,20,.08); border:1px solid rgba(100,20,20,.18);
+  border-left:2px solid #8B1A1A; padding:10px 13px; margin-bottom:14px;
+}
+.ts-dl { font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(176,74,54,.75); margin-bottom:5px; font-family:'Outfit',sans-serif; }
+.ts-dt { font-size:.76rem; color:rgba(240,232,220,.55); line-height:1.62; font-family:'Outfit',sans-serif; font-weight:300; }
+
+/* nearby tips */
+.ts-nearby {
+  background:rgba(196,150,90,.04); border:1px solid rgba(196,150,90,.1);
+  padding:12px 14px; margin-bottom:14px;
+}
+.ts-nb-lbl { font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:#C4965A; margin-bottom:8px; font-family:'Outfit',sans-serif; }
+.ts-nb-item { display:flex; gap:8px; align-items:flex-start; padding:5px 0; border-bottom:1px solid rgba(196,150,90,.07); }
+.ts-nb-item:last-child { border-bottom:none; padding-bottom:0; }
+.ts-nb-icon { font-size:.85rem; flex-shrink:0; margin-top:1px; }
+.ts-nb-text { font-size:.74rem; color:rgba(240,232,220,.55); line-height:1.5; font-family:'Outfit',sans-serif; font-weight:300; }
+.ts-nb-text strong { color:rgba(240,232,220,.75); font-weight:400; display:block; }
+
+/* walk hint */
+.ts-walk {
+  background:rgba(196,150,90,.03); border:1px solid rgba(196,150,90,.1);
+  padding:11px 13px; margin-bottom:16px;
+  display:flex; gap:9px; align-items:flex-start;
+}
+.ts-wi { font-size:.85rem; flex-shrink:0; margin-top:2px; opacity:.55; }
+.ts-wt { font-size:.73rem; color:#6A5A50; line-height:1.58; font-family:'Outfit',sans-serif; font-weight:300; }
+.ts-wt strong { color:rgba(240,232,220,.6); font-weight:400; display:block; margin-bottom:1px; }
+
+.ts-arrived {
+  width:100%; background:#C4965A; border:none; color:#080706;
+  padding:13px; font-family:'Outfit',sans-serif; font-size:.76rem;
+  font-weight:500; letter-spacing:.12em; text-transform:uppercase;
+  cursor:pointer; transition:background .2s; margin-bottom:7px;
+}
+.ts-arrived:hover { background:#E0B478; }
+.ts-arrived.thidden { display:none; }
+
+.ts-skip {
+  width:100%; background:none; border:1px solid rgba(196,150,90,.1);
+  color:#6A5A50; padding:10px;
+  font-family:'Outfit',sans-serif; font-size:.68rem; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer; transition:color .2s, border-color .2s;
+  margin-bottom:20px;
+}
+.ts-skip:hover { color:#F0E8DC; border-color:#6A5A50; }
+
+/* ── FINALE ── */
+#ts-finale {
+  background:#080706; justify-content:center; align-items:center;
+  text-align:center; padding:44px 28px;
+}
+.tf-icon { font-size:3.2rem; margin-bottom:24px; filter:drop-shadow(0 0 18px rgba(139,58,42,.7)); }
+.tf-title { font-family:'Libre Baskerville',serif; font-size:2.6rem; font-weight:400; line-height:1.1; margin-bottom:12px; color:#F0E8DC; }
+.tf-title em { font-style:italic; color:#E0B478; }
+.tf-sub { font-size:.83rem; color:#6A5A50; line-height:1.8; margin-bottom:36px; max-width:28ch; font-family:'Outfit',sans-serif; font-weight:300; }
+.tf-btns { display:flex; flex-direction:column; gap:9px; width:100%; }
+.tf-btn { padding:13px; border:1px solid rgba(196,150,90,.12); background:none; color:#F0E8DC; font-family:'Outfit',sans-serif; font-size:.74rem; letter-spacing:.08em; cursor:pointer; transition:all .2s; }
+.tf-btn:hover { border-color:#C4965A; color:#C4965A; }
+.tf-btn.tprimary { background:#8B3A2A; border-color:#8B3A2A; }
+.tf-btn.tprimary:hover { background:#B04A36; border-color:#B04A36; color:#F0E8DC; }
+
+/* loading dots */
+.tldots { display:flex; gap:4px; padding:10px 0; }
+.tldots span { width:4px; height:4px; border-radius:50%; background:#B04A36; opacity:.25; animation:tld 1.1s ease-in-out infinite; }
+.tldots span:nth-child(2){animation-delay:.15s;} .tldots span:nth-child(3){animation-delay:.3s;}
+@keyframes tld { 0%,100%{opacity:.2;transform:translateY(0);} 50%{opacity:1;transform:translateY(-3px);} }
+</style>
+
+<div id="tour-overlay">
+  <div class="tour-wrap">
+    <button class="tour-close" onclick="closeTour()">✕</button>
+
+    <!-- INTRO -->
+    <div id="ts-intro" class="tscreen tactive">
+      <div class="ti-atm">
+        <div class="ti-lines"></div>
+        <div class="ti-glow"></div>
+        <span class="ti-icon">🕯️</span>
+      </div>
+      <div class="ti-body">
+        <p class="ti-kicker">Lane Stories · Bergen</p>
+        <h1 class="ti-title">The<br><em>Dark</em><br>Lanes</h1>
+        <p class="ti-desc">From Viking kings to Nazi resistance — and a table in a feast hall unchanged since 1708.</p>
+        <div class="ti-meta">
+          <div class="ti-pill"><strong>4 stops</strong>2–3 hours</div>
+          <div class="ti-pill"><strong>Starts</strong>Bergenhus</div>
+          <div class="ti-pill"><strong>GPS + Audio</strong>guide</div>
+        </div>
+        <div class="ti-stops">
+          <div class="ti-stop"><p class="ti-stop-n">01</p><p class="ti-stop-name">Bergenhus Fortress</p></div>
+          <div class="ti-stop"><p class="ti-stop-n">02</p><p class="ti-stop-name">Bryggen Lanes</p></div>
+          <div class="ti-stop"><p class="ti-stop-n">03</p><p class="ti-stop-name">Theta Room</p></div>
+          <div class="ti-stop"><p class="ti-stop-n">04</p><p class="ti-stop-name">Dinner at Tracteursted</p></div>
+        </div>
+        <button class="ti-btn" onclick="tStartTour()">Enter the dark lanes →</button>
+      </div>
+    </div>
+
+    <!-- STOP -->
+    <div id="ts-stop" class="tscreen">
+      <div class="ts-bar">
+        <div class="ts-dots" id="ts-dots"></div>
+        <span class="ts-lbl" id="ts-lbl">Stop 1 of 4</span>
+      </div>
+      <div class="ts-gps">
+        <div class="ts-gps-dot" id="ts-gps-dot"></div>
+        <span class="ts-gps-txt" id="ts-gps-txt">Locating you...</span>
+        <span class="ts-gps-dist" id="ts-gps-dist"></span>
+      </div>
+      <div class="ts-content" id="ts-content">
+        <p class="ts-eyebrow" id="ts-eyebrow"></p>
+        <h2 class="ts-title" id="ts-title"></h2>
+        <p class="ts-addr" id="ts-addr"></p>
+        <div class="ts-story-hdr">
+          <div class="ts-story-lbl"><div class="ts-ind"></div>Guide</div>
+          <button class="ts-audio" id="ts-audio" onclick="toggleTourAudio()" disabled>🔊 Listen</button>
+        </div>
+        <div class="ts-story" id="ts-story"><div class="tldots"><span></span><span></span><span></span></div></div>
+        <div class="ts-detail" id="ts-detail">
+          <p class="ts-dl" id="ts-dl"></p>
+          <p class="ts-dt" id="ts-dt"></p>
+        </div>
+        <div class="ts-nearby" id="ts-nearby">
+          <p class="ts-nb-lbl">Nearby</p>
+          <div id="ts-nb-items"></div>
+        </div>
+        <div class="ts-walk">
+          <span class="ts-wi">🚶</span>
+          <div class="ts-wt"><strong id="ts-wt"></strong><span id="ts-wd"></span></div>
+        </div>
+        <button class="ts-arrived thidden" id="ts-arrived" onclick="tNextStop()">✓ I'm here — continue</button>
+        <button class="ts-skip" onclick="tNextStop()">Skip ahead</button>
+      </div>
+    </div>
+
+    <!-- FINALE -->
+    <div id="ts-finale" class="tscreen">
+      <div class="tf-icon">🕯️</div>
+      <h2 class="tf-title">You walked<br>through <em>history.</em></h2>
+      <p class="tf-sub">Seven centuries of Bergen in three streets. These stories happened to real people.</p>
+      <div class="tf-btns">
+        <button class="tf-btn tprimary" onclick="tShare()">Share this route 🕯️</button>
+        <button class="tf-btn" onclick="showTourScreen('ts-intro')">Walk it again</button>
+        <button class="tf-btn" onclick="closeTour()">Back to all routes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// THE DARK LANES — TOUR ENGINE
+// ══════════════════════════════════════
+const T_STOPS = [
+  {
+    eyebrow: "First stop · 900–1944",
+    name: "Bergenhus Festning",
+    addr: "📍 Bradbenken, Bergen sentrum",
+    lat: 60.3986, lng: 5.3178,
+    detail: {
+      label: "20 April 1944 — The Explosion",
+      text: "A Dutch freighter loaded with 124 tonnes of explosives detonated in Vågen harbour. The shockwave shattered Håkonshallen's roof — a 700-year-old royal feast hall. 160 people died. The hall you see today was painstakingly rebuilt over 20 years."
+    },
+    nearby: [
+      { icon:"🏰", name:"Håkonshallen", note:"Open for visits. Built 1247–1261 as Norway's royal feast hall. Free entry to grounds." },
+      { icon:"🗼", name:"Rosenkrantztårnet", note:"The Renaissance tower beside the hall. Climb for views over Vågen." },
+      { icon:"☕", name:"Koengen area", note:"Café kiosk inside the fortress in summer. Good spot to sit before the walk." }
+    ],
+    walk: { t:"Walk to Bryggen (4 min)", d:"Leave the fortress through the main gate and walk east along the waterfront. Look for the large yellow building with a gilded unicorn head above the archway — that's your entrance." },
+    story: `You are standing at the heart of Bergen's entire history. This spot — once called Holmen — has been continuously occupied since before the year 1000. Viking kings held court here. Norway's first capital was here. And on the morning of 9 April 1940, it fell in darkness.
+
+Before all of that, however, this was a place of extraordinary ceremony. King Håkon Håkonsson built the great stone hall you see to your left between 1247 and 1261. It was here, on 11 September 1261, that his son Magnus Lagabøte was crowned and married the Danish princess Ingebjørg — a celebration that lasted days, with lords and bishops gathered from across the Norse world. Bergen was then the capital of Norway, and this fortress was the beating heart of a kingdom that stretched from Iceland to the Scottish islands.
+
+Then came 9 April 1940. German ships entered the harbour before dawn. By five in the morning, Admiral von Schrader stood at these gates and received the Norwegian commander's surrender. The fortress that had never been taken by force was handed over in darkness. For five years, this was the Nazi western headquarters. That squat concrete bunker in the middle of the grounds? Built in 1940, by Soviet prisoners of war, under German command. Medieval kings and Nazi generals — both in the same stones.`
+  },
+  {
+    eyebrow: "Second stop · The Hanseatic lanes",
+    name: "Enhjørningsgården, Bryggen",
+    addr: "📍 Bryggen 29, Bergen",
+    lat: 60.3975, lng: 5.3238,
+    detail: {
+      label: "1360 — The Hanseatic League arrives",
+      text: "German merchants established their trading post here around 1360, dominating Bergen's commerce for 400 years. They imported grain, exported dried cod. The men lived in these alleys under strict rules — no women, no Norwegian friends, no leaving without permission. An entire male world, sealed inside wooden walls."
+    },
+    nearby: [
+      { icon:"🏛️", name:"Bryggens Museum", note:"Excavations beneath the car park revealed medieval foundations going back to 1100. Worth 45 minutes." },
+      { icon:"🐟", name:"Fisketorget", note:"5 min walk south. Bergen's fish market — buy a cone of fresh shrimp and eat it by the water." },
+      { icon:"🍺", name:"Sjøboden", note:"Historic bar inside a Bryggen boathouse. Live music every evening. Good stop before dinner." }
+    ],
+    walk: { t:"Find the Theta Room (2 min)", d:"Walk 60 metres further into the passageway. Look for a small sign on the stairs to your right, just before the inner courtyard opens up. The museum is up those stairs." },
+    story: `Step into this alley. The wooden walls lean toward each other overhead. It smells of old timber and salt. Very little has changed here since the 14th century.
+
+Bergen was, for much of the Middle Ages, one of the most important trading cities in northern Europe. The Hanseatic League — a network of German merchant cities — ran an entire parallel world inside these buildings. Their rules were extraordinary: no Norwegian women were permitted inside. No Norwegian friendships. Boys arrived at twelve as apprentices and lived under near-total control for years. They slept in the same rooms as their masters, ate in the same schøtstuer, and were not allowed to marry until they had risen to the rank of full merchant. It was a kind of monastery of commerce.
+
+During the German occupation six centuries later, these same alleys were used by Nazi patrols. Gestapo informers moved through Bergen daily — hundreds of Norwegians recruited to infiltrate resistance networks. The Nacht und Nebel decree meant that people arrested simply vanished, with no notification to family. They disappeared into the Reich's prison system. Some of them had walked through this very passage.`
+  },
+  {
+    eyebrow: "Third stop · Norway's smallest museum",
+    name: "Thetamuseet",
+    addr: "📍 Enhjørningsgården, Bryggen",
+    lat: 60.3974, lng: 5.3241,
+    detail: {
+      label: "17 October 1942 — The Raid",
+      text: "German forces raided Bryggen and discovered the Theta room by accident — the electrical locking system had failed. Two members fled to England but were captured and sent to Nacht und Nebel camps. One member stayed in Bergen, continued resistance work until December 1944, and was sentenced to death. The capitulation on 8 May 1945 saved his life with days to spare."
+    },
+    nearby: [
+      { icon:"🍷", name:"Frille & Dyveke Vinkjeller", note:"A wine cellar dating to the 16th century, two minutes walk. Excellent natural wines and a remarkable atmosphere." },
+      { icon:"🎵", name:"Madam Felle", note:"Bryggen bar with live music every night. Good stop after dinner if you want to extend the evening." },
+      { icon:"🚢", name:"Statsraaden Bar", note:"Maritime-themed bar on Bryggen with harbour views. Concerts in winter, terrace in summer." }
+    ],
+    walk: { t:"Walk to your final stop — dinner (3 min)", d:"Come back out through the passageway and turn left along Bryggen. Bryggen Tracteursted is the third building on the left — look for the restaurant sign and the historic wooden entrance. Dinner is entirely optional, but the building itself is part of the story." },
+    story: `One room. No bigger than a large wardrobe. This is Norway's smallest museum — and one of its most important.
+
+In May 1940, a group of engineering students from Bergen — the oldest was 22 — established a secret radio post inside this building. Their name was the Theta Group. Their mission: to transmit intelligence about German naval movements along the coast directly to London. They built a concealed door with an electrical locking system they had designed themselves, hidden within Bryggen's sealed-off medieval passages. For two years, they broadcast in secret, providing information that helped the Allied effort in the North Atlantic.
+
+The room was discovered on 17 October 1942, during a large German raid on Bryggen. The members fled. The room was destroyed. What you see today is a reconstruction — rebuilt in 1981 exactly as it appeared in 1942, with original equipment recovered after the war. Stand here and think about being 20 years old, transmitting coded messages to England from an occupied city, in a room built by your own hands, knowing that if you were caught you would simply disappear.`
+  },
+  {
+    eyebrow: "Fourth stop · Optional dinner",
+    name: "Bryggen Tracteursted",
+    addr: "📍 Bryggen, 5003 Bergen · bryggentracteursted.no",
+    lat: 60.3971, lng: 5.3232,
+    detail: {
+      label: "The Schøtstue — since 1360",
+      text: "A schøtstue was the Hanseatic merchants' communal dining hall — the one place in Bryggen where a warm meal was permitted, since open fires were forbidden in the wooden buildings. Svensgårdens Schøtstue, now housing this restaurant, is the last surviving example on the west coast of Norway. People have been eating in this room for over 600 years."
+    },
+    nearby: [
+      { icon:"🥃", name:"No Stress", note:"Bergen's best cocktail bar — 10 min walk. Named Norway's best bar. Ask for the evening special." },
+      { icon:"🎵", name:"Café Opera", note:"8 min walk. Bergen's most beloved late-night venue — jazz, quiz nights, dancing. Open since 1984." },
+      { icon:"🌙", name:"Hulen", note:"15 min walk. A concert venue inside a medieval bomb shelter. One of Norway's oldest clubs." }
+    ],
+    walk: { t:"The route ends here", d:"You've walked from the 13th century to the 20th century in three streets. The lanes of Bergen have been holding these stories for a very long time. Thank you for listening." },
+    story: `This is where the route ends — and where Bergen has been feeding people since long before the occupation, long before the Hanseatic League, arguably since the city itself began.
+
+The building you're standing in contains Svensgårdens Schøtstue, established in 1708 and the last remaining example of a medieval feast hall on the entire west coast of Norway. In the Hanseatic period, this was the communal dining room for the German merchants — the one place in Bryggen where open fires were permitted and warm meals were served, since the risk of fire in the wooden buildings was otherwise too great. Important decisions were made here. Disputes were settled here. And on the long, dark Norwegian winter evenings, it was the warmth that men walked toward.
+
+Dinner here is entirely your choice — but if you sit down, order the fiskesuppe. It's been on Bergen tables in some form for centuries. You've spent the last few hours walking through layers of this city's history. Consider ending it with a glass of something and the simple pleasure of a warm room after a long walk through the dark lanes.`
+  }
+];
+
+const T_RADIUS = 130;
+let tCur = 0, tourWatchId = null, tSpeaking = false, tUtter = null, tStory = '';
+
+function showTourScreen(id) {
+  document.querySelectorAll('.tscreen').forEach(s => s.classList.remove('tactive'));
+  document.getElementById(id).classList.add('tactive');
+}
+
+function tStartTour() {
+  tCur = 0;
+  // build dots
+  const dotsEl = document.getElementById('ts-dots');
+  dotsEl.innerHTML = '';
+  T_STOPS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'ts-dot'; d.id = 'tsd'+i;
+    dotsEl.appendChild(d);
+  });
+  showTourScreen('ts-stop');
+  tLoad(0);
+  tStartGPS();
+}
+
+function tLoad(i) {
+  const s = T_STOPS[i];
+  stopTourAudio();
+  document.getElementById('ts-content').scrollTop = 0;
+
+  document.getElementById('ts-lbl').textContent = `Stop ${i+1} of ${T_STOPS.length}`;
+  document.getElementById('ts-eyebrow').textContent = s.eyebrow;
+  document.getElementById('ts-title').textContent = s.name;
+  document.getElementById('ts-addr').textContent = s.addr;
+  document.getElementById('ts-dl').textContent = s.detail.label;
+  document.getElementById('ts-dt').textContent = s.detail.text;
+  document.getElementById('ts-wt').textContent = s.walk.t;
+  document.getElementById('ts-wd').textContent = s.walk.d;
+  document.getElementById('ts-arrived').classList.add('thidden');
+
+  // dots
+  for (let j = 0; j < T_STOPS.length; j++) {
+    const d = document.getElementById('tsd'+j);
+    if (!d) continue;
+    d.className = 'ts-dot' + (j < i ? ' tdone' : j === i ? ' tnow' : '');
+  }
+
+  // nearby
+  const nbEl = document.getElementById('ts-nb-items');
+  nbEl.innerHTML = '';
+  s.nearby.forEach(n => {
+    nbEl.innerHTML += `<div class="ts-nb-item"><span class="ts-nb-icon">${n.icon}</span><div class="ts-nb-text"><strong>${n.name}</strong>${n.note}</div></div>`;
+  });
+
+  // story
+  const box = document.getElementById('ts-story');
+  box.innerHTML = '';
+  tStory = s.story;
+  s.story.split('\n\n').filter(p => p.trim()).forEach(p => {
+    const el = document.createElement('p');
+    el.className = 'ts-sp'; el.textContent = p.trim();
+    box.appendChild(el);
+  });
+
+  document.getElementById('ts-audio').disabled = false;
+
+  // last stop styling
+  document.querySelector('.ts-walk').style.opacity = i === T_STOPS.length - 1 ? '0.5' : '1';
+}
+
+function tNextStop() {
+  stopTourAudio();
+  tCur++;
+  if (tCur >= T_STOPS.length) {
+    showTourScreen('ts-finale');
+    if (tourWatchId) navigator.geolocation.clearWatch(tourWatchId);
+  } else {
+    tLoad(tCur);
+  }
+}
+
+// ── AUDIO — female British voice ──
+function toggleTourAudio() { tSpeaking ? stopTourAudio() : tPlayAudio(); }
+
+function tPlayAudio() {
+  if (!tStory || !window.speechSynthesis) return;
+  stopTourAudio();
+  tUtter = new SpeechSynthesisUtterance(tStory);
+  tUtter.lang = 'en-GB';
+  tUtter.rate = 0.86;
+  tUtter.pitch = 1.05;
+
+  // Prefer female British voice
+  const voices = speechSynthesis.getVoices();
+  const femaleGB = voices.find(v => v.lang === 'en-GB' && /female|samantha|karen|fiona|victoria|alice|serena/i.test(v.name))
+    || voices.find(v => v.lang === 'en-GB' && !/male/i.test(v.name) && v.name !== '')
+    || voices.find(v => v.lang.startsWith('en') && /female|samantha|karen|fiona|victoria|alice|serena/i.test(v.name))
+    || voices.find(v => v.lang === 'en-GB')
+    || voices.find(v => v.lang.startsWith('en'));
+  if (femaleGB) tUtter.voice = femaleGB;
+
+  tUtter.onstart = () => {
+    tSpeaking = true;
+    const b = document.getElementById('ts-audio');
+    b.textContent = '⏹ Stop'; b.classList.add('tplaying');
+  };
+  tUtter.onend = tUtter.onerror = () => {
+    tSpeaking = false;
+    const b = document.getElementById('ts-audio');
+    if (b) { b.textContent = '🔊 Listen'; b.classList.remove('tplaying'); }
+  };
+  speechSynthesis.speak(tUtter);
+}
+
+function stopTourAudio() {
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  tSpeaking = false;
+  const b = document.getElementById('ts-audio');
+  if (b) { b.textContent = '🔊 Listen'; b.classList.remove('tplaying'); }
+}
+
+// ── GPS ──
+function tStartGPS() {
+  if (!navigator.geolocation) { tSetGPS('GPS not available', ''); return; }
+  tourWatchId = navigator.geolocation.watchPosition(tOnPos,
+    () => tSetGPS('Location unavailable', ''),
+    { enableHighAccuracy:true, maximumAge:5000, timeout:10000 });
+}
+
+function tOnPos(p) {
+  const {latitude:la, longitude:lo} = p.coords;
+  const s = T_STOPS[tCur];
+  const d = tHav(la, lo, s.lat, s.lng);
+  const dr = Math.round(d);
+  document.getElementById('ts-gps-dot').className = 'ts-gps-dot ttrack';
+  if (d <= T_RADIUS) {
+    document.getElementById('ts-gps-dot').className = 'ts-gps-dot tnear';
+    tSetGPS("You're here", dr+'m');
+    document.getElementById('ts-arrived').classList.remove('thidden');
+  } else {
+    tSetGPS('Navigating...', dr < 1000 ? dr+'m away' : (d/1000).toFixed(1)+'km');
+    document.getElementById('ts-arrived').classList.add('thidden');
+  }
+}
+
+function tSetGPS(t, d) {
+  document.getElementById('ts-gps-txt').textContent = t;
+  document.getElementById('ts-gps-dist').textContent = d;
+}
+
+function tHav(a,b,c,d) {
+  const R=6371000, dL=(c-a)*Math.PI/180, dO=(d-b)*Math.PI/180;
+  const x=Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dO/2)**2;
+  return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
+
+function tShare() {
+  const data = {title:'The Dark Lanes – Bergen', text:'Just walked The Dark Lanes on LaneStories.com — Bergen from 1261 to 1945 in three streets.', url:'https://lanestories.com'};
+  if (navigator.share) navigator.share(data);
+  else { navigator.clipboard?.writeText(data.url); alert('Link copied!'); }
+}
+
+if (window.speechSynthesis) speechSynthesis.getVoices();
+</script>
+</body>
+</html>
