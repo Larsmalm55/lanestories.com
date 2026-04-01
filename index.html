@@ -644,15 +644,12 @@ noRoutes.style.display = count === 0 ? 'block' : 'none';
 }
 let pendingRoute = '';
 function openRoute(name, price, routeId) {
-document.getElementById('modal-title').textContent = name;
-document.getElementById('modal-price').textContent = price;
-pendingRoute = routeId;
-document.getElementById('modal').style.display = 'flex';
+// TEST MODE: skip payment, go directly to route
+window.location.href = 'route.html?id=' + (routeId || 'dark-lanes') + '&name=' + encodeURIComponent(name);
 }
 function closeModal() { document.getElementById('modal').style.display = 'none'; }
 function goToPayment() {
-// In production: open Gumroad link for specific route
-window.open('https://gumroad.com/l/lanestories-' + (pendingRoute || 'route'), '_blank');
+window.location.href = 'route.html?id=' + (pendingRoute || 'dark-lanes');
 closeModal();
 }
 document.getElementById('modal').addEventListener('click', function(e) {
