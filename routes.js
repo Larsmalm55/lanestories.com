@@ -324,4 +324,93 @@ const ROUTES = {
     ]
   }
 
+
+  // ── ANTWERPEN: THE MERCHANT'S EVENING ───────
+  'antwerp': {
+    title:    "The Merchant's Evening",
+    kicker:   'Antwerpen · Kveld · 3–4 timer · Grote Markt til Eilandje',
+    subtitle: 'Om en by som en gang var rikere enn Roma. Om geneveren som ble til gin. Og om en elv som ble stengt i to hundre år — og hva som skjedde da den ble åpnet igjen.',
+    meta: [
+      ['4 stopp',     'inkl. middag'],
+      ['Starter',     'Grote Markt'],
+      ['Tema',        'Øl · Jenever · Mat'],
+      ['GPS + Audio', 'guide']
+    ],
+    completion: "Du har gått The Merchant's Evening. 4 stopp. Fra Grote Markt til Eilandje. En by som falt fra verdens topp og fant seg selv på nytt — og geneveren som ble til gin.",
+    stops: [
+      {
+        name:      'Café Den Engel',
+        address:   'Grote Markt 3, Antwerpen',
+        tag:       'Stopp 1 av 4 · Start her · Grote Markt',
+        drink:     '🍺 Din drink her: En Duvel eller Westmalle Tripel — velg noe belgisk og stolt',
+        audioMin:  'ca. 5 min',
+        nextLabel: 'Neste: De Vagant →',
+        mapNext:   'De Vagant · 8 min å gå',
+        mapLabel:  'Neste stopp',
+        body: `
+<p>Se deg rundt. Gildebyggningene rundt plassen — med forgylte fasader og overdådige skulpturer — ble oppført av byens mektigste kjøpmenn. De ville at alle som ankom Antwerpen skulle forstå én ting med en gang: dette er en rik by. Faktisk var det mer enn det.</p>
+<div class="pullquote"><p>"I 1540 var Antwerpen den rikeste byen i Europa. Kanskje i verden. Tre fjerdedeler av all handel mellom England og kontinentet gikk gjennom denne plassen."</p></div>
+<div class="history-box"><p class="hb-label">💰 Verdens første børs</p><p class="hb-text">I 1531 ble Antwerpen hjemsted for verdens første formelle børs — Beurzen. Kjøpmenn fra Portugal, England, Spania og det tyske riket møttes her for å handle ikke bare varer, men fremtidige leveranser, vekslerbrev og kreditt. Ideen om å handle i papir i stedet for korn og klede var revolusjonerende — og ble selve grunnlaget for moderne kapitalisme. London, Amsterdam og New York kopierte modellen. Originalen var her.</p></div>
+<p>En samtid beskrev det slik: «I Antwerpen tales alle språk, alle nasjoners skikker er å se.» Det var ikke overdrivelse. I 1550-tallets Antwerpen bodde det portugisere, jøder fra Spania, engelskmenn, tyskere og flamlendere side om side. Byens havn tok imot krydder fra den nye verden, silke fra Orienten og ull fra England. Alt ble omsatt. Alt hadde en pris.</p>
+<p>Men fontenen foran deg forteller en annen historie. Legenden om Brabo: en romersk soldat som drepte kjempen Druon Antigoon, som krevde toll av alle som passerte elven, og kastet hånden hans i Scheldt. «Hand werpen» — å kaste en hånd. Derav: Antwerpen.</p>
+<p>Det er selvfølgelig bare en legende. Men det er byens legende om seg selv: vi betalte prisen, vi kastet hånden til undertrykkeren i elven, og vi ble frie. Sannheten er mer brutal og mer fascinerende. Det kommer du til å forstå.</p>
+<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>En Duvel eller Westmalle Tripel.</strong> Duvel er belgisk for djevel — en blond sterk øl med mer bak fasaden enn den ser ut til å ha. Akkurat som denne byen. Westmalle Tripel er et trappistøl fra abbediet i Malle, 25 km herfra, brygget av munker siden 1836. Belgisk ølkultur er ikke en trend. Det er en sivilisasjon.</p></div></div>`
+      },
+      {
+        name:      'De Vagant',
+        address:   'Reyndersstraat 25, Antwerpen',
+        tag:       'Stopp 2 av 4 · 8 min gange',
+        drink:     '🥃 Din drink her: En oude jenever — ta den ren, i romtemperatur',
+        audioMin:  'ca. 5 min',
+        nextLabel: 'Neste: Café Beveren →',
+        mapNext:   'Café Beveren · 5 min å gå',
+        mapLabel:  'Neste stopp',
+        body: `
+<p>Du er nå i et av Europas beste jenever-barer. De Vagant har over 200 varianter. Ikke begynn å lese menyen ennå — det tar resten av kvelden. Hør historien først.</p>
+<p>Jenever er ikke gin. Gin er jenever som ble forenklet, anglisert og rebrandlet. Originalen ble til her i de lave land på 1500-tallet — destillert korn med einebær, brukt som medisin mot nyresten og reumatisme.</p>
+<div class="pullquote"><p>"Under trettiårskrigen, i 1618–1648, gav engelske soldater som kjempet side om side med nederlandske allierte noe de aldri hadde smakt. De kalte det «Dutch courage» — nederlandsk mot. De tok det med hjem."</p></div>
+<div class="history-box"><p class="hb-label">🥃 Fra medisin til gin — jenevers reise</p><p class="hb-text">Jenever ble opprinnelig solgt på apotek som kur mot magesykdom, febersykdom og nyrestein — det ble kalt «genever» etter det nederlandske ordet for einebær. Da engelske soldater begynte å drikke det i felt, returnerte de hjem med en ny smak. Innen 1720-30 hadde London en ginkrise: 11 millioner gallons gin ble produsert per år til en befolkning på 600.000. William Hogarths berømte stikk «Gin Lane» fra 1751 er arven etter det. Og det startet med en medisinsk destillat fra de lave land.</p></div>
+<p>Antwerpen var ikke bare et handelssentrum. Det var et spredningspunkt. Ideer, varer, drinker, sykdommer og oppdagelser gikk ut i verden herfra som ringer i vann. London fikk gin fra nederlandske soldater. New York het opprinnelig New Amsterdam. Wall Street er en direkte etterfølger av Antwerpens børs.</p>
+<p>Og du sitter nå og drikker selve originalen. Ikke en hyllest. Ikke en rekonstruksjon. Oude jenever, lagret på eikefat, er nøyaktig det engelske soldatene drakk i skyttergravene i Flandern mens de ventet på at noe forferdelig skulle skje.</p>
+<div class="drink-tip"><div class="dt-icon">🥃</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>Be om en oude jenever</strong> — den lagrede varianten. Ikke den unge, gjennomsiktige. Gammel jenever er mørk, myk og nesten whisky-aktig. Drikk den ren, i et lite glass, i romtemperatur. Tilsett ikke is. Ikke tonic. Bare drikken, slik den alltid har vært drukket her.</p></div></div>`
+      },
+      {
+        name:      'Café Beveren',
+        address:   'Vlasmarkt 2, Antwerpen',
+        tag:       'Stopp 3 av 4 · 5 min gange',
+        drink:     '🍺 Din drink her: En Bolleke De Koninck — Antwerpens eget bryggeri siden 1827',
+        audioMin:  'ca. 6 min',
+        nextLabel: 'Siste stopp: Middag →',
+        mapNext:   'Het Pomphuis · 15 min å gå (eller taxi)',
+        mapLabel:  'Neste stopp',
+        body: `
+<p>Stopp opp. Se innover. Taket er det originale Art Deco-taket. Lampene er originale. Og orgelet — det store mekaniske orgelet som henger der på veggen — er ekte. Det spiller fremdeles. Noen kvelder starter det bare av seg selv.</p>
+<p>Café Beveren er fra tidlig 1900-tall og er et av Antwerpens mest autentiske brune kafeer. Men dens virkelige funksjon i kveld er å hjelpe deg forstå hva som skjedde med den rikeste byen i verden — etter at den falt.</p>
+<div class="pullquote"><p>"I 1585 tok den spanske feltherren Alexander Farnese Antwerpen etter en 14 måneder lang beleiring. Det som skjedde de neste ti årene endret Europa for alltid."</p></div>
+<div class="history-box"><p class="hb-label">⚓ Den lukkede elven — 210 år i isolasjon</p><p class="hb-text">Da Antwerpen falt til Spania i 1585, flyktet omtrent halvparten av byens befolkning nordover til det nye, protestantiske Nederland. Kjøpmenn, bankierer, kunstnere og håndverkere tok med seg kapitalen sin. Amsterdam ble den nye verdensfinanshovedstaden — ikke fordi Amsterdam var bedre, men fordi Antwerpen ble stengt. De nederlandske provinsene, som nå var i krig med Spania, stengte Scheldt-elven for skipstrafikk. Ingen skip inn. Ingen skip ut. I 210 år. Fra 1585 til 1795, da Napoleon endelig åpnet elven igjen.</p></div>
+<p>Tenk på det: 210 år. Antwerpen, verdens handelshovedstad, fikk ikke lov til å bruke sin egen elv. Mens Amsterdam, London og Rotterdam blomstret, satt Antwerpen fast. Byens befolkning falt fra 100.000 til 40.000 på et tiår.</p>
+<p>Men noe overlevde. Portugisiske og spanske jøder — drevet ut av Iberia av inkvisitorene — hadde allerede funnet veien til Antwerpen. De brakte med seg diamanthandelen. Og den ble igjen. Selv da alt annet forlot byen, satt diamanthandlerne og slepte og polerte og handlet. I dag passerer fremdeles omtrent 80 % av verdens uslipte diamanter gjennom Antwerpen. En direkte arv fra flyktningene som kom hit og aldri dro.</p>
+<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>En Bolleke De Koninck.</strong> «Bolleke» betyr «lite kuppel» på antwerpsk dialekt — en referanse til den runde, kuppelformede glasset ølen serveres i. De Koninck ble grunnlagt i 1827 og brygger fremdeles i Antwerpen sentrum. Å bestille en Bolleke her er ikke å velge en øl. Det er å si at du vet hvor du er.</p></div></div>`
+      },
+      {
+        name:      'Het Pomphuis',
+        address:   'Hanzestedenplaats 1, Eilandje, Antwerpen',
+        tag:       'Stopp 4 av 4 · Avslutning · Eilandje',
+        drink:     '🍽️ Din drink her: Hva du vil — du er fremme',
+        audioMin:  'ca. 4 min',
+        nextLabel: null,
+        mapNext:   'Ruten er fullført 🎉',
+        mapLabel:  'Status',
+        body: `
+<p>Du sitter inne i en pumpemaskin. Ikke metaforisk — bygningen rundt deg er en ekte industriell pumpemaskin fra 1920. Maskineriet er fremdeles der, omgitt av gjester og kvelds-belysning. Det heter «het pomphuis» — pumpehuset.</p>
+<p>Og pumpehuset er der fordi Napoleon Bonaparte en dag i 1795 beordret at Scheldt-elven skulle åpnes igjen.</p>
+<div class="pullquote"><p>"Napoleon besøkte Antwerpen i 1803 og erklærte: «Jeg har tenkt å gjøre Antwerpen til en pistol rettet mot hjertet av England.» Han mente havnen. Han mente elven. Han mente frihet til å seile ut og inn igjen."</p></div>
+<div class="history-box"><p class="hb-label">⚓ Napoleons havn og Antwerpens gjenoppstandelse</p><p class="hb-text">Napoleon beordret bygging av to store dokker i Antwerpen — nøyaktig det komplekset du ser utenfor vinduet akkurat nå: Willemdok og Bonapartedok. De ble bygd mellom 1803 og 1811 av soldater og tvangsarbeidere. Det var ikke filantropi — Napoleon ville bruke Antwerpen som marinebasis mot britene. Men effekten var permanent: elven var åpen, havnen var ny, og Antwerpen begynte langsomt å puste igjen. I dag er Antwerpen Europas nest største havn målt i tonnasje. Bare Rotterdam er større.</p></div>
+<p>Eilandje — «den lille øya» — er kvarteret rundt disse dokkene. Inntil for tjue år siden var det et forlatt industriområde. Entrepotdok-lagerbygningene sto tomme. Kaiene var rusten. Så begynte det som alltid skjer med slike steder: kunstnere kom. Deretter kafeer. Deretter restauranter. Deretter eiendomsutviklere. I dag er Eilandje et av Antwerpens fineste nabolag. Men gammelt gods er ikke borte — det er blitt til gulv og tak og stemning.</p>
+<p>Du sitter i et rom som ble bygd for å flytte vann, og som nå fyller deg med mat og drikke. Det er ikke så langt fra hva denne byen alltid har gjort: ta det som strømmer gjennom den, og gjøre noe nyttig av det.</p>
+<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">God appetitt. Antwerpen er glad for at du fant veien hit.</p>`
+      }
+    ]
+  }
+
 };
