@@ -411,6 +411,77 @@ const ROUTES = {
 <p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">God appetitt. Antwerpen er glad for at du fant veien hit.</p>`
       }
     ]
+  },
+
+  // ── BERGEN: OVER BERGEN (KOLSTIEN) ──────────
+  'bergen-kolstien': {
+    title:    'Over Bergen',
+    kicker:   'Bergen · Dagstur · 1–2 timer · Kolstien',
+    subtitle: 'En times gange over Bergens tak. Stien som generasjoner av bergensere har brukt som snarvei, utsiktspunkt og pustepause — med historier fra fjellfoten til fjorden.',
+    meta: [
+      ['3 stopp',       'ingen barer'],
+      ['Starter',       'Kolstien'],
+      ['Tema',          'Natur · Historie · Utsikt'],
+      ['GPS + Audio',   'guide']
+    ],
+    completion: 'Du har gått Over Bergen. 3 stopp. Fra Kolstien ned til Sandviken. Stien som alltid har vært der — lenge før turistene, lenge etter.',
+    stops: [
+      {
+        name:      'Kolstien — startpunktet',
+        address:   'Øvre Kolstien, Bergen — start ved Skansen-siden',
+        tag:       'Stopp 1 av 3 · Start her · Pust inn',
+        drink:     null,
+        audioMin:  'ca. 5 min',
+        nextLabel: 'Neste stopp →',
+        mapNext:   'Munkeliv-haugen · 20 min gange',
+        mapLabel:  'Neste stopp',
+        body: `
+<p>Ta et øyeblikk før du begynner å gå. Se utover. Bergenhus festning ligger der nede. Bryggen strekker seg langs kaia. Vågen — den indre havnen — skinner enten i sol eller regn, og begge deler er Bergen.</p>
+<p>Stien du står på heter Kolstien. Den løper langs fjellsiden over Bergen sentrum, fra Bergenhus-siden i sør til Sandviken i nord. Ingen vet nøyaktig når den ble til, men den har vært brukt i hundrevis av år — av arbeidere, tjenestepiker, fiskere og kjøpmenn som trengte den korteste veien mellom byens to ender.</p>
+<div class="pullquote"><p>"Kol" i Kolstien viser trolig til kull — trekull. Oppe i liene her ble det brent kull fra begynnelsen av middelalderen. Kullbrenning var tungt, møkkete arbeid, og mennene som gjorde det bodde og arbeidet der ingen andre ville bo: oppe i skogen, over byen."</p></div>
+<div class="history-box"><p class="hb-label">⛰️ Bergen og de syv fjellene</p><p class="hb-text">Bergen er omgitt av syv fjell: Fløyen, Ulriken, Løvstakken, Damsgårdsfjellet, Lyderhorn, Sandviksfjellet og Rundemanen. Disse fjellene er ikke bare bakgrunn — de har alltid definert byen. De begrenset hvor folk kunne bo. De skapte naturlige ruter, som Kolstien. De ga tre, vann og ly. Og de har sett alt: Bergen var Norges ubestridte hovedstad i over to hundre år, fra rundt 1070 til 1299, da kongene holdt hoff ved Bergenhus nede i dalen.</p></div>
+<p>Nede til venstre kan du se restene av Bergenhus festning. Den har stått der siden 1200-tallet. Men det meste av Bergen du ser herfra er ikke gammelt — ikke i den forstand. Bergen har brent over tjue ganger. I 1702 la den største brannen nesten hele byen i aske på én natt. Det du ser er det som ble bygd etterpå, og etterpå igjen, og etterpå igjen etter det.</p>
+<p>Bare Bryggen overlevde fordi vinden blåste fra feil kant den natten. Alt annet er yngre enn du kanskje tror.</p>
+<p>Begynn å gå. Stien er smal og ujamn og vakker. Hold deg på den. Den vet veien.`
+      },
+      {
+        name:      'Munkeliv-haugen',
+        address:   'Over Nøstet — midtpunktet på stien',
+        tag:       'Stopp 2 av 3 · 20 min gange fra start',
+        drink:     null,
+        audioMin:  'ca. 5 min',
+        nextLabel: 'Neste stopp: Sandviksbodene →',
+        mapNext:   'Sandviksbodene · 20 min gange',
+        mapLabel:  'Neste stopp',
+        body: `
+<p>Du er nå omtrent midt på stien. Se ned mot nabolaget under deg — det heter Nøstet. Trangt, tett, med små gårder og smug som har endret seg lite siden 1800-tallet. Lenger ned, ved vannet, kan du skimte der Munkeliv kloster en gang lå.</p>
+<div class="pullquote"><p>"Munkeliv kloster ble grunnlagt rundt år 1110 av kong Øystein Magnusson. I over fire hundre år var det et levende sentrum for religion, medisin og landbruk — til reformasjonen rev det ned i 1537."</p></div>
+<div class="history-box"><p class="hb-label">✝️ Munkeliv — klosteret som forsvant</p><p class="hb-text">Munkeliv var et benediktinerkloster, og munkene her var selvforsynte: de dyrket epler, urter og grønnsaker i hagen ned mot elven. De brygget øl og presset sider. De drev et gjestehus for reisende og et sykehus for fattige. Da kong Christian III innførte reformasjonen i 1537 og oppløste alle norske klostre, ble Munkelivs bygninger revet ned sten for sten. Materialene ble brukt til å bygge opp igjen Bergenhus festning. Ikke én mur står igjen. Men stedsnavnet lever: Munkelivsbakken, Munkeliv — fragmenter av et sted de fleste bergensere har glemt fantes.</p></div>
+<p>Stien du går på var en del av hverdagen til folk som bodde her nede. Tjenestepiker gikk den tidlig om morgenen. Fiskere gikk den med tom kurv og kom hjem med full. Barn brukte den som snarvei til skolen på den andre siden av fjellet.</p>
+<p>Det er noe eget med en sti som ikke er laget for turister. Kolstien ble ikke planlagt som attraksjon. Den ble tråkket opp fordi folk trengte den — og den er fremdeles her fordi den tråkkes opp igjen av nye folk, dag etter dag, år etter år.</p>
+<p>Fra dette punktet kan du begynne å ane Sandviken nede til høyre. Det blå vannet. De røde og gule trebygningene langs kaia. Du nærmer deg enden.`
+      },
+      {
+        name:      'Sandviksbodene',
+        address:   'Sandviksbodene, Sandviken — langs kaien',
+        tag:       'Stopp 3 av 3 · 20 min gange · Avslutning',
+        drink:     null,
+        audioMin:  'ca. 5 min',
+        nextLabel: null,
+        mapNext:   'Ruten er fullført 🎉',
+        mapLabel:  'Status',
+        body: `
+<p>De røde trebyggningene langs vannet er Sandviksbodene. De er blant de eldste bevarte trebygningene i Bergen — noen av dem daterer seg tilbake til tidlig 1700-tall. Ikke rekonstruksjoner. Ikke museumsbygg. De har stått her siden.</p>
+<p>Sandviken var lenge ikke en del av Bergen. Det lå utenfor bymurene, utenfor hanseatenes kontroll, utenfor reglene som gjaldt inne i selve byen. Det ga stedet en annen karakter — friere, litt villere, mer direkte knyttet til havet og fjellet bak.</p>
+<div class="pullquote"><p>"«Sand» i Sandviken viser til de grunne sandstrendene som en gang lå langs fjorden her. Fiskerne trakk båtene opp på sanden. Bodene langs kaia var lager for redskaper, fisk og varer som kom og gikk med tidevann og årstid."</p></div>
+<div class="history-box"><p class="hb-label">🏚️ Sandviken — utenfor murene</p><p class="hb-text">Mens Bryggen og Bergen sentrum var dominert av hanseatiske kjøpmenn med strenge handelsregler, var Sandviken et fristed. Her bodde fiskere, håndverkere og sjøfolk som ikke hørte hjemme i byens hierarki. Sandviken fikk sin egen kirke — Sandviken kirke, fra 1881 — fordi folk her alltid hadde hatt sin egen identitet. Nabolaget har siden 1900-tallet blitt omtalt som et av Bergens best bevarte historiske miljøer, men det er ikke museum. Folk bor her fremdeles, i hus som er hundre og to hundre år gamle.</p></div>
+<p>Gå bort til vannet. Sett deg på en av steinene eller benkene langs kaia. Se tilbake — mot stien du kom fra, mot fjellsiden over nabolagene du gikk over.</p>
+<p>Herfra ser Bergen ut slik handelsmenn og sjøfarere har sett det i hundrevis av år: en by klemt mellom fjell og fjord, kompakt og vakkert umulig. Du har nettopp gått over den. Nå ser du den fra utsiden igjen.</p>
+<p>Det er godt å ha gått en time for å forstå noe du ellers bare hadde kjørt forbi.</p>
+<div class="drink-tip"><div class="dt-icon">☕</div><div><p class="dt-label">Avslutt kvelden her</p><p class="dt-text"><strong>Sett deg ved vannet og bli sittende litt lenger enn nødvendig.</strong> Det finnes kafeer og serveringssteder i Sandviken-området. Ta en kaffe, et glass — hva du vil. Du har tjent det. Og utsikten tilbake mot fjellet du nettopp gikk over er et av Bergens roligste øyeblikk.</p></div></div>
+<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Vel gått. Stien har ventet på deg en stund.</p>`
+      }
+    ]
   }
 
 };
