@@ -322,7 +322,7 @@ const ROUTES = {
 <p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Spis godt. Du fant det andre Oslo. Det fleste gjør aldri det.</p>`
       }
     ]
-  }
+  },
 
 
   // ── ANTWERPEN: THE MERCHANT'S EVENING ───────
