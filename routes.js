@@ -413,73 +413,71 @@ const ROUTES = {
     ]
   },
 
-  // ── BERGEN: OVER BERGEN (KOLSTIEN) ──────────
+  // ── BERGEN: GRIEG OG STAVKIRKEN (KOLSTIEN, LANDÅS) ──
   'bergen-kolstien': {
-    title:    'Over Bergen',
-    kicker:   'Bergen · Dagstur · 1–2 timer · Kolstien',
-    subtitle: 'En times gange over Bergens tak. Stien som generasjoner av bergensere har brukt som snarvei, utsiktspunkt og pustepause — med historier fra fjellfoten til fjorden.',
+    title:    'Grieg og stavkirken',
+    kicker:   'Bergen · Dagstur · 1–2 timer · Fra Kolstien, Landås',
+    subtitle: 'En times gange fra Kolstien på Landås, gjennom to av Bergens mest usannsynlige steder: en stavkirke som brant ned og ble reist på nytt — og et komponisthjem ved et stille vann.',
     meta: [
       ['3 stopp',       'ingen barer'],
-      ['Starter',       'Kolstien'],
-      ['Tema',          'Natur · Historie · Utsikt'],
+      ['Starter',       'Kolstien, Landås'],
+      ['Tema',          'Natur · Musikk · Historie'],
       ['GPS + Audio',   'guide']
     ],
-    completion: 'Du har gått Over Bergen. 3 stopp. Fra Kolstien ned til Sandviken. Stien som alltid har vært der — lenge før turistene, lenge etter.',
+    completion: 'Du har gått Grieg og stavkirken. Fra Kolstien på Landås, via Fantoft til Troldhaugen. En time som dekker 900 år med Bergen-historie.',
     stops: [
       {
-        name:      'Kolstien — startpunktet',
-        address:   'Øvre Kolstien, Bergen — start ved Skansen-siden',
-        tag:       'Stopp 1 av 3 · Start her · Pust inn',
+        name:      'Fantoft stavkirke',
+        address:   'Fantoftvegen 38, Bergen — ca. 20 min fra Kolstien',
+        tag:       'Stopp 1 av 3 · 20 min gange fra Kolstien',
         drink:     null,
-        audioMin:  'ca. 5 min',
+        audioMin:  'ca. 6 min',
         nextLabel: 'Neste stopp →',
-        mapNext:   'Munkeliv-haugen · 20 min gange',
+        mapNext:   'Nordåsvannet · 15 min gange',
         mapLabel:  'Neste stopp',
         body: `
-<p>Ta et øyeblikk før du begynner å gå. Se utover. Bergenhus festning ligger der nede. Bryggen strekker seg langs kaia. Vågen — den indre havnen — skinner enten i sol eller regn, og begge deler er Bergen.</p>
-<p>Stien du står på heter Kolstien. Den løper langs fjellsiden over Bergen sentrum, fra Bergenhus-siden i sør til Sandviken i nord. Ingen vet nøyaktig når den ble til, men den har vært brukt i hundrevis av år — av arbeidere, tjenestepiker, fiskere og kjøpmenn som trengte den korteste veien mellom byens to ender.</p>
-<div class="pullquote"><p>"Kol" i Kolstien viser trolig til kull — trekull. Oppe i liene her ble det brent kull fra begynnelsen av middelalderen. Kullbrenning var tungt, møkkete arbeid, og mennene som gjorde det bodde og arbeidet der ingen andre ville bo: oppe i skogen, over byen."</p></div>
-<div class="history-box"><p class="hb-label">⛰️ Bergen og de syv fjellene</p><p class="hb-text">Bergen er omgitt av syv fjell: Fløyen, Ulriken, Løvstakken, Damsgårdsfjellet, Lyderhorn, Sandviksfjellet og Rundemanen. Disse fjellene er ikke bare bakgrunn — de har alltid definert byen. De begrenset hvor folk kunne bo. De skapte naturlige ruter, som Kolstien. De ga tre, vann og ly. Og de har sett alt: Bergen var Norges ubestridte hovedstad i over to hundre år, fra rundt 1070 til 1299, da kongene holdt hoff ved Bergenhus nede i dalen.</p></div>
-<p>Nede til venstre kan du se restene av Bergenhus festning. Den har stått der siden 1200-tallet. Men det meste av Bergen du ser herfra er ikke gammelt — ikke i den forstand. Bergen har brent over tjue ganger. I 1702 la den største brannen nesten hele byen i aske på én natt. Det du ser er det som ble bygd etterpå, og etterpå igjen, og etterpå igjen etter det.</p>
-<p>Bare Bryggen overlevde fordi vinden blåste fra feil kant den natten. Alt annet er yngre enn du kanskje tror.</p>
-<p>Begynn å gå. Stien er smal og ujamn og vakker. Hold deg på den. Den vet veien.`
+<p>Det du ser foran deg er ikke originalen. Men historien om hvorfor — og om hva som skjedde natten den brant — er kanskje viktigere enn om det hadde stått urørt siden middelalderen.</p>
+<p>Fantoft stavkirke ble bygd rundt år 1150 i Fortun i Sognefjord. Den var én av tusenvis. I middelalderen hadde Norge mellom 1.300 og 2.000 stavkirker — en helt særegen byggetradisjon der veggene er laget av vertikale staver, ikke horisontale laftede stokker. De er teknisk dristige, vakre og til dels mystiske. Av alle disse kirkene finnes i dag bare 28 igjen.</p>
+<div class="pullquote"><p>"I 1883 ville sognefolket i Fortun rive stavkirken og bygge noe større. Bergenskonsul Fredrik Gade hørte om det, reiste dit og kjøpte kirken. Han fraktet den, planke for planke, til sin tomt i Fantoft utenfor Bergen."</p></div>
+<div class="history-box"><p class="hb-label">🔥 Natten kirken brant — 6. juni 1992</p><p class="hb-text">Klokken 02.00 natt til 6. juni 1992 brant Fantoft stavkirke ned på under en time. Brannen var påsatt. Noen måneder senere ble Varg Vikernes — kjent under artistnavnet Count Grishnackh fra black metal-bandet Burzum — pågrepet og til slutt dømt for drapet på gitaristen Euronymous og for en rekke andre kirkebranner i Norge. Fantoft var en av dem. Kirken var totalødelagt. Bare steintrappen og grunnmuren sto igjen. Fem år etter startet gjenoppbyggingen, basert på gamle tegninger og fotografier. I 1997 sto den der igjen.</p></div>
+<p>Gå rundt kirken. Den er mørk av tjære — slik alle stavkirker opprinnelig var. Tjæren beskyttet mot råte og regn, og ga kirken den svarte, litt truende silhuetten som ble et ikon for norsk middelalder. De dragehodene som stikker ut fra taket er ikke bare dekorasjon. De er en direkte arvtager fra vikingtidens skipsbygging — det samme håndverket, de samme hendene, bare brukt til et gudshus i stedet for et langskip.</p>
+<p>Stå litt. Se opp mot toppen. Tenk på at kirken reiste seg to ganger: én gang i Fortun i 1150, én gang i Bergen i 1997. Noen ting nekter å forsvinne.</p>`
       },
       {
-        name:      'Munkeliv-haugen',
-        address:   'Over Nøstet — midtpunktet på stien',
-        tag:       'Stopp 2 av 3 · 20 min gange fra start',
+        name:      'Nordåsvannet',
+        address:   'Nordåsvannet, Hop — langs strandveien',
+        tag:       'Stopp 2 av 3 · 15 min gange fra Fantoft',
         drink:     null,
-        audioMin:  'ca. 5 min',
-        nextLabel: 'Neste stopp: Sandviksbodene →',
-        mapNext:   'Sandviksbodene · 20 min gange',
+        audioMin:  'ca. 4 min',
+        nextLabel: 'Siste stopp: Troldhaugen →',
+        mapNext:   'Troldhaugen · 10 min gange',
         mapLabel:  'Neste stopp',
         body: `
-<p>Du er nå omtrent midt på stien. Se ned mot nabolaget under deg — det heter Nøstet. Trangt, tett, med små gårder og smug som har endret seg lite siden 1800-tallet. Lenger ned, ved vannet, kan du skimte der Munkeliv kloster en gang lå.</p>
-<div class="pullquote"><p>"Munkeliv kloster ble grunnlagt rundt år 1110 av kong Øystein Magnusson. I over fire hundre år var det et levende sentrum for religion, medisin og landbruk — til reformasjonen rev det ned i 1537."</p></div>
-<div class="history-box"><p class="hb-label">✝️ Munkeliv — klosteret som forsvant</p><p class="hb-text">Munkeliv var et benediktinerkloster, og munkene her var selvforsynte: de dyrket epler, urter og grønnsaker i hagen ned mot elven. De brygget øl og presset sider. De drev et gjestehus for reisende og et sykehus for fattige. Da kong Christian III innførte reformasjonen i 1537 og oppløste alle norske klostre, ble Munkelivs bygninger revet ned sten for sten. Materialene ble brukt til å bygge opp igjen Bergenhus festning. Ikke én mur står igjen. Men stedsnavnet lever: Munkelivsbakken, Munkeliv — fragmenter av et sted de fleste bergensere har glemt fantes.</p></div>
-<p>Stien du går på var en del av hverdagen til folk som bodde her nede. Tjenestepiker gikk den tidlig om morgenen. Fiskere gikk den med tom kurv og kom hjem med full. Barn brukte den som snarvei til skolen på den andre siden av fjellet.</p>
-<p>Det er noe eget med en sti som ikke er laget for turister. Kolstien ble ikke planlagt som attraksjon. Den ble tråkket opp fordi folk trengte den — og den er fremdeles her fordi den tråkkes opp igjen av nye folk, dag etter dag, år etter år.</p>
-<p>Fra dette punktet kan du begynne å ane Sandviken nede til høyre. Det blå vannet. De røde og gule trebygningene langs kaia. Du nærmer deg enden.`
+<p>Du er nå ved Nordåsvannet. Det ser ut som en innsjø. Det er faktisk en fjordarm — havet trenger seg inn her, og tidevann bestemmer fortsatt vannstanden. Om morgenen høyvann, om kvelden lavvann. Vannet er stille uansett. Det har alltid vært stille her.</p>
+<p>Nabolaget rundt heter delvis «Paradis». Det er ikke et turistnavn. Det er det folk faktisk har kalt det siden 1800-tallet — trolig fordi det er uvanlig skjermet og grønt, med vann på alle kanter og fjell i bakgrunnen. Bergensere som hadde råd til å bo utenfor bykjernen kom hit. Det var det nærmeste man kom landlig ro uten å forlate Bergen.</p>
+<div class="pullquote"><p>"Edvard Grieg fant Nordåsvannet i 1884. Han var 41 år gammel, hadde bodd det meste av livet i utlandet, og var lei av å leie rom. Han ville ha et eget sted. Vannet, skogen og stillheten hjalp ham bestemme seg."</p></div>
+<div class="history-box"><p class="hb-label">🎵 Vannet som inspirerte musikken</p><p class="hb-text">Nordåsvannet og naturen rundt Troldhaugen er ikke bare bakgrunn for Griegs liv — det er direkte til stede i musikken. «Lyriske stykker», som han skrev i over 30 år, er fulle av norsk natur omsatt til toner: morgenstillhet, bølgenes bevegelse, skogens sus. Grieg sa selv at han ikke komponerte musikk om naturen — han omsatte naturen til musikk. Forskjellen er viktig. Og det var denne naturen han hadde rundt seg.</p></div>
+<p>Finn et sted å stå ved vannet i ett minutt. Ikke for å se på noe spesielt — bare for å lytte. Det er stille på en annen måte enn ellers. Den typen stillhet der lydene finnes, men ikke forstyrrer.</p>
+<p>Grieg gikk her. Hver sommer i over tjue år. Du har igjen ti minutters gange til huset der han bodde, komponerte og ble begravet. Vannet du ser nå er det samme vannet han så fra stuevinduet.</p>`
       },
       {
-        name:      'Sandviksbodene',
-        address:   'Sandviksbodene, Sandviken — langs kaien',
-        tag:       'Stopp 3 av 3 · 20 min gange · Avslutning',
+        name:      'Troldhaugen',
+        address:   'Troldhaugveien 65, Bergen · Edvard Griegs hjem',
+        tag:       'Stopp 3 av 3 · 10 min gange · Avslutning',
         drink:     null,
-        audioMin:  'ca. 5 min',
+        audioMin:  'ca. 6 min',
         nextLabel: null,
         mapNext:   'Ruten er fullført 🎉',
         mapLabel:  'Status',
         body: `
-<p>De røde trebyggningene langs vannet er Sandviksbodene. De er blant de eldste bevarte trebygningene i Bergen — noen av dem daterer seg tilbake til tidlig 1700-tall. Ikke rekonstruksjoner. Ikke museumsbygg. De har stått her siden.</p>
-<p>Sandviken var lenge ikke en del av Bergen. Det lå utenfor bymurene, utenfor hanseatenes kontroll, utenfor reglene som gjaldt inne i selve byen. Det ga stedet en annen karakter — friere, litt villere, mer direkte knyttet til havet og fjellet bak.</p>
-<div class="pullquote"><p>"«Sand» i Sandviken viser til de grunne sandstrendene som en gang lå langs fjorden her. Fiskerne trakk båtene opp på sanden. Bodene langs kaia var lager for redskaper, fisk og varer som kom og gikk med tidevann og årstid."</p></div>
-<div class="history-box"><p class="hb-label">🏚️ Sandviken — utenfor murene</p><p class="hb-text">Mens Bryggen og Bergen sentrum var dominert av hanseatiske kjøpmenn med strenge handelsregler, var Sandviken et fristed. Her bodde fiskere, håndverkere og sjøfolk som ikke hørte hjemme i byens hierarki. Sandviken fikk sin egen kirke — Sandviken kirke, fra 1881 — fordi folk her alltid hadde hatt sin egen identitet. Nabolaget har siden 1900-tallet blitt omtalt som et av Bergens best bevarte historiske miljøer, men det er ikke museum. Folk bor her fremdeles, i hus som er hundre og to hundre år gamle.</p></div>
-<p>Gå bort til vannet. Sett deg på en av steinene eller benkene langs kaia. Se tilbake — mot stien du kom fra, mot fjellsiden over nabolagene du gikk over.</p>
-<p>Herfra ser Bergen ut slik handelsmenn og sjøfarere har sett det i hundrevis av år: en by klemt mellom fjell og fjord, kompakt og vakkert umulig. Du har nettopp gått over den. Nå ser du den fra utsiden igjen.</p>
-<p>Det er godt å ha gått en time for å forstå noe du ellers bare hadde kjørt forbi.</p>
-<div class="drink-tip"><div class="dt-icon">☕</div><div><p class="dt-label">Avslutt kvelden her</p><p class="dt-text"><strong>Sett deg ved vannet og bli sittende litt lenger enn nødvendig.</strong> Det finnes kafeer og serveringssteder i Sandviken-området. Ta en kaffe, et glass — hva du vil. Du har tjent det. Og utsikten tilbake mot fjellet du nettopp gikk over er et av Bergens roligste øyeblikk.</p></div></div>
-<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Vel gått. Stien har ventet på deg en stund.</p>`
+<p>Troldhaugen — Trollhøyden. Grieg mente det var et noe merkelig navn, og han visste ikke hvem som hadde kalt stedet det. Men han likte det. Det passet til noe han alltid hadde hatt i musikken: det litt uforklarlige, det som ikke helt lar seg sette ord på.</p>
+<p>Han bygde villaen i 1885 og bodde her hver sommer frem til sin død i 1907. Om vinteren reiste han på konsertturneer rundt i Europa — han var en internasjonal stjerne, spilte for keisere og konger — og om sommeren kom han tilbake hit, til stillheten og vannet og hytten.</p>
+<div class="pullquote"><p>"Nede ved vannet, noen meter fra villaen, bygde Grieg seg en liten komposisjonshytte. Den er på knappe seks kvadratmeter. Det er her han egentlig jobbet. Det er der musikken ble til."</p></div>
+<div class="history-box"><p class="hb-label">🪨 Graven i fjellet</p><p class="hb-text">Edvard Grieg døde 4. september 1907 på Hotel Norge i Bergen, på vei til en konsertturné til England. Hans siste ord skal ha vært: «Vel, hvis det må være.» Han og konen Nina — som overlevde ham med 28 år — er begravet i en nisje hugget direkte inn i fjellveggen ved Nordåsvannet, på Troldhaugen-eiendommen. Ikke på en kirkegård. Ikke under et kors. I selve fjellet, med utsikt over vannet han elsket. Det er vanskelig å se det uten å bli stille.</p></div>
+<p>Gå ned mot vannet etter at du har sett huset og hytten. Finn graven i fjellet. Se ned på Nordåsvannet derfra. Du har nå gått den samme turen Grieg gikk — fra nabolaget og skogen, til vannet, til dette punktet.</p>
+<p>Det finnes en kafé på Troldhaugen med terrasse mot vannet. Sett deg der. Bestill noe. Bli sittende litt lenger enn du planla.</p>
+<div class="drink-tip"><div class="dt-icon">☕</div><div><p class="dt-label">Avslutt her</p><p class="dt-text"><strong>Kaféen på Troldhaugen har terrasse mot Nordåsvannet.</strong> En kaffe, et glass — hva du vil. Du har gått 1 time og 900 år med Bergen-historie. Det fortjener en pause der du ikke er i ferd med å gå videre.</p></div></div>
+<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Vel gått. Grieg ville ha likt at noen tok seg tid til dette.</p>`
       }
     ]
   }
