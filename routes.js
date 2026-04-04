@@ -480,7 +480,7 @@ const ROUTES = {
 <p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Vel gått. Grieg ville ha likt at noen tok seg tid til dette.</p>`
       }
     ]
-  }
+  },
 
 
   // ── BERGEN: KOLSTIEN & LYSTGÅRDEN ──────────
