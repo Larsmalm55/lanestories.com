@@ -6,6 +6,8 @@
 <title>Lane Stories – Rute</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="routes.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 :root {
   --ink:        #0C0B09;
@@ -257,10 +259,7 @@ footer {
 
   <!-- MAP PANEL -->
   <div class="map-panel">
-    <div class="map-inner">
-      <div class="map-pin">📍</div>
-      <p class="map-caption">GPS-navigasjon vises her i produksjon</p>
-    </div>
+    <div id="leaflet-map" style="flex:1;min-height:300px;"></div>
     <div class="map-next">
       <div class="map-next-label" id="map-label">Neste stopp</div>
       <div class="map-next-val"   id="map-val">–</div>
@@ -276,10 +275,15 @@ footer {
 
 <script>
 // ── Load route from URL ──────────────────────
-const params   = new URLSearchParams(window.location.search);
-const routeId  = params.get('id') || 'dark-lanes';
-const route    = ROUTES[routeId] || ROUTES['dark-lanes'];
-let   current  = 0;
+const params  = new URLSearchParams(window.location.search);
+const routeId = params.get('id') || 'dark-lanes';
+const route   = ROUTES[routeId] || ROUTES['dark-lanes'];
+let current   = 0;
+let speechUtterance = null;
+let map = null;
+let stopMarker = null;
+let userMarker = null;
+let geoWatchId = null;
 
 // ── Render header ────────────────────────────
 document.getElementById('rh-kicker').textContent = route.kicker;
@@ -309,7 +313,6 @@ const total   = route.stops.length;
 route.stops.forEach((stop, i) => {
   const isLast = i === total - 1;
 
-  // Nav buttons
   const prevBtn = i > 0
     ? `<button class="stop-nav-btn prev" onclick="goToStop(${i - 1})">← Forrige</button>`
     : `<span></span>`;
@@ -318,12 +321,9 @@ route.stops.forEach((stop, i) => {
     ? `<a href="index.html" class="stop-nav-btn next">Finn ny rute →</a>`
     : `<button class="stop-nav-btn next" onclick="goToStop(${i + 1})">${stop.nextLabel || 'Neste stopp →'}</button>`;
 
-  // Drink badge
   const drinkHtml = stop.drink
-    ? `<div class="stop-drink">${stop.drink}</div>`
-    : '';
+    ? `<div class="stop-drink">${stop.drink}</div>` : '';
 
-  // Completion box (last stop only)
   const completionHtml = isLast ? `
     <div class="completion-box">
       <p class="completion-label">Ruten er fullført</p>
@@ -337,67 +337,182 @@ route.stops.forEach((stop, i) => {
       <h2 class="stop-title">${stop.name}</h2>
       <p class="stop-venue">${stop.address}</p>
       ${drinkHtml}
-
       <div class="audio-player">
-        <button class="audio-btn" onclick="toggleAudio(this, ${i})">▶</button>
+        <button class="audio-btn" id="audio-btn-${i}" onclick="toggleAudio(${i})">▶</button>
         <div class="audio-label">
-          <strong>Audio guide · Stopp ${i + 1}</strong>
-          Trykk for å høre historien lest opp — ${stop.audioMin}
+          <strong id="audio-label-${i}">Audio guide · Stopp ${i + 1}</strong>
+          <span id="audio-sub-${i}">Trykk for å høre historien lest opp — ${stop.audioMin}</span>
         </div>
       </div>
-
       <div class="story-body">${stop.body}</div>
       ${completionHtml}
-
-      <div class="stop-nav">
-        ${prevBtn}
-        ${nextBtn}
-      </div>
+      <div class="stop-nav">${prevBtn}${nextBtn}</div>
     </div>`;
 });
 
+// ── AUDIO — Web Speech API ───────────────────
+function stripHtml(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+}
+
+function toggleAudio(i) {
+  const btn   = document.getElementById('audio-btn-' + i);
+  const label = document.getElementById('audio-label-' + i);
+  const sub   = document.getElementById('audio-sub-' + i);
+
+  if (!window.speechSynthesis) {
+    sub.textContent = 'Audio støttes ikke i denne nettleseren.';
+    return;
+  }
+
+  // If already playing this stop — pause/resume
+  if (speechSynthesis.speaking && speechUtterance && speechUtterance._stopIndex === i) {
+    if (speechSynthesis.paused) {
+      speechSynthesis.resume();
+      btn.textContent   = '⏸';
+      label.textContent = 'Spiller av...';
+    } else {
+      speechSynthesis.pause();
+      btn.textContent   = '▶';
+      label.textContent = 'Satt på pause';
+    }
+    return;
+  }
+
+  // Stop any current playback
+  speechSynthesis.cancel();
+  resetAudioBtn();
+
+  // Build utterance from stop text
+  const text = stripHtml(route.stops[i].body);
+  const utt  = new SpeechSynthesisUtterance(text);
+  utt._stopIndex = i;
+  utt.lang  = 'nb-NO';
+  utt.rate  = 0.92;
+  utt.pitch = 1;
+
+  // Pick Norwegian voice if available
+  const voices = speechSynthesis.getVoices();
+  const norVoice = voices.find(v => v.lang.startsWith('nb') || v.lang.startsWith('no'));
+  if (norVoice) utt.voice = norVoice;
+
+  utt.onstart = () => {
+    btn.textContent   = '⏸';
+    label.textContent = 'Spiller av...';
+    sub.textContent   = 'Trykk for å sette på pause';
+  };
+  utt.onend = utt.onerror = () => {
+    btn.textContent   = '▶';
+    label.textContent = 'Audio guide · Stopp ' + (i + 1);
+    sub.textContent   = 'Trykk for å høre historien lest opp — ' + route.stops[i].audioMin;
+  };
+
+  speechUtterance = utt;
+  speechSynthesis.speak(utt);
+}
+
+function resetAudioBtn() {
+  route.stops.forEach((stop, i) => {
+    const btn = document.getElementById('audio-btn-' + i);
+    if (btn) btn.textContent = '▶';
+    const lbl = document.getElementById('audio-label-' + i);
+    if (lbl) lbl.textContent = 'Audio guide · Stopp ' + (i + 1);
+  });
+}
+
+// ── MAP — Leaflet + Nominatim geocoding ──────
+function initMap() {
+  map = L.map('leaflet-map', { zoomControl: true, attributionControl: false });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
+  }).addTo(map);
+  map.setView([60.393, 5.324], 13); // Bergen default
+
+  // GPS: watch user position
+  if (navigator.geolocation) {
+    geoWatchId = navigator.geolocation.watchPosition(pos => {
+      const ll = [pos.coords.latitude, pos.coords.longitude];
+      if (!userMarker) {
+        const userIcon = L.divIcon({
+          className: '',
+          html: '<div style="width:14px;height:14px;background:#4A90D9;border:3px solid #fff;border-radius:50%;box-shadow:0 0 6px rgba(74,144,217,.7);"></div>',
+          iconSize: [14, 14], iconAnchor: [7, 7]
+        });
+        userMarker = L.marker(ll, { icon: userIcon }).addTo(map);
+      } else {
+        userMarker.setLatLng(ll);
+      }
+    }, null, { enableHighAccuracy: true, maximumAge: 5000 });
+  }
+}
+
+function geocodeAndPan(address) {
+  const url = 'https://nominatim.openstreetmap.org/search?q='
+    + encodeURIComponent(address + ', Bergen, Norway')
+    + '&format=json&limit=1';
+
+  fetch(url, { headers: { 'Accept-Language': 'no' } })
+    .then(r => r.json())
+    .then(data => {
+      if (!data.length) return;
+      const ll = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+
+      if (stopMarker) map.removeLayer(stopMarker);
+
+      const stopIcon = L.divIcon({
+        className: '',
+        html: '<div style="width:22px;height:22px;background:#B07830;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;"></div>',
+        iconSize: [22, 22], iconAnchor: [11, 11]
+      });
+      stopMarker = L.marker(ll, { icon: stopIcon })
+        .addTo(map)
+        .bindPopup(route.stops[current].name, { closeButton: false })
+        .openPopup();
+
+      map.setView(ll, 16, { animate: true });
+    })
+    .catch(() => {});
+}
+
 // ── Navigation ───────────────────────────────
 function goToStop(i) {
-  // Hide all stops
-  document.querySelectorAll('.stop-content').forEach(el => el.classList.remove('active'));
+  // Stop audio
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  resetAudioBtn();
 
-  // Update progress bar
+  document.querySelectorAll('.stop-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.pb-stop').forEach((el, j) => {
     el.classList.remove('active');
     const num = document.getElementById('pb-num-' + j);
-    if (j < i) {
-      num.style.background = 'var(--amber)';
-      num.style.color      = 'var(--ink)';
-    } else {
-      num.style.background = '';
-      num.style.color      = '';
-    }
+    num.style.background = j < i ? 'var(--amber)' : '';
+    num.style.color      = j < i ? 'var(--ink)'   : '';
   });
 
-  // Show current stop
   document.getElementById('stop-' + i).classList.add('active');
   document.getElementById('pb-stop-' + i).classList.add('active');
   current = i;
 
-  // Update map panel
   document.getElementById('map-val').textContent   = route.stops[i].mapNext;
   document.getElementById('map-label').textContent = route.stops[i].mapLabel;
+
+  // Geocode and pan map
+  if (map) geocodeAndPan(route.stops[i].address);
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function toggleAudio(btn, stopIndex) {
-  if (btn.textContent === '▶') {
-    btn.textContent = '⏸';
-    btn.nextElementSibling.querySelector('strong').textContent = 'Spiller av...';
-  } else {
-    btn.textContent = '▶';
-    btn.nextElementSibling.querySelector('strong').textContent = 'Audio guide · Stopp ' + (stopIndex + 1);
-  }
+// ── Init ─────────────────────────────────────
+// Voices may load async in some browsers
+if (window.speechSynthesis) {
+  speechSynthesis.onvoiceschanged = () => {};
 }
 
-// Init first stop
-goToStop(0);
+window.addEventListener('load', () => {
+  initMap();
+  goToStop(0);
+});
 </script>
 </body>
 </html>
