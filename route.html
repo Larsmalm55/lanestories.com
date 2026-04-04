@@ -212,9 +212,9 @@ footer {
 /* MOBILE */
 @media(max-width:600px){
   .rh-meta { gap:12px; }
-  .story-panel { padding:28px 5vw 100px; }
+  .story-panel { padding:28px 5vw 120px; }
   .stop-title { font-size:1.6rem; }
-  .story-body { font-size:.94rem; }
+  .story-body { font-size:.94rem; line-height:1.85; }
   .stop-nav {
     position:fixed; bottom:0; left:0; right:0;
     background:var(--paper); border-top:1px solid var(--line);
@@ -224,6 +224,53 @@ footer {
   .stop-nav-btn.next { flex:1; justify-content:center; }
   .stop-nav-btn.prev { min-width:76px; justify-content:center; }
   footer { flex-direction:column; align-items:flex-start; }
+
+  /* Audio — større touch-flate */
+  .audio-player { padding:16px; gap:14px; }
+  .audio-btn { width:48px; height:48px; font-size:1.1rem; flex-shrink:0; }
+  .audio-label strong { font-size:.82rem; }
+
+  /* Kart-knapp på mobil */
+  .map-fab {
+    display:flex !important;
+  }
+}
+
+/* Kart-fab — kun synlig på mobil */
+.map-fab {
+  display:none;
+  position:fixed; bottom:80px; right:20px; z-index:200;
+  width:50px; height:50px; border-radius:50%;
+  background:var(--amber); border:none; cursor:pointer;
+  align-items:center; justify-content:center;
+  font-size:1.3rem;
+  box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+
+/* Kart-modal på mobil */
+.map-modal {
+  display:none;
+  position:fixed; inset:0; z-index:300;
+  background:var(--dark);
+  flex-direction:column;
+}
+.map-modal.open { display:flex; }
+.map-modal-header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 5vw; border-bottom:1px solid rgba(255,255,255,.07);
+  flex-shrink:0;
+}
+.map-modal-title { font-size:.78rem; color:rgba(240,235,224,.5); letter-spacing:.06em; }
+.map-modal-close {
+  background:none; border:none; color:rgba(240,235,224,.4);
+  font-size:1.4rem; cursor:pointer; padding:4px 8px; line-height:1;
+}
+#map-modal-inner { flex:1; min-height:0; }
+.map-modal-footer {
+  padding:12px 5vw; border-top:1px solid rgba(255,255,255,.07);
+  font-family:'Libre Baskerville',serif; font-style:italic;
+  font-size:.82rem; color:rgba(240,235,224,.45); flex-shrink:0;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 </style>
 </head>
@@ -266,6 +313,19 @@ footer {
     </div>
   </div>
 
+</div>
+
+<!-- Kart-knapp (kun mobil) -->
+<button class="map-fab" id="map-fab" onclick="openMapModal()" title="Vis kart">🗺</button>
+
+<!-- Kart-modal (kun mobil) -->
+<div class="map-modal" id="map-modal">
+  <div class="map-modal-header">
+    <span class="map-modal-title">KART</span>
+    <button class="map-modal-close" onclick="closeMapModal()">×</button>
+  </div>
+  <div id="map-modal-inner"></div>
+  <div class="map-modal-footer" id="map-modal-footer">–</div>
 </div>
 
 <footer>
@@ -350,67 +410,111 @@ route.stops.forEach((stop, i) => {
     </div>`;
 });
 
-// ── AUDIO — Web Speech API ───────────────────
+// ── AUDIO — Web Speech API (iOS-kompatibel) ──
 function stripHtml(html) {
   const tmp = document.createElement('div');
   tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || '';
+  return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
+}
+
+// iOS stopper etter ~220 tegn — del opp i setninger
+function chunkText(text, max) {
+  max = max || 210;
+  const parts = text.match(/[^.!?]+[.!?]*/g) || [text];
+  const chunks = [];
+  let cur = '';
+  parts.forEach(function(s) {
+    if ((cur + s).length > max && cur) { chunks.push(cur.trim()); cur = s; }
+    else { cur += s; }
+  });
+  if (cur.trim()) chunks.push(cur.trim());
+  return chunks.length ? chunks : [text];
+}
+
+let audioChunks   = [];
+let audioChunkIdx = 0;
+let audioStopIdx  = -1;
+let iosTimer      = null;
+
+function playChunk(i, chunks, stopIndex) {
+  if (audioStopIdx !== stopIndex) return; // avbrutt
+  if (i >= chunks.length) { onAudioDone(stopIndex); return; }
+
+  const utt  = new SpeechSynthesisUtterance(chunks[i]);
+  utt.lang   = 'nb-NO';
+  utt.rate   = 0.92;
+  utt.pitch  = 1;
+  speechUtterance = utt;
+
+  const voices   = speechSynthesis.getVoices();
+  const norVoice = voices.find(function(v){ return v.lang.startsWith('nb') || v.lang.startsWith('no'); });
+  if (norVoice) utt.voice = norVoice;
+
+  utt.onend   = function() { if (audioStopIdx === stopIndex) playChunk(i + 1, chunks, stopIndex); };
+  utt.onerror = function(e) { if (e.error !== 'interrupted') onAudioDone(stopIndex); };
+
+  speechSynthesis.speak(utt);
+
+  // iOS-hack: kall pause/resume hvert 10s for å hindre at iOS dreper avspillingen
+  clearInterval(iosTimer);
+  iosTimer = setInterval(function() {
+    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+      speechSynthesis.pause();
+      speechSynthesis.resume();
+    }
+  }, 10000);
+}
+
+function onAudioDone(stopIndex) {
+  clearInterval(iosTimer);
+  audioStopIdx = -1;
+  const btn   = document.getElementById('audio-btn-'   + stopIndex);
+  const label = document.getElementById('audio-label-' + stopIndex);
+  const sub   = document.getElementById('audio-sub-'   + stopIndex);
+  if (btn)   btn.textContent   = '▶';
+  if (label) label.textContent = 'Audio guide · Stopp ' + (stopIndex + 1);
+  if (sub)   sub.textContent   = 'Trykk for å høre historien lest opp — ' + route.stops[stopIndex].audioMin;
 }
 
 function toggleAudio(i) {
-  const btn   = document.getElementById('audio-btn-' + i);
+  const btn   = document.getElementById('audio-btn-'   + i);
   const label = document.getElementById('audio-label-' + i);
-  const sub   = document.getElementById('audio-sub-' + i);
+  const sub   = document.getElementById('audio-sub-'   + i);
 
   if (!window.speechSynthesis) {
-    sub.textContent = 'Audio støttes ikke i denne nettleseren.';
+    if (sub) sub.textContent = 'Audio støttes ikke i denne nettleseren.';
     return;
   }
 
-  // If already playing this stop — pause/resume
-  if (speechSynthesis.speaking && speechUtterance && speechUtterance._stopIndex === i) {
+  // Pause / resume
+  if (audioStopIdx === i) {
     if (speechSynthesis.paused) {
       speechSynthesis.resume();
-      btn.textContent   = '⏸';
-      label.textContent = 'Spiller av...';
+      if (btn)   btn.textContent   = '⏸';
+      if (label) label.textContent = 'Spiller av...';
     } else {
       speechSynthesis.pause();
-      btn.textContent   = '▶';
-      label.textContent = 'Satt på pause';
+      if (btn)   btn.textContent   = '▶';
+      if (label) label.textContent = 'Satt på pause';
     }
     return;
   }
 
-  // Stop any current playback
+  // Stopp det som spiller
   speechSynthesis.cancel();
+  clearInterval(iosTimer);
   resetAudioBtn();
 
-  // Build utterance from stop text
-  const text = stripHtml(route.stops[i].body);
-  const utt  = new SpeechSynthesisUtterance(text);
-  utt._stopIndex = i;
-  utt.lang  = 'nb-NO';
-  utt.rate  = 0.92;
-  utt.pitch = 1;
+  // Oppdater UI
+  if (btn)   btn.textContent   = '⏸';
+  if (label) label.textContent = 'Spiller av...';
+  if (sub)   sub.textContent   = 'Trykk for å sette på pause';
 
-  // Pick Norwegian voice if available
-  const voices = speechSynthesis.getVoices();
-  const norVoice = voices.find(v => v.lang.startsWith('nb') || v.lang.startsWith('no'));
-  if (norVoice) utt.voice = norVoice;
-
-  utt.onstart = () => {
-    btn.textContent   = '⏸';
-    label.textContent = 'Spiller av...';
-    sub.textContent   = 'Trykk for å sette på pause';
-  };
-  utt.onend = utt.onerror = () => {
-    btn.textContent   = '▶';
-    label.textContent = 'Audio guide · Stopp ' + (i + 1);
-    sub.textContent   = 'Trykk for å høre historien lest opp — ' + route.stops[i].audioMin;
-  };
-
-  speechUtterance = utt;
-  speechSynthesis.speak(utt);
+  // Sett opp chunks og start — SYNKRONT (krav fra iOS)
+  const text   = stripHtml(route.stops[i].body);
+  const chunks = chunkText(text);
+  audioStopIdx = i;
+  playChunk(0, chunks, i);
 }
 
 function resetAudioBtn() {
@@ -476,10 +580,69 @@ function geocodeAndPan(address) {
     .catch(() => {});
 }
 
+// ── Mobil kart-modal ─────────────────────────
+let mobileMap = null;
+let mobileStopMarker = null;
+let mobileUserMarker = null;
+
+function openMapModal() {
+  document.getElementById('map-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  if (!mobileMap) {
+    mobileMap = L.map('map-modal-inner', { zoomControl:true, attributionControl:false });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:19 }).addTo(mobileMap);
+    mobileMap.setView([60.393, 5.324], 13);
+
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(function(pos) {
+        const ll = [pos.coords.latitude, pos.coords.longitude];
+        const userIcon = L.divIcon({
+          className:'',
+          html:'<div style="width:14px;height:14px;background:#4A90D9;border:3px solid #fff;border-radius:50%;box-shadow:0 0 6px rgba(74,144,217,.7);"></div>',
+          iconSize:[14,14], iconAnchor:[7,7]
+        });
+        if (!mobileUserMarker) mobileUserMarker = L.marker(ll, { icon:userIcon }).addTo(mobileMap);
+        else mobileUserMarker.setLatLng(ll);
+      }, null, { enableHighAccuracy:true, maximumAge:5000 });
+    }
+  }
+
+  setTimeout(function(){ mobileMap.invalidateSize(); }, 100);
+  geocodeForModal(route.stops[current].address);
+  document.getElementById('map-modal-footer').textContent = route.stops[current].name + ' · ' + route.stops[current].address;
+}
+
+function closeMapModal() {
+  document.getElementById('map-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function geocodeForModal(address) {
+  if (!mobileMap) return;
+  const url = 'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(address) + '&format=json&limit=1';
+  fetch(url, { headers:{ 'Accept-Language':'no' } })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (!data.length) return;
+      const ll = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+      if (mobileStopMarker) mobileMap.removeLayer(mobileStopMarker);
+      const stopIcon = L.divIcon({
+        className:'',
+        html:'<div style="width:22px;height:22px;background:#B07830;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.4);"></div>',
+        iconSize:[22,22], iconAnchor:[11,11]
+      });
+      mobileStopMarker = L.marker(ll, { icon:stopIcon }).addTo(mobileMap)
+        .bindPopup(route.stops[current].name, { closeButton:false }).openPopup();
+      mobileMap.setView(ll, 16, { animate:true });
+    }).catch(function(){});
+}
+
 // ── Navigation ───────────────────────────────
 function goToStop(i) {
   // Stop audio
-  if (window.speechSynthesis) speechSynthesis.cancel();
+  if (window.speechSynthesis) { speechSynthesis.cancel(); clearInterval(iosTimer); }
+  audioStopIdx = -1;
   resetAudioBtn();
 
   document.querySelectorAll('.stop-content').forEach(el => el.classList.remove('active'));
@@ -497,8 +660,14 @@ function goToStop(i) {
   document.getElementById('map-val').textContent   = route.stops[i].mapNext;
   document.getElementById('map-label').textContent = route.stops[i].mapLabel;
 
-  // Geocode and pan map
+  // Geocode desktop-kart
   if (map) geocodeAndPan(route.stops[i].address);
+
+  // Oppdater mobil-kart hvis modal er åpen
+  if (mobileMap && document.getElementById('map-modal').classList.contains('open')) {
+    geocodeForModal(route.stops[i].address);
+    document.getElementById('map-modal-footer').textContent = route.stops[i].name + ' · ' + route.stops[i].address;
+  }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
