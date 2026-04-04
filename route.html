@@ -410,111 +410,83 @@ route.stops.forEach((stop, i) => {
     </div>`;
 });
 
-// ── AUDIO — Web Speech API (iOS-kompatibel) ──
+// ── AUDIO ────────────────────────────────────
 function stripHtml(html) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
+  var d = document.createElement('div');
+  d.innerHTML = html;
+  return (d.textContent || d.innerText || '').replace(/\s+/g, ' ').trim();
 }
 
-// iOS stopper etter ~220 tegn — del opp i setninger
-function chunkText(text, max) {
-  max = max || 210;
-  const parts = text.match(/[^.!?]+[.!?]*/g) || [text];
-  const chunks = [];
-  let cur = '';
-  parts.forEach(function(s) {
-    if ((cur + s).length > max && cur) { chunks.push(cur.trim()); cur = s; }
-    else { cur += s; }
+// Del opp tekst i korte setnings-biter (iOS krasjer på lange)
+function chunkText(text) {
+  var sentences = text.match(/[^.!?]+[.!?]*/g) || [text];
+  var chunks = [], cur = '';
+  sentences.forEach(function(s) {
+    if (cur.length + s.length > 180 && cur) { chunks.push(cur.trim()); cur = s; }
+    else cur += s;
   });
   if (cur.trim()) chunks.push(cur.trim());
   return chunks.length ? chunks : [text];
 }
 
-let audioChunks   = [];
-let audioChunkIdx = 0;
-let audioStopIdx  = -1;
-let iosTimer      = null;
+var audioStopIdx = -1;
+var audioQueue   = [];
+var audioQueuePos = 0;
 
-function playChunk(i, chunks, stopIndex) {
-  if (audioStopIdx !== stopIndex) return; // avbrutt
-  if (i >= chunks.length) { onAudioDone(stopIndex); return; }
-
-  const utt  = new SpeechSynthesisUtterance(chunks[i]);
-  utt.lang   = 'nb-NO';
-  utt.rate   = 0.92;
-  utt.pitch  = 1;
-  speechUtterance = utt;
-
-  const voices   = speechSynthesis.getVoices();
-  const norVoice = voices.find(function(v){ return v.lang.startsWith('nb') || v.lang.startsWith('no'); });
-  if (norVoice) utt.voice = norVoice;
-
-  utt.onend   = function() { if (audioStopIdx === stopIndex) playChunk(i + 1, chunks, stopIndex); };
-  utt.onerror = function(e) { if (e.error !== 'interrupted') onAudioDone(stopIndex); };
-
-  speechSynthesis.speak(utt);
-
-  // iOS-hack: kall pause/resume hvert 10s for å hindre at iOS dreper avspillingen
-  clearInterval(iosTimer);
-  iosTimer = setInterval(function() {
-    if (speechSynthesis.speaking && !speechSynthesis.paused) {
-      speechSynthesis.pause();
-      speechSynthesis.resume();
-    }
-  }, 10000);
+function setAudioUI(i, playing) {
+  var btn   = document.getElementById('audio-btn-'   + i);
+  var label = document.getElementById('audio-label-' + i);
+  var sub   = document.getElementById('audio-sub-'   + i);
+  if (!btn) return;
+  if (playing === 'play')  { btn.textContent = '⏸'; label.textContent = 'Spiller av...'; sub.textContent = 'Trykk for å pause'; }
+  if (playing === 'pause') { btn.textContent = '▶'; label.textContent = 'Satt på pause';  sub.textContent = 'Trykk for å fortsette'; }
+  if (playing === 'done')  { btn.textContent = '▶'; label.textContent = 'Audio guide · Stopp ' + (i+1); sub.textContent = 'Trykk for å høre historien — ' + route.stops[i].audioMin; }
 }
 
-function onAudioDone(stopIndex) {
-  clearInterval(iosTimer);
-  audioStopIdx = -1;
-  const btn   = document.getElementById('audio-btn-'   + stopIndex);
-  const label = document.getElementById('audio-label-' + stopIndex);
-  const sub   = document.getElementById('audio-sub-'   + stopIndex);
-  if (btn)   btn.textContent   = '▶';
-  if (label) label.textContent = 'Audio guide · Stopp ' + (stopIndex + 1);
-  if (sub)   sub.textContent   = 'Trykk for å høre historien lest opp — ' + route.stops[stopIndex].audioMin;
+function speakChunk(stopIndex) {
+  if (audioStopIdx !== stopIndex) return;
+  if (audioQueuePos >= audioQueue.length) { audioStopIdx = -1; setAudioUI(stopIndex, 'done'); return; }
+
+  var utt = new SpeechSynthesisUtterance(audioQueue[audioQueuePos]);
+  utt.lang  = 'nb-NO';
+  utt.rate  = 0.9;
+  utt.pitch = 1;
+  utt.onend = function() {
+    audioQueuePos++;
+    speakChunk(stopIndex);
+  };
+  utt.onerror = function(e) {
+    if (e.error === 'interrupted' || e.error === 'canceled') return;
+    audioStopIdx = -1;
+    setAudioUI(stopIndex, 'done');
+  };
+  window.speechSynthesis.speak(utt);
 }
 
 function toggleAudio(i) {
-  const btn   = document.getElementById('audio-btn-'   + i);
-  const label = document.getElementById('audio-label-' + i);
-  const sub   = document.getElementById('audio-sub-'   + i);
-
   if (!window.speechSynthesis) {
-    if (sub) sub.textContent = 'Audio støttes ikke i denne nettleseren.';
+    var s = document.getElementById('audio-sub-' + i);
+    if (s) s.textContent = 'Audio støttes ikke i denne nettleseren.';
     return;
   }
 
-  // Pause / resume
+  // Pause / resume pågående stopp
   if (audioStopIdx === i) {
-    if (speechSynthesis.paused) {
-      speechSynthesis.resume();
-      if (btn)   btn.textContent   = '⏸';
-      if (label) label.textContent = 'Spiller av...';
-    } else {
-      speechSynthesis.pause();
-      if (btn)   btn.textContent   = '▶';
-      if (label) label.textContent = 'Satt på pause';
-    }
+    if (speechSynthesis.paused) { speechSynthesis.resume(); setAudioUI(i, 'play'); }
+    else                        { speechSynthesis.pause();  setAudioUI(i, 'pause'); }
     return;
   }
 
-  // Stopp det som spiller
+  // Stopp alt og start nytt — SYNKRONT i click-handler (iOS-krav)
   speechSynthesis.cancel();
-  clearInterval(iosTimer);
   resetAudioBtn();
 
-  // Oppdater UI
-  if (btn)   btn.textContent   = '⏸';
-  if (label) label.textContent = 'Spiller av...';
-  if (sub)   sub.textContent   = 'Trykk for å sette på pause';
+  audioQueue    = chunkText(stripHtml(route.stops[i].body));
+  audioQueuePos = 0;
+  audioStopIdx  = i;
 
-  // Sett opp chunks og start — SYNKRONT (krav fra iOS)
-  const text   = stripHtml(route.stops[i].body);
-  const chunks = chunkText(text);
-  audioStopIdx = i;
-  playChunk(0, chunks, i);
+  setAudioUI(i, 'play');
+  speakChunk(i);   // kalles synkront — ingen setTimeout
 }
 
 function resetAudioBtn() {
@@ -641,7 +613,7 @@ function geocodeForModal(address) {
 // ── Navigation ───────────────────────────────
 function goToStop(i) {
   // Stop audio
-  if (window.speechSynthesis) { speechSynthesis.cancel(); clearInterval(iosTimer); }
+  if (window.speechSynthesis) speechSynthesis.cancel();
   audioStopIdx = -1;
   resetAudioBtn();
 

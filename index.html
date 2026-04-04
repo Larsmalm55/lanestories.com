@@ -371,21 +371,44 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
   .hero-h1 { font-size:2.1rem; }
 }
 
-/* Ekstra mobil-finjustering */
+/* ── MOBIL FINJUSTERING ── */
 @media(max-width:600px) {
-  /* Rutekort — CTA-knapp full bredde */
+  /* Rutekort */
   .rc-footer { flex-direction:column; gap:12px; align-items:flex-start; }
   .rc-cta { width:100%; text-align:center; justify-content:center; padding:14px; }
-
-  /* Resultatkort litt mer luft */
   .result-card { padding:20px 18px; }
 
-  /* Nav — skjul "How it works" og "Cities", behold CTA */
+  /* Nav */
   .nav-links .nav-link { display:none; }
   .nav-cta { font-size:.68rem; padding:8px 14px; }
 
-  /* Steg-nummer litt trangere */
+  /* How it works */
   .step-heading { font-size:1.2rem; }
+  .how-step { padding:20px 16px; }
+  .hs-title { font-size:.88rem; }
+  .hs-body  { font-size:.76rem; }
+
+  /* Story-seksjon (mørk) */
+  .story-section { padding:52px 5vw; }
+  .sc-footer { flex-direction:column; gap:10px; align-items:flex-start; }
+  .sc-unlock-btn { width:100%; text-align:center; padding:12px; }
+
+  /* Reviews */
+  .reviews-section { padding:52px 5vw; }
+  .rv-text { font-size:.82rem; }
+
+  /* Byer */
+  .cities-section { padding:52px 5vw; }
+  .city-block { padding:18px 14px; }
+  .city-block-name { font-size:1.05rem; }
+
+  /* CTA */
+  .cta-section { padding:60px 5vw; }
+  .cta-h2 { font-size:2rem; }
+
+  /* Footer */
+  footer { padding:24px 5vw; gap:16px; }
+  .footer-links { flex-wrap:wrap; gap:14px; }
 }
 </style>
 </head>
@@ -708,7 +731,7 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
 <section class="reviews-section">
   <div class="reviews-header">
     <p class="sec-kicker">What people say</p>
-    <h2>340 walks.<br><em>Real</em> reactions.</h2>
+    <h2><span id="walk-count">0</span> walks.<br><em>Real</em> reactions.</h2>
   </div>
   <div class="reviews-grid">
     <div class="review-card">
@@ -738,7 +761,7 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
 <section class="cities-section" id="cities">
   <div class="cities-header">
     <p class="sec-kicker">Available now</p>
-    <h2>Bergen first.<br><em>Your city</em> next.</h2>
+    <h2>3 cities.<br><em>More</em> coming.</h2>
   </div>
   <div class="cities-grid">
     <div class="city-block">
@@ -752,24 +775,29 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
       <div class="city-block-routes">2 routes · walking now</div>
     </div>
     <div class="city-block">
+      <div class="city-block-name">Antwerpen</div>
+      <div class="city-block-country">Belgium</div>
+      <div class="city-block-routes">1 route · walking now</div>
+    </div>
+    <div class="city-block">
       <div class="city-badge">Soon</div>
       <div class="city-block-name">Edinburgh</div>
       <div class="city-block-country">Scotland</div>
-      <div class="city-block-routes" style="color:rgba(240,235,224,.25)">Coming Q3 2025</div>
+      <div class="city-block-routes" style="color:rgba(240,235,224,.25)">Coming 2026</div>
     </div>
     <div class="city-block">
       <div class="city-badge">Soon</div>
       <div class="city-block-name">Lisbon</div>
       <div class="city-block-country">Portugal</div>
-      <div class="city-block-routes" style="color:rgba(240,235,224,.25)">Coming Q4 2025</div>
+      <div class="city-block-routes" style="color:rgba(240,235,224,.25)">Coming 2026</div>
     </div>
     <div class="city-block">
       <div class="city-badge">Soon</div>
       <div class="city-block-name">Amsterdam</div>
       <div class="city-block-country">Netherlands</div>
-      <div class="city-block-routes" style="color:rgba(240,235,224,.25)">Coming Q4 2025</div>
+      <div class="city-block-routes" style="color:rgba(240,235,224,.25)">Coming 2026</div>
     </div>
-    <div class="city-block" style="border-style:dashed;cursor:pointer;display:flex;align-items:center;justify-content:center;" onclick="alert('Route creator launching soon.')">
+    <div class="city-block" style="border-style:dashed;cursor:pointer;display:flex;align-items:center;justify-content:center;" onclick="document.getElementById('routes').scrollIntoView({behavior:'smooth'})">
       <div style="text-align:center;color:rgba(240,235,224,.15);font-size:.74rem;letter-spacing:.1em;">+ YOUR CITY</div>
     </div>
   </div>
@@ -939,6 +967,27 @@ function typeChar() {
 
 // Kick off
 setTimeout(() => startStory(0), 600);
+
+// ── Walk counter — animerer opp når synlig ────
+(function() {
+  var target = 340, el = document.getElementById('walk-count');
+  if (!el) return;
+  var obs = new IntersectionObserver(function(entries) {
+    if (!entries[0].isIntersecting) return;
+    obs.disconnect();
+    var start = 0, duration = 1400, startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / duration, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(ease * target);
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }, { threshold: 0.4 });
+  obs.observe(el);
+})();
 </script>
 </body>
 </html>
