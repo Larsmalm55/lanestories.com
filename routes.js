@@ -482,4 +482,85 @@ const ROUTES = {
     ]
   }
 
+
+  // ── BERGEN: KOLSTIEN & LYSTGÅRDEN ──────────
+  'kolstien-landaas': {
+    title:    'Kolstien & Lystgården',
+    kicker:   'Bergen · Landås · Historisk dagstur · 1 time',
+    subtitle: 'Fra gammel mølledal til borgerskapets lystgård og kirkebygg på Kanonhaugen — ein time med Bergens stille historia.',
+    meta: [
+      ['4 stopp',      'ingen barer'],
+      ['Starter',      'Kolstien, Landås'],
+      ['Varighet',     '1 time · 3,5 km'],
+      ['Nivå',         'Lett']
+    ],
+    completion: 'Du har gått Kolstien & Lystgården. 4 stopp. Møllendalen, borgerskapets sommerflukt og Kanonhaugen — ein time og tre hundre år.',
+    stops: [
+      {
+        name:      'Kolstien',
+        address:   'Kolstien, Landås, Bergen',
+        tag:       'Startpunkt · Stopp 1 av 4',
+        drink:     null,
+        audioMin:  'ca. 3 min',
+        nextLabel: 'Neste: Christie Mølle →',
+        mapNext:   'Christie Mølle · 10 min sørover langs Gimlevegen',
+        mapLabel:  'Neste stopp',
+        body: `
+<p>Landås-navnet strekker seg tilbake til middelalderen. «Landås» betyr simpelthen «ås ved landeveien», og området fungerte som en naturlig passasje mellom Bergens indre daldrag og det åpne terrenget mot sør. Gårdene her var i bruk langt inn på 1800-tallet, og den rolige strukturen med private hager og brede tomter er et ekko av det gamle jordbrukslandskapet.</p>
+<div class="pullquote"><p>"Kolstien er en stille blindvei med en atmosfære som føles fjern fra Bergen sentrum — selv om du er bare 15 minutter unna."</p></div>
+<p>Du starter herfra, går ned mot Gimlevegen og orienterer deg mot daldraget der Møllendal-elven renner. Legg merke til hageporene, brevkassene med lokale navn og den lavmælte stoltheten i bebyggelsen.</p>
+<p style="font-style:italic;color:var(--muted);">Gå langsomt herfra. Turen er ikke om distansen — det er om å legge merke til det.</p>`
+      },
+      {
+        name:      'Christie Mølle',
+        address:   'Gimleveien 97, Bergen',
+        tag:       'Stopp 2 av 4 · 10 min gange',
+        drink:     null,
+        audioMin:  'ca. 5 min',
+        nextLabel: 'Neste: Lystgården →',
+        mapNext:   'Kanonhaugen · 20 min opp fra mølleparken',
+        mapLabel:  'Neste stopp',
+        body: `
+<p>Mølla bærer navnet etter den bergenske slekten Christie — en av byens mest innflytelsesrike familier på 17- og 1800-tallet. Statsminister Wilhelm Frimann Koren Christie (1778–1849), kjent som en av grunnlovsfedre og initiativtaker til Universitetet i Bergen, tilhørte denne slekten.</p>
+<div class="pullquote"><p>"Den opprinnelige kvernmølla brukte vannkraften fra Møllendalsbekken til å male korn for bergenserne — en hverdagsinfrastruktur som i dag nesten er glemt."</p></div>
+<div class="history-box"><p class="hb-label">📜 Møllendalen</p><p class="hb-text">Selve dalen — Møllendal — har navn etter nettopp disse møllene. På 1800-tallet var det flere vandringer hit fra Bergen sentrum, og dalen ble et populært utfartssted for borgerskapet, som søkte fred bort fra byens havn og de tette middelalderkvartaler.</p></div>
+<p>Den restaurerte mølla og den lille parken rundt henne er blant Bergens mest diskrete skjulte skatter. Bekken renner fortsatt, og lyden av rennende vann dominerer fullstendig — det er nesten utrolig at du er midt i en stor by.</p>
+<p>Legg merke til steinhuset, vannhjulet og det lille fossefallet. Tenk deg at denne lyden — vann over stein — er den samme som folk hørte her for 200 år siden, mens de ventet på malt korn.</p>`
+      },
+      {
+        name:      'Lystgården & Presteboligen',
+        address:   'Kanonhaugen 39, Bergen',
+        tag:       'Stopp 3 av 4 · Historisk kjernestopp',
+        drink:     null,
+        audioMin:  'ca. 6 min',
+        nextLabel: 'Tilbake til Kolstien →',
+        mapNext:   'Benk ved Kolstien · 20 min via Gimlevegen',
+        mapLabel:  'Neste stopp',
+        body: `
+<p>Lystgården på Kanonhaugen er en av de eldste bevarte bygningene i Landås og bærer i seg hele bydelens sosialhistorie. Slike «lystgårder» — sommerboliger for byens velstående borgere — ble vanlige utenfor Bergen fra 1700-tallet av.</p>
+<div class="pullquote"><p>"Borgere med råd til det flyktet fra byens trangboddhet, lukt og sykdomsfare til luftigere omgivelser i åssidene. Landås, med sin sørvendte helling og utsikt over dalen, var et yndet sted."</p></div>
+<p>Eiendommen skiftet hender mange ganger gjennom 1800-tallet og inn i det 20. århundre. I nyere tid er Lystgården blitt et aktivt kultursted med urbant landbruk, hagebrukskurs, konserter og matarrangementer.</p>
+<div class="history-box"><p class="hb-label">🏔 Kanonhaugen-navnet</p><p class="hb-text">Kanonhaugen-navnet er eldre enn kirken. Det sikter trolig til kanonstillinger eller militær aktivitet på høyden, fra en tid da Bergen trengte forsvar — kanskje fra 1700-tallets fryktsomme år da sjøfarten var full av pirater og krigstrusler langs kysten.</p></div>
+<p>Rett ved siden av Lystgården ligger Landås kirke og den tilhørende presteboligen — en rødmalt trehusbebyggelse i tradisjonell bergensk stil. Kirken fungerte som lokalt gravitasjonspunkt, ikke bare religiøst men sosialt, for generasjoner av Landås-beboere. Presteboligens trepanel er vedlikeholdt med en stille stolthet.</p>
+<p>Hagen ved Lystgården er vakker og velstelt. Fra tomten er det utsikt som minner deg på at du befinner deg høyere enn du kanskje tror.</p>`
+      },
+      {
+        name:      'Benken ved Kolstien',
+        address:   'Kolstien, Landås, Bergen',
+        tag:       'Stopp 4 av 4 · Avslutning',
+        drink:     null,
+        audioMin:  'ca. 2 min',
+        nextLabel: null,
+        mapNext:   'Ruten er fullført 🎉',
+        mapLabel:  'Status',
+        body: `
+<p>Du er tilbake der du startet, men du er ikke den samme som gikk herfra for en time siden. Du har gått gjennom en mølledal som har malt korn i to hundre år. Du har stått i hagen til en lystgård der byens borgere søkte ro fra en by som aldri sto stille. Du har sett presteboligen som har holdt stand gjennom generasjoner av Landås sine store og små hendelser.</p>
+<div class="pullquote"><p>"Bergen er ikke bare syv fjell. Det er alle dalene imellom."</p></div>
+<p>Og du har gått det hele på én time — uten å skynde deg.</p>
+<p>Finn en benk. Si ingenting. Se på bladene eller himmelen. La det som har beveget seg inni deg, sette seg.</p>
+<p style="font-style:italic;color:var(--muted);">Det er ikke noe mer å gjøre. Landås er ett av de nabolagene Bergen glemmer å vise frem — men de som går rolig gjennom det, vet hva de har.</p>`
+      }
+    ]
+  }
+
 };
