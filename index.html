@@ -96,38 +96,64 @@ nav {
   position:absolute; inset:0;
   background:radial-gradient(ellipse 60% 50% at 80% 30%, rgba(176,120,48,.08) 0%, transparent 65%);
 }
-.hero-cards {
+
+/* ── STORY TEASER ── */
+.story-teaser {
   position:relative; z-index:2;
-  width:100%; max-width:380px;
-  display:flex; flex-direction:column; gap:2px;
+  width:100%; max-width:420px;
+  display:flex; flex-direction:column;
+  gap:0;
 }
-.hero-card {
-  background:var(--dark2);
-  border:1px solid rgba(255,255,255,.05);
-  padding:20px 22px;
-  display:flex; justify-content:space-between; align-items:flex-start;
-  cursor:pointer; transition:background .2s;
+.st-eyebrow {
+  font-size:.52rem; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--amber2); margin-bottom:28px; font-family:'Outfit',sans-serif;
+  opacity:.7;
 }
-.hero-card:hover { background:#2a2420; }
-.hc-left {}
-.hc-label {
-  font-size:.52rem; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--amber2); margin-bottom:8px; font-family:'Outfit',sans-serif;
+.st-quote-wrap {
+  min-height:200px;
+  display:flex; flex-direction:column; justify-content:flex-start;
+  position:relative;
 }
-.hc-title {
+.st-quote {
   font-family:'Libre Baskerville',serif;
-  font-size:1.15rem; font-style:italic;
-  color:rgba(240,235,224,.88); line-height:1.2;
+  font-size:clamp(1.05rem,1.6vw,1.3rem);
+  font-style:italic;
+  color:rgba(240,235,224,.88);
+  line-height:1.75;
+  transition:opacity .5s;
 }
-.hc-meta {
-  font-size:.68rem; color:rgba(240,235,224,.3);
-  margin-top:8px; display:flex; gap:12px; font-family:'Outfit',sans-serif;
+.st-cursor {
+  display:inline-block;
+  width:2px; height:1.1em;
+  background:var(--amber);
+  margin-left:3px;
+  vertical-align:text-bottom;
+  animation:blink .85s step-end infinite;
 }
-.hc-price {
-  font-family:'Libre Baskerville',serif;
-  font-size:1rem; color:var(--amber2); font-weight:700;
-  align-self:center; flex-shrink:0; margin-left:12px;
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.st-meta {
+  margin-top:28px;
+  display:flex; align-items:center; gap:12px;
+  opacity:0; transition:opacity .6s;
 }
+.st-meta.visible { opacity:1; }
+.st-line {
+  width:28px; height:1px; background:var(--amber); flex-shrink:0;
+}
+.st-route {
+  font-size:.62rem; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(240,235,224,.35); font-family:'Outfit',sans-serif;
+}
+.st-route span { color:var(--amber2); }
+.st-progress {
+  margin-top:40px;
+  display:flex; gap:6px;
+}
+.st-dot {
+  width:20px; height:2px; background:rgba(255,255,255,.12);
+  cursor:pointer; transition:background .3s;
+}
+.st-dot.active { background:var(--amber); width:32px; }
 
 /* ── FIND YOUR ROUTE ── */
 .routes-section { background:var(--paper); padding:96px 6vw; }
@@ -370,47 +396,16 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
     </div>
   </div>
   <div class="hero-right">
-    <div class="hero-cards">
-      <div class="hero-card" onclick="window.location.href='route.html?id=dyveke'">
-        <div class="hc-left">
-          <p class="hc-label">Bergen · Wine &amp; History</p>
-          <p class="hc-title">The Wine Evening</p>
-          <div class="hc-meta">
-            <span>4 stops</span><span>3–4 hrs</span>
-          </div>
-        </div>
-        <span class="hc-price">49 kr</span>
+    <div class="story-teaser">
+      <p class="st-eyebrow">Live fra rutene</p>
+      <div class="st-quote-wrap">
+        <p class="st-quote" id="st-quote"><span id="st-text"></span><span class="st-cursor" id="st-cursor"></span></p>
       </div>
-      <div class="hero-card" onclick="openRoute('The Dark Lanes','dark-lanes')">
-        <div class="hc-left">
-          <p class="hc-label">Bergen · Dark History</p>
-          <p class="hc-title">The Dark Lanes</p>
-          <div class="hc-meta">
-            <span>4 stops</span><span>2–3 hrs</span>
-          </div>
-        </div>
-        <span class="hc-price">49 kr</span>
+      <div class="st-meta" id="st-meta">
+        <div class="st-line"></div>
+        <p class="st-route" id="st-route"></p>
       </div>
-      <div class="hero-card" onclick="openRoute('Bergen on a Plate','')">
-        <div class="hc-left">
-          <p class="hc-label">Bergen · Food &amp; Taste</p>
-          <p class="hc-title">Bergen on a Plate</p>
-          <div class="hc-meta">
-            <span>4 stops</span><span>3–5 hrs</span>
-          </div>
-        </div>
-        <span class="hc-price">49 kr</span>
-      </div>
-      <div class="hero-card" onclick="window.location.href='route.html?id=dyveke'">
-        <div class="hc-left">
-          <p class="hc-label">Bergen · Vin · Sider · Mat</p>
-          <p class="hc-title">Dyveke's Evening</p>
-          <div class="hc-meta">
-            <span>4 stops</span><span>3–4 hrs</span>
-          </div>
-        </div>
-        <span class="hc-price">49 kr</span>
-      </div>
+      <div class="st-progress" id="st-progress"></div>
     </div>
   </div>
 </section>
@@ -833,6 +828,100 @@ function filterCards() {
 function openRoute(name, routeId) {
   window.location.href = 'route.html?id=' + (routeId || 'dark-lanes') + '&name=' + encodeURIComponent(name);
 }
+
+// ── STORY TEASER — typewriter ─────────────────
+const STORIES = [
+  {
+    text: "Du er nå i en smal gang uendret siden 1300-tallet. Veggene heller mot hverandre over deg. Det lukter gammelt treverk og salt.",
+    route: "The Dark Lanes", city: "Bergen"
+  },
+  {
+    text: "I en liten leilighet i fjerde etasje sendte de krypterte meldinger til London hver natt klokken 22.00. Gestapo lette i to år.",
+    route: "The Dark Lanes", city: "Bergen"
+  },
+  {
+    text: "Hennes datter skulle bli den mest omtalte kvinnen i 1500-tallets Norden. Du møter henne om tolv minutter.",
+    route: "Dyveke's Evening", city: "Bergen"
+  },
+  {
+    text: "Mølla har malt korn her i to hundre år. Bekken renner fortsatt. Lyden av vann over stein er den samme som for 200 år siden.",
+    route: "Kolstien & Lystgården", city: "Bergen"
+  },
+  {
+    text: "Grieg bygde seg en komposisjonshytte på seks kvadratmeter nede ved vannet. Det er der musikken ble til.",
+    route: "Grieg & Stavkirken", city: "Bergen"
+  },
+  {
+    text: "Fabrikkjentene langs Akerselva og Ibsens Nora — to fangenskap. Ikke like ulike som man skulle tro.",
+    route: "Nora's Quarter", city: "Oslo"
+  },
+  {
+    text: "I 1540 var dette den rikeste byen i verden. Geneveren herfra ble til London gin. Elven var stengt i 210 år.",
+    route: "The Merchant's Evening", city: "Antwerpen"
+  }
+];
+
+let stIdx = 0;
+let stTyping = false;
+let stTimeout = null;
+let stCharIdx = 0;
+
+const stTextEl     = document.getElementById('st-text');
+const stMetaEl     = document.getElementById('st-meta');
+const stRouteEl    = document.getElementById('st-route');
+const stProgressEl = document.getElementById('st-progress');
+const stCursorEl   = document.getElementById('st-cursor');
+
+// Build progress dots
+STORIES.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'st-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => startStory(i);
+  stProgressEl.appendChild(d);
+});
+
+function updateDots(i) {
+  document.querySelectorAll('.st-dot').forEach((d, j) => {
+    d.classList.toggle('active', j === i);
+  });
+}
+
+function startStory(i) {
+  clearTimeout(stTimeout);
+  stIdx     = i;
+  stCharIdx = 0;
+  stTyping  = true;
+  stTextEl.textContent = '';
+  stMetaEl.classList.remove('visible');
+  updateDots(i);
+  typeChar();
+}
+
+function typeChar() {
+  if (!stTyping) return;
+  const story = STORIES[stIdx];
+  if (stCharIdx < story.text.length) {
+    stTextEl.textContent += story.text[stCharIdx];
+    stCharIdx++;
+    const delay = story.text[stCharIdx - 1] === '.' || story.text[stCharIdx - 1] === ',' ? 180 : 28;
+    stTimeout = setTimeout(typeChar, delay);
+  } else {
+    // Done typing — show meta, pause, then next
+    stCursorEl.style.display = 'none';
+    stRouteEl.innerHTML = '<span>' + story.route + '</span> · ' + story.city;
+    stMetaEl.classList.add('visible');
+    stTimeout = setTimeout(() => {
+      stMetaEl.classList.remove('visible');
+      stCursorEl.style.display = '';
+      stTimeout = setTimeout(() => {
+        startStory((stIdx + 1) % STORIES.length);
+      }, 600);
+    }, 4200);
+  }
+}
+
+// Kick off
+setTimeout(() => startStory(0), 600);
 </script>
 </body>
 </html>
