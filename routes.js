@@ -192,7 +192,7 @@ const ROUTES = {
     stops: [
       {
         name:      'Internasjonalen',
-        address:   'Folkets Hus, Møllergata 10 · Youngstorget',
+        address:   'Møllergata 10, Oslo',
         tag:       'Stopp 1 av 3 · Start her',
         drink:     '🍺 Din drink her: En Ringnes på fat — det er historisk riktig',
         audioMin:  'ca. 5 min',
@@ -211,7 +211,7 @@ const ROUTES = {
       },
       {
         name:      'Blå',
-        address:   'Brenneriveien 9C · Akerselva, Grünerløkka',
+        address:   'Brenneriveien 9C, Oslo',
         tag:       'Stopp 2 av 3 · 12 min gange nordover',
         drink:     '🍷 Din drink her: En glass norsk naturvin eller lokal craft — hva enn de anbefaler',
         audioMin:  'ca. 6 min',
@@ -232,7 +232,7 @@ const ROUTES = {
       },
       {
         name:      'Villa Paradiso',
-        address:   'Olaf Ryes plass 8 · Grünerløkka',
+        address:   'Olaf Ryes plass 8, Oslo',
         tag:       'Stopp 3 av 3 · 5 min gange · Avslutning',
         drink:     '🍽️ Din drink her: Velg en naturvin til maten — du er i paradis',
         audioMin:  'ca. 4 min',

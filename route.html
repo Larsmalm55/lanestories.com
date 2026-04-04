@@ -450,7 +450,7 @@ function initMap() {
 
 function geocodeAndPan(address) {
   const url = 'https://nominatim.openstreetmap.org/search?q='
-    + encodeURIComponent(address + ', Bergen, Norway')
+    + encodeURIComponent(address)
     + '&format=json&limit=1';
 
   fetch(url, { headers: { 'Accept-Language': 'no' } })
