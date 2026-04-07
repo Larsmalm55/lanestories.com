@@ -54,7 +54,7 @@ nav {
   min-height:100vh;
   padding-top:58px;
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:1.35fr 0.85fr;
 }
 .hero-left {
   display:flex; flex-direction:column; justify-content:center;
@@ -124,10 +124,10 @@ nav {
 }
 .st-quote {
   font-family:'Libre Baskerville',serif;
-  font-size:clamp(1.05rem,1.6vw,1.3rem);
+  font-size:clamp(1.18rem,1.9vw,1.52rem);
   font-style:italic;
-  color:rgba(240,235,224,.88);
-  line-height:1.75;
+  color:rgba(240,235,224,.92);
+  line-height:1.78;
   transition:opacity .5s;
 }
 .st-cursor {
@@ -294,12 +294,53 @@ nav {
 .reviews-header .sec-kicker { font-size:.58rem; letter-spacing:.28em; text-transform:uppercase; color:var(--amber); margin-bottom:14px; }
 .reviews-header h2 { font-family:'Libre Baskerville',serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:400; line-height:1.12; }
 .reviews-header h2 em { font-style:italic; color:var(--amber); }
-.reviews-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:2px; }
+.reviews-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:2px; margin-bottom:2px; }
 .review-card { background:var(--warm); padding:26px 22px; }
 .rv-stars { display:flex; gap:2px; margin-bottom:12px; }
 .rv-star { color:var(--amber); font-size:.78rem; }
 .rv-text { font-family:'Libre Baskerville',serif; font-style:italic; font-size:.85rem; line-height:1.75; color:var(--ink); margin-bottom:12px; }
 .rv-who { font-size:.66rem; color:var(--muted); }
+
+/* Review form */
+.review-form-wrap {
+  background:var(--warm); border-top:2px solid var(--amber);
+  padding:36px 40px; margin-top:2px;
+}
+.rf-title { font-family:'Libre Baskerville',serif; font-size:1.1rem; font-weight:400; margin-bottom:6px; }
+.rf-sub { font-size:.76rem; color:var(--muted); margin-bottom:28px; }
+.rf-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.rf-field { display:flex; flex-direction:column; gap:6px; }
+.rf-field label { font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+.rf-field input, .rf-field select, .rf-field textarea {
+  background:#fff; border:1px solid rgba(12,11,9,.14);
+  padding:10px 14px; font-family:'Outfit',sans-serif; font-size:.82rem;
+  color:var(--ink); outline:none; transition:border-color .2s;
+  border-radius:0;
+}
+.rf-field input:focus, .rf-field select:focus, .rf-field textarea:focus { border-color:var(--amber); }
+.rf-field textarea { resize:vertical; min-height:80px; }
+.rf-stars-pick { display:flex; gap:6px; }
+.rf-star-btn {
+  font-size:1.4rem; background:none; border:none; cursor:pointer;
+  color:rgba(12,11,9,.15); transition:color .15s; padding:0; line-height:1;
+}
+.rf-star-btn.lit { color:var(--amber); }
+.rf-submit {
+  background:var(--amber); color:#fff; border:none;
+  padding:13px 32px; font-family:'Outfit',sans-serif;
+  font-size:.74rem; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer; transition:background .2s; margin-top:8px;
+}
+.rf-submit:hover { background:var(--amber2); }
+.rf-thanks {
+  display:none; padding:16px 20px;
+  background:rgba(176,120,48,.08); border-left:3px solid var(--amber);
+  font-size:.84rem; color:var(--muted); margin-top:16px; font-style:italic;
+}
+@media(max-width:600px){
+  .review-form-wrap { padding:24px 20px; }
+  .rf-row { grid-template-columns:1fr; }
+}
 
 /* ── CITIES ── */
 .cities-section { background:var(--dark); color:var(--paper); padding:96px 6vw; }
@@ -372,6 +413,11 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
   .cta-btns .btn-primary, .cta-btns .btn-ghost { width:100%; max-width:300px; justify-content:center; }
 
   footer { flex-direction:column; align-items:flex-start; }
+}
+
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 
 @media(max-width:400px) {
@@ -741,7 +787,7 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
     <p class="sec-kicker">What people say</p>
     <h2><span id="walk-count">0</span> walks.<br><em>Real</em> reactions.</h2>
   </div>
-  <div class="reviews-grid">
+  <div class="reviews-grid" id="reviews-grid">
     <div class="review-card">
       <div class="rv-stars"><span class="rv-star">★</span><span class="rv-star">★</span><span class="rv-star">★</span><span class="rv-star">★</span><span class="rv-star">★</span></div>
       <p class="rv-text">"I've lived in Bergen for six years. I had no idea about the Theta room. Actual shivers."</p>
@@ -762,6 +808,48 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
       <p class="rv-text">"Better than any tour guide. The audio is atmospheric, not robotic. And the stories are real."</p>
       <p class="rv-who">Sarah M. · tourist from Edinburgh · Dark Lanes</p>
     </div>
+  </div>
+
+  <!-- Legg igjen en anmeldelse -->
+  <div class="review-form-wrap">
+    <p class="rf-title">Har du gått en rute?</p>
+    <p class="rf-sub">Del opplevelsen din — det tar under ett minutt.</p>
+    <div class="rf-row">
+      <div class="rf-field">
+        <label>Navn</label>
+        <input type="text" id="rf-name" placeholder="Fornavn eller initialer">
+      </div>
+      <div class="rf-field">
+        <label>Rute</label>
+        <select id="rf-route">
+          <option value="">Velg rute...</option>
+          <option>The Dark Lanes · Bergen</option>
+          <option>The Wine Evening · Bergen</option>
+          <option>Dyveke's Evening · Bergen</option>
+          <option>Bergen on a Plate · Bergen</option>
+          <option>Kolstien & Lystgården · Bergen</option>
+          <option>Nora's Quarter · Oslo</option>
+          <option>The Other Oslo · Oslo</option>
+          <option>The Merchant's Evening · Antwerpen</option>
+        </select>
+      </div>
+    </div>
+    <div class="rf-field" style="margin-bottom:16px;">
+      <label>Din vurdering</label>
+      <div class="rf-stars-pick" id="rf-stars">
+        <button class="rf-star-btn" data-val="1" onclick="setStars(1)">★</button>
+        <button class="rf-star-btn" data-val="2" onclick="setStars(2)">★</button>
+        <button class="rf-star-btn" data-val="3" onclick="setStars(3)">★</button>
+        <button class="rf-star-btn" data-val="4" onclick="setStars(4)">★</button>
+        <button class="rf-star-btn" data-val="5" onclick="setStars(5)">★</button>
+      </div>
+    </div>
+    <div class="rf-field" style="margin-bottom:20px;">
+      <label>Kommentar</label>
+      <textarea id="rf-text" placeholder="Hva opplevde du? Hva overrasket deg mest?"></textarea>
+    </div>
+    <button class="rf-submit" onclick="submitReview()">Send anmeldelse →</button>
+    <div class="rf-thanks" id="rf-thanks">Tusen takk! Anmeldelsen din er lagt til.</div>
   </div>
 </section>
 
@@ -975,6 +1063,49 @@ function typeChar() {
 
 // Kick off
 setTimeout(() => startStory(0), 600);
+
+// ── Reviews ───────────────────────────────────
+var rfRating = 0;
+
+function setStars(n) {
+  rfRating = n;
+  document.querySelectorAll('.rf-star-btn').forEach(function(btn) {
+    btn.classList.toggle('lit', parseInt(btn.dataset.val) <= n);
+  });
+}
+
+function submitReview() {
+  var name  = (document.getElementById('rf-name').value  || '').trim();
+  var route = (document.getElementById('rf-route').value || '').trim();
+  var text  = (document.getElementById('rf-text').value  || '').trim();
+
+  if (!name || !route || !text || rfRating === 0) {
+    alert('Fyll inn navn, rute, vurdering og kommentar.');
+    return;
+  }
+
+  var stars = '';
+  for (var i = 0; i < rfRating; i++) stars += '★';
+
+  var card = document.createElement('div');
+  card.className = 'review-card';
+  card.style.animation = 'fadeInUp .4s ease';
+  card.innerHTML =
+    '<div class="rv-stars"><span class="rv-star">' + stars + '</span></div>' +
+    '<p class="rv-text">"' + text.replace(/</g,'&lt;') + '"</p>' +
+    '<p class="rv-who">' + name.replace(/</g,'&lt;') + ' · ' + route + '</p>';
+
+  document.getElementById('reviews-grid').appendChild(card);
+
+  document.getElementById('rf-name').value  = '';
+  document.getElementById('rf-route').value = '';
+  document.getElementById('rf-text').value  = '';
+  setStars(0); rfRating = 0;
+
+  var thanks = document.getElementById('rf-thanks');
+  thanks.style.display = 'block';
+  setTimeout(function(){ thanks.style.display = 'none'; }, 4000);
+}
 
 // ── Walk counter — animerer opp når synlig ────
 (function() {
