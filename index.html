@@ -491,7 +491,7 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
   </div>
   <div class="hero-right">
     <div class="story-teaser">
-      <p class="st-eyebrow">Live fra rutene</p>
+      <p class="st-eyebrow">Live from the routes</p>
       <div class="st-quote-wrap">
         <p class="st-quote" id="st-quote"><span id="st-text"></span><span class="st-cursor" id="st-cursor"></span></p>
       </div>
@@ -671,7 +671,7 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
           <div class="rc-meta-item"><strong>GPS + Guide</strong></div>
         </div>
         <div class="rc-footer">
-          <div><div class="rc-price">Gratis</div><div class="rc-price-note">åpen rute</div></div>
+          <div><div class="rc-price">Free</div><div class="rc-price-note">open route</div></div>
           <button class="rc-cta" onclick="window.location.href='route.html?id=kolstien-landaas'">Start walking →</button>
         </div>
       </div>
@@ -791,17 +791,17 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
 
   <!-- Legg igjen en anmeldelse -->
   <div class="review-form-wrap">
-    <p class="rf-title">Har du gått en rute?</p>
-    <p class="rf-sub">Del opplevelsen din — det tar under ett minutt.</p>
+    <p class="rf-title">Have you walked a route?</p>
+    <p class="rf-sub">Share your experience — takes under a minute.</p>
     <div class="rf-row">
       <div class="rf-field">
-        <label>Navn</label>
-        <input type="text" id="rf-name" placeholder="Fornavn eller initialer">
+        <label>Name</label>
+        <input type="text" id="rf-name" placeholder="First name or initials">
       </div>
       <div class="rf-field">
-        <label>Rute</label>
+        <label>Route</label>
         <select id="rf-route">
-          <option value="">Velg rute...</option>
+          <option value="">Choose route...</option>
           <option>The Dark Lanes · Bergen</option>
           <option>The Wine Evening · Bergen</option>
           <option>Dyveke's Evening · Bergen</option>
@@ -814,7 +814,7 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
       </div>
     </div>
     <div class="rf-field" style="margin-bottom:16px;">
-      <label>Din vurdering</label>
+      <label>Your rating</label>
       <div class="rf-stars-pick" id="rf-stars">
         <button class="rf-star-btn" data-val="1" onclick="setStars(1)">★</button>
         <button class="rf-star-btn" data-val="2" onclick="setStars(2)">★</button>
@@ -824,11 +824,11 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
       </div>
     </div>
     <div class="rf-field" style="margin-bottom:20px;">
-      <label>Kommentar</label>
-      <textarea id="rf-text" placeholder="Hva opplevde du? Hva overrasket deg mest?"></textarea>
+      <label>Comment</label>
+      <textarea id="rf-text" placeholder="What did you experience? What surprised you most?"></textarea>
     </div>
-    <button class="rf-submit" onclick="submitReview()">Send anmeldelse →</button>
-    <div class="rf-thanks" id="rf-thanks">Tusen takk! Anmeldelsen din er lagt til.</div>
+    <button class="rf-submit" onclick="submitReview()">Submit review →</button>
+    <div class="rf-thanks" id="rf-thanks">Thank you! Your review has been added.</div>
   </div>
 </section>
 
@@ -1059,7 +1059,7 @@ function submitReview() {
   var text  = (document.getElementById('rf-text').value  || '').trim();
 
   if (!name || !route || !text || rfRating === 0) {
-    alert('Fyll inn navn, rute, vurdering og kommentar.');
+    alert('Please fill in name, route, rating and comment.');
     return;
   }
 
