@@ -373,6 +373,33 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
 .footer-link:hover { color:var(--amber); }
 .footer-copy { font-size:.62rem; color:rgba(240,235,224,.18); }
 
+/* ── MOBILE TRUST STRIP ── */
+.hero-trust {
+  display: none;
+}
+@media(max-width:600px) {
+  .hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-top: 20px;
+  }
+  .hero-trust span {
+    font-size: .65rem;
+    color: var(--muted);
+    letter-spacing: .04em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .hero-trust span::before {
+    content: '·';
+    color: var(--amber);
+    font-size: .8rem;
+  }
+  .hero-trust span:first-child::before { display:none; }
+}
+
 /* ── MOBILE ── */
 @media(max-width:780px) {
   .hero { grid-template-columns:1fr; }
@@ -398,15 +425,13 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
   .city-btn, .mood-btn { padding:9px 13px; font-size:.74rem; }
   .results-grid { grid-template-columns:1fr; }
 
-  .how-section { padding:60px 5vw; }
-  .how-steps { grid-template-columns:1fr; }
-
-  .story-section { padding:60px 5vw; }
-  .reviews-section { padding:60px 5vw; }
-  .reviews-grid { grid-template-columns:1fr; }
-
-  .cities-section { padding:60px 5vw; }
-  .cities-grid { grid-template-columns:1fr 1fr; }
+  /* Skjul mellom-seksjoner på mobil */
+  .how-section     { display:none; }
+  .story-section   { display:none; }
+  .reviews-section { display:none; }
+  .cities-section  { display:none; }
+  /* Skjul "How it works"-knappen i hero siden seksjonen er skjult */
+  .hero-btns .btn-ghost { display:none; }
 
   .cta-section { padding:72px 5vw; }
   .cta-btns { flex-direction:column; align-items:center; }
@@ -436,25 +461,19 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
   .nav-links .nav-link { display:none; }
   .nav-cta { font-size:.68rem; padding:8px 14px; }
 
-  /* How it works */
-  .step-heading { font-size:1.2rem; }
-  .how-step { padding:20px 16px; }
-  .hs-title { font-size:.88rem; }
-  .hs-body  { font-size:.76rem; }
+  /* Rutekort på mobil — mer luftig og tydelig */
+  .result-card { padding:22px 18px; }
+  .rc-title { font-size:1.3rem; }
+  .rc-sub   { font-size:.8rem; }
+  .rc-footer { flex-direction:row; align-items:center; justify-content:space-between; gap:10px; }
+  .rc-cta { padding:12px 20px; font-size:.74rem; white-space:nowrap; }
+  .rc-price { font-size:1.1rem; }
 
-  /* Story-seksjon (mørk) */
-  .story-section { padding:52px 5vw; }
-  .sc-footer { flex-direction:column; gap:10px; align-items:flex-start; }
-  .sc-unlock-btn { width:100%; text-align:center; padding:12px; }
-
-  /* Reviews */
-  .reviews-section { padding:52px 5vw; }
-  .rv-text { font-size:.82rem; }
-
-  /* Byer */
-  .cities-section { padding:52px 5vw; }
-  .city-block { padding:18px 14px; }
-  .city-block-name { font-size:1.05rem; }
+  /* Routes-seksjonen mer kompakt på mobil */
+  .routes-section { padding:48px 5vw 64px; }
+  .rs-intro { margin-bottom:32px; }
+  .rs-h2 { font-size:1.7rem; }
+  .rs-sub { font-size:.84rem; }
 
   /* CTA */
   .cta-section { padding:60px 5vw; }
@@ -487,6 +506,12 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
     <div class="hero-btns">
       <a href="#routes" class="btn-primary">Find your route</a>
       <a href="#how" class="btn-ghost">How it works</a>
+    </div>
+    <div class="hero-trust">
+      <span>🗺 GPS guide</span>
+      <span>🎧 Audio at every stop</span>
+      <span>€5 · pay once</span>
+      <span>Bergen · Oslo · Antwerp</span>
     </div>
   </div>
   <div class="hero-right">
