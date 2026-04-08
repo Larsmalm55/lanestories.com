@@ -30,8 +30,26 @@
   --line-light: rgba(255,255,255,.06);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
 html { scroll-behavior:smooth; }
-body { background:var(--paper); color:var(--ink); font-family:'Outfit',sans-serif; font-weight:300; overflow-x:hidden; }
+body { background:var(--paper); color:var(--ink); font-family:'Outfit',sans-serif; font-weight:300; overflow:hidden; }
+
+/* ── PANEL SYSTEM ── */
+.panel {
+  position:fixed; inset:0;
+  overflow-y:auto; overflow-x:hidden;
+  transition:transform .55s cubic-bezier(.77,0,.18,1), opacity .45s ease;
+  will-change:transform;
+  background:var(--paper);
+}
+.panel-hero   { z-index:10; transform:translateY(0); opacity:1; }
+.panel-routes { z-index:20; background:var(--paper); }
+.panel-how    { z-index:20; background:var(--warm); }
+
+/* States */
+.panel.hidden    { transform:translateY(-5%) !important; opacity:0 !important; pointer-events:none !important; }
+.panel.slide-up  { transform:translateY(0) !important; opacity:1 !important; pointer-events:auto !important; }
+.panel.slide-down{ transform:translateY(100%) !important; opacity:1; pointer-events:none !important; }
 
 /* ── NAV ── */
 nav {
@@ -168,8 +186,25 @@ nav {
 }
 .st-dot.active { background:var(--amber); width:32px; }
 
+/* ── BACK BUTTON ── */
+.panel-back {
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:10px;
+  padding:14px 6vw;
+  background:rgba(240,235,224,.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  cursor:pointer;
+  font-size:.72rem; letter-spacing:.06em; color:var(--muted);
+  font-family:'Outfit',sans-serif;
+  transition:color .2s;
+  user-select:none;
+}
+.panel-back:hover { color:var(--ink); }
+.panel-back svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+
 /* ── FIND YOUR ROUTE ── */
-.routes-section { background:var(--paper); padding:96px 6vw; }
+.routes-section { background:var(--paper); padding:80px 6vw 96px; }
 .rs-intro { max-width:600px; margin:0 auto 60px; text-align:center; }
 .rs-sub { max-width:48ch; margin-left:auto; margin-right:auto; }
 .rs-kicker { font-size:.58rem; letter-spacing:.28em; text-transform:uppercase; color:var(--amber); margin-bottom:14px; }
@@ -526,13 +561,16 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
 </head>
 <body>
 
+<!-- PANEL 1: HERO -->
+<div class="panel panel-hero" id="panel-hero">
+
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">Lane<span>Stories</span></a>
   <div class="nav-links">
-    <a href="#how" class="nav-link">How it works</a>
-    <a href="#cities" class="nav-link">Cities</a>
-    <a href="#routes" class="nav-cta">Start exploring</a>
+    <a href="#" class="nav-link" onclick="showPanel('how'); return false;">How it works</a>
+    <a href="#" class="nav-link" onclick="showPanel('routes'); return false;">Cities</a>
+    <button class="nav-cta" onclick="showPanel('routes')">Start exploring</button>
   </div>
 </nav>
 
@@ -543,8 +581,8 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
     <h1 class="hero-h1">Every city<br>has <em>lanes.</em><br>Every lane<br>has a story.</h1>
     <p class="hero-sub">You're new in town. Or you've lived here for years and stopped seeing it. Lane Stories gives you a route, a guide, and the stories hiding in plain sight.</p>
     <div class="hero-btns">
-      <a href="#routes" class="btn-primary">Find your route</a>
-      <a href="#how" class="btn-ghost">How it works</a>
+      <button class="btn-primary" onclick="showPanel('routes')">Find your route →</button>
+      <button class="btn-ghost" onclick="showPanel('how')">How it works</button>
     </div>
     <div class="hero-trust">
       <span>🗺 GPS guide</span>
@@ -566,9 +604,15 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
       <div class="st-progress" id="st-progress"></div>
     </div>
   </div>
-</section>
+</section><!-- end hero section -->
+</div><!-- end panel-hero -->
 
-<!-- FIND YOUR ROUTE -->
+<!-- PANEL 2: FIND YOUR ROUTE -->
+<div class="panel panel-routes" id="panel-routes">
+<div class="panel-back" onclick="showPanel('hero')">
+  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  Back to home
+</div>
 <section class="routes-section" id="routes">
   <div class="rs-intro">
     <p class="rs-kicker">Find your route</p>
@@ -667,35 +711,6 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
       </div>
 
 
-      <div class="result-card" data-city="bergen" data-tags="family,hidden">
-        <p class="rc-label">Bergen · Family · All day</p>
-        <h3 class="rc-title">Family Lanes</h3>
-        <p class="rc-snippet">"Your daughter finds the totem pole first. You didn't know Seattle gave Bergen a gift."</p>
-        <div class="rc-meta-row">
-          <div class="rc-meta-item"><strong>5 stops</strong> all ages</div>
-          <div class="rc-meta-item"><strong>3–5 hrs</strong></div>
-          <div class="rc-meta-item"><strong>GPS + Audio</strong></div>
-        </div>
-        <div class="rc-footer">
-          <div><div class="rc-price">€5</div><div class="rc-price-note">one-time · instant</div></div>
-          <button class="rc-cta" onclick="openRoute('Family Lanes','')">Start walking →</button>
-        </div>
-      </div>
-
-      <div class="result-card" data-city="bergen" data-tags="history,hidden">
-        <p class="rc-label">Bergen · History · Morning</p>
-        <h3 class="rc-title">The Hanseatic Walk</h3>
-        <p class="rc-snippet">"The boy arrived at twelve years old, speaking no Norwegian. He would not leave for seven years."</p>
-        <div class="rc-meta-row">
-          <div class="rc-meta-item"><strong>4 stops</strong> Bryggen</div>
-          <div class="rc-meta-item"><strong>2–3 hrs</strong></div>
-          <div class="rc-meta-item"><strong>GPS + Audio</strong></div>
-        </div>
-        <div class="rc-footer">
-          <div><div class="rc-price">€5</div><div class="rc-price-note">one-time · instant</div></div>
-          <button class="rc-cta" onclick="openRoute('The Hanseatic Walk','')">Start walking →</button>
-        </div>
-      </div>
 
       <div class="result-card" data-city="bergen" data-tags="history,hidden">
         <p class="rc-label">Bergen · Day walk · From Kolstien, Landås</p>
@@ -791,6 +806,14 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
     </div>
   </div>
 </section>
+</div><!-- end panel-routes -->
+
+<!-- PANEL 3: HOW IT WORKS -->
+<div class="panel panel-how" id="panel-how">
+<div class="panel-back" onclick="showPanel('hero')">
+  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  Back to home
+</div>
 
 <!-- HOW IT WORKS -->
 <section class="how-section" id="how">
@@ -906,7 +929,7 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
     <div class="city-block">
       <div class="city-block-name">Bergen</div>
       <div class="city-block-country">Norway</div>
-      <div class="city-block-routes">6 routes · walking now</div>
+      <div class="city-block-routes">4 routes · walking now</div>
     </div>
     <div class="city-block">
       <div class="city-block-name">Oslo</div>
@@ -947,8 +970,8 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
   <h2 class="cta-h2">You already live<br>in a <em>story.</em></h2>
   <p class="cta-sub">"There's a door in your city you've passed a hundred times. Behind it — something happened. Lane Stories tells you what."</p>
   <div class="cta-btns">
-    <a href="#routes" class="btn-primary">Find your route</a>
-    <a href="#story" class="btn-ghost">Hear a story first</a>
+    <button class="btn-primary" onclick="showPanel('routes')">Find your route</button>
+    <button class="btn-ghost" onclick="document.getElementById('story').scrollIntoView({behavior:'smooth'})">Hear a story first</button>
   </div>
 </section>
 
@@ -963,15 +986,46 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
   </div>
   <span class="footer-copy">© 2025 LaneStories.com</span>
 </footer>
+</div><!-- end panel-how -->
 
 <script>
+// ── PANEL NAVIGATION ─────────────────────────────
+const PANELS = { hero: 'panel-hero', routes: 'panel-routes', how: 'panel-how' };
+let currentPanel = 'hero';
+
+function showPanel(name) {
+  if (name === currentPanel) return;
+  const leaving = document.getElementById(PANELS[currentPanel]);
+  const arriving = document.getElementById(PANELS[name]);
+
+  // Hero leaves upward when navigating away from it
+  leaving.classList.add('hidden');
+  arriving.classList.remove('slide-down');
+  arriving.classList.add('slide-up');
+  arriving.scrollTop = 0;
+
+  currentPanel = name;
+}
+
+function initPanels() {
+  // All non-hero panels start below
+  Object.keys(PANELS).forEach(function(key) {
+    if (key !== 'hero') {
+      var el = document.getElementById(PANELS[key]);
+      el.classList.add('slide-down');
+    }
+  });
+}
+initPanels();
+
+// ─────────────────────────────────────────────────
 let activeCity = null;
 let activeMood = 'all';
 
 // Cities per country
 const COUNTRY_CITIES = {
   norway: [
-    { id: 'bergen',     name: 'Bergen',     info: '6 routes' },
+    { id: 'bergen',     name: 'Bergen',     info: '4 routes' },
     { id: 'oslo',       name: 'Oslo',       info: '2 routes' },
     { id: 'trondheim',  name: 'Trondheim',  info: null },
     { id: 'stavanger',  name: 'Stavanger',  info: null },
