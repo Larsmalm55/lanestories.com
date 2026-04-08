@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lane Stories – Rute</title>
+<title>Lane Stories – Route</title>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XBM1G0X2N0"></script>
 <script>
@@ -233,18 +233,18 @@ footer {
   .stop-nav-btn.prev { min-width:76px; justify-content:center; }
   footer { flex-direction:column; align-items:flex-start; }
 
-  /* Audio — større touch-flate */
+  /* Audio — larger touch target */
   .audio-player { padding:16px; gap:14px; }
   .audio-btn { width:48px; height:48px; font-size:1.1rem; flex-shrink:0; }
   .audio-label strong { font-size:.82rem; }
 
-  /* Kart-knapp på mobil */
+  /* Map button on mobile */
   .map-fab {
     display:flex !important;
   }
 }
 
-/* Kart-fab — kun synlig på mobil */
+/* Map FAB — visible on mobile only */
 .map-fab {
   display:none;
   position:fixed; bottom:80px; right:20px; z-index:200;
@@ -255,7 +255,7 @@ footer {
   box-shadow:0 4px 16px rgba(0,0,0,.25);
 }
 
-/* Kart-modal på mobil */
+/* Map modal on mobile */
 .map-modal {
   display:none;
   position:fixed; inset:0; z-index:300;
@@ -285,12 +285,12 @@ footer {
 <body>
 
 <!-- TEST BANNER -->
-<div class="test-banner">🧪 Test mode – fri tilgang<span>Betalingssteg deaktivert. Kun for testing.</span></div>
+<div class="test-banner">🧪 Test mode – free access<span>Payment disabled. For testing only.</span></div>
 
 <!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">Lane<span>Stories</span></a>
-  <a href="index.html" class="nav-back">← Tilbake til ruteoversikt</a>
+  <a href="index.html" class="nav-back">← Back to all routes</a>
 </nav>
 
 <!-- ROUTE HEADER (filled by JS) -->
@@ -316,7 +316,7 @@ footer {
   <div class="map-panel">
     <div id="leaflet-map" style="flex:1;min-height:300px;"></div>
     <div class="map-next">
-      <div class="map-next-label" id="map-label">Neste stopp</div>
+      <div class="map-next-label" id="map-label">Next stop</div>
       <div class="map-next-val"   id="map-val">–</div>
     </div>
   </div>
@@ -324,12 +324,12 @@ footer {
 </div>
 
 <!-- Kart-knapp (kun mobil) -->
-<button class="map-fab" id="map-fab" onclick="openMapModal()" title="Vis kart">🗺</button>
+<button class="map-fab" id="map-fab" onclick="openMapModal()" title="Show map">🗺</button>
 
 <!-- Kart-modal (kun mobil) -->
 <div class="map-modal" id="map-modal">
   <div class="map-modal-header">
-    <span class="map-modal-title">KART</span>
+    <span class="map-modal-title">MAP</span>
     <button class="map-modal-close" onclick="closeMapModal()">×</button>
   </div>
   <div id="map-modal-inner"></div>
@@ -338,7 +338,7 @@ footer {
 
 <footer>
   <span class="footer-logo">Lane<span>Stories</span></span>
-  <span class="footer-copy">© 2025 LaneStories.com · Testmodus</span>
+  <span class="footer-copy">© 2025 LaneStories.com · Test mode</span>
 </footer>
 
 <script>
@@ -382,21 +382,21 @@ route.stops.forEach((stop, i) => {
   const isLast = i === total - 1;
 
   const prevBtn = i > 0
-    ? `<button class="stop-nav-btn prev" onclick="goToStop(${i - 1})">← Forrige</button>`
+    ? `<button class="stop-nav-btn prev" onclick="goToStop(${i - 1})">← Previous</button>`
     : `<span></span>`;
 
   const nextBtn = isLast
-    ? `<a href="index.html" class="stop-nav-btn next">Finn ny rute →</a>`
-    : `<button class="stop-nav-btn next" onclick="goToStop(${i + 1})">${stop.nextLabel || 'Neste stopp →'}</button>`;
+    ? `<a href="index.html" class="stop-nav-btn next">Find a new route →</a>`
+    : `<button class="stop-nav-btn next" onclick="goToStop(${i + 1})">${stop.nextLabel || 'Next stop →'}</button>`;
 
   const drinkHtml = stop.drink
     ? `<div class="stop-drink">${stop.drink}</div>` : '';
 
   const completionHtml = isLast ? `
     <div class="completion-box">
-      <p class="completion-label">Ruten er fullført</p>
+      <p class="completion-label">Route complete</p>
       <p class="completion-text">${route.completion}</p>
-      <a href="index.html" class="completion-link">← Finn en ny rute</a>
+      <a href="index.html" class="completion-link">← Find a new route</a>
     </div>` : '';
 
   panelEl.innerHTML += `
@@ -408,8 +408,8 @@ route.stops.forEach((stop, i) => {
       <div class="audio-player">
         <button class="audio-btn" id="audio-btn-${i}" onclick="toggleAudio(${i})">▶</button>
         <div class="audio-label">
-          <strong id="audio-label-${i}">Audio guide · Stopp ${i + 1}</strong>
-          <span id="audio-sub-${i}">Trykk for å høre historien lest opp — ${stop.audioMin}</span>
+          <strong id="audio-label-${i}">Audio guide · Stop ${i + 1}</strong>
+          <span id="audio-sub-${i}">Tap to hear the story — ${stop.audioMin}</span>
         </div>
       </div>
       <div class="story-body">${stop.body}</div>
@@ -425,7 +425,7 @@ function stripHtml(html) {
   return (d.textContent || d.innerText || '').replace(/\s+/g, ' ').trim();
 }
 
-// Del opp tekst i korte setnings-biter (iOS krasjer på lange)
+// Split text into short sentence chunks (iOS crashes on long utterances)
 function chunkText(text) {
   var sentences = text.match(/[^.!?]+[.!?]*/g) || [text];
   var chunks = [], cur = '';
@@ -446,9 +446,9 @@ function setAudioUI(i, playing) {
   var label = document.getElementById('audio-label-' + i);
   var sub   = document.getElementById('audio-sub-'   + i);
   if (!btn) return;
-  if (playing === 'play')  { btn.textContent = '⏸'; label.textContent = 'Spiller av...'; sub.textContent = 'Trykk for å pause'; }
-  if (playing === 'pause') { btn.textContent = '▶'; label.textContent = 'Satt på pause';  sub.textContent = 'Trykk for å fortsette'; }
-  if (playing === 'done')  { btn.textContent = '▶'; label.textContent = 'Audio guide · Stopp ' + (i+1); sub.textContent = 'Trykk for å høre historien — ' + route.stops[i].audioMin; }
+  if (playing === 'play')  { btn.textContent = '⏸'; label.textContent = 'Playing...'; sub.textContent = 'Tap to pause'; }
+  if (playing === 'pause') { btn.textContent = '▶'; label.textContent = 'Paused';      sub.textContent = 'Tap to continue'; }
+  if (playing === 'done')  { btn.textContent = '▶'; label.textContent = 'Audio guide · Stop ' + (i+1); sub.textContent = 'Tap to hear the story — ' + route.stops[i].audioMin; }
 }
 
 function speakChunk(stopIndex) {
@@ -456,7 +456,7 @@ function speakChunk(stopIndex) {
   if (audioQueuePos >= audioQueue.length) { audioStopIdx = -1; setAudioUI(stopIndex, 'done'); return; }
 
   var utt = new SpeechSynthesisUtterance(audioQueue[audioQueuePos]);
-  utt.lang  = 'nb-NO';
+  utt.lang  = 'en-GB';
   utt.rate  = 0.9;
   utt.pitch = 1;
   utt.onend = function() {
@@ -474,11 +474,11 @@ function speakChunk(stopIndex) {
 function toggleAudio(i) {
   if (!window.speechSynthesis) {
     var s = document.getElementById('audio-sub-' + i);
-    if (s) s.textContent = 'Audio støttes ikke i denne nettleseren.';
+    if (s) s.textContent = 'Audio not supported in this browser.';
     return;
   }
 
-  // Pause / resume pågående stopp
+  // Pause / resume current stop
   if (audioStopIdx === i) {
     if (speechSynthesis.paused) { speechSynthesis.resume(); setAudioUI(i, 'play'); }
     else                        { speechSynthesis.pause();  setAudioUI(i, 'pause'); }
@@ -502,7 +502,7 @@ function resetAudioBtn() {
     const btn = document.getElementById('audio-btn-' + i);
     if (btn) btn.textContent = '▶';
     const lbl = document.getElementById('audio-label-' + i);
-    if (lbl) lbl.textContent = 'Audio guide · Stopp ' + (i + 1);
+    if (lbl) lbl.textContent = 'Audio guide · Stop ' + (i + 1);
   });
 }
 
@@ -537,7 +537,7 @@ function geocodeAndPan(address) {
     + encodeURIComponent(address)
     + '&format=json&limit=1';
 
-  fetch(url, { headers: { 'Accept-Language': 'no' } })
+  fetch(url, { headers: { 'Accept-Language': 'en' } })
     .then(r => r.json())
     .then(data => {
       if (!data.length) return;
@@ -643,7 +643,7 @@ function goToStop(i) {
   // Geocode desktop-kart
   if (map) geocodeAndPan(route.stops[i].address);
 
-  // Oppdater mobil-kart hvis modal er åpen
+  // Update mobile map if modal is open
   if (mobileMap && document.getElementById('map-modal').classList.contains('open')) {
     geocodeForModal(route.stops[i].address);
     document.getElementById('map-modal-footer').textContent = route.stops[i].name + ' · ' + route.stops[i].address;

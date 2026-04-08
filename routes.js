@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────
-//  LaneStories · Rutedata
-//  For å legge til en ny rute: kopier et eksisterende
-//  objekt, gi det en ny id, og fyll inn innholdet.
+//  LaneStories · Route data
+//  To add a new route: copy an existing object,
+//  give it a new id, and fill in the content.
 // ─────────────────────────────────────────────
 
 const ROUTES = {
@@ -9,79 +9,79 @@ const ROUTES = {
   // ── BERGEN: THE DARK LANES ──────────────────
   'dark-lanes': {
     title:    'The Dark Lanes',
-    kicker:   'Bergen · Kveld · 2–3 timer',
-    subtitle: 'Fra vikingekonger til nazistisk motstand — og avslutter med middag i en hanseatisk festsal uendret siden 1708.',
+    kicker:   'Bergen · Evening · 2–3 hours',
+    subtitle: 'From Viking kings to Nazi resistance — ending with dinner in a Hanseatic banquet hall unchanged since 1708.',
     meta: [
-      ['4 stopp',      'inkl. middag'],
-      ['Starter',      'Bergenhus'],
-      ['GPS + Audio',  'guide'],
-      ['⭐ 4.9',       '· 94 har gått denne']
+      ['4 stops',     'incl. dinner'],
+      ['Starts at',   'Bergenhus'],
+      ['GPS + Audio', 'guide'],
+      ['⭐ 4.9',      '· 94 have walked this']
     ],
-    completion: 'Du har gått The Dark Lanes. 4 stopp. Omtrent 800 år med Bergen-historie.',
+    completion: 'You have walked The Dark Lanes. 4 stops. About 800 years of Bergen history.',
     stops: [
       {
-        name:      'Bergenhus Festning',
+        name:      'Bergenhus Fortress',
         address:   'Bergenhus, 5003 Bergen',
-        tag:       'Stopp 1 av 4 · Du er her nå',
+        tag:       'Stop 1 of 4 · You are here',
         drink:     null,
-        audioMin:  'ca. 4 min',
-        nextLabel: 'Neste stopp →',
+        audioMin:  'approx. 4 min',
+        nextLabel: 'Next stop →',
         mapNext:   'Enhjørningsgården · 4 min',
-        mapLabel:  'Neste stopp',
+        mapLabel:  'Next stop',
         body: `
-<p>Du står ved hjertet av Bergens hele historie. Dette stedet — en gang kalt Holmen — har vært kontinuerlig bebodd siden før år 1000. Vikingekonger holdt hoff her. Norges første hovedstad var her. Og om morgenen 9. april 1940 falt det i mørket.</p>
-<div class="pullquote"><p>"Før alt dette var dette et sted for ekstraordinær seremoni. Kong Håkon Håkonsson bygde den store steinhallen til venstre for deg mellom 1247 og 1261."</p></div>
-<p>Det var her, 11. september 1261, at hans sønn Magnus Lagabøte ble kronet. Du kan nesten se fakkellyset mot steinveggen, høre latinen fra biskopens munn bue seg opp under hvelvet.</p>
-<p>Da nazistene landet i Bergen ved daggry den 9. april, ble festningen holdt av en liten garnison i timer. Kommandanten nektet å overgi seg. Skuddene fyrte. Og i det rotet av forvirring og frykt og heroisme begynte en motstandsbevegelse som til slutt hjalp med å vinne krigen — i stor del fra en hemmelig leilighet noen hundre meter unna.</p>
-<p>Du vil se det stedet om tolv minutter. Men først: se tilbake mot tornet. Murstein er fra 1200-tallet. Mørtel er original. Det som ser ut som restaurering er faktisk det ekte.</p>`
+<p>You are standing at the very heart of Bergen's entire history. This place — once called Holmen — has been continuously inhabited since before the year 1000. Viking kings held court here. Norway's first capital was here. And in the early hours of 9 April 1940, it fell in darkness.</p>
+<div class="pullquote"><p>"Before all this, this was a place of extraordinary ceremony. King Håkon Håkonsson built the great stone hall to your left between 1247 and 1261."</p></div>
+<p>It was here, on 11 September 1261, that his son Magnus Lagabøte was crowned. You can almost see the torchlight against the stone wall, hear the Latin from the bishop's mouth arching up under the vault.</p>
+<p>When the Nazis landed in Bergen at dawn on 9 April, the fortress was held by a small garrison for hours. The commandant refused to surrender. Shots were fired. And in that tangle of confusion and fear and heroism, a resistance movement began that would eventually help win the war — largely from a secret apartment a few hundred metres away.</p>
+<p>You will see that place in twelve minutes. But first: look back at the tower. The brick is from the 1200s. The mortar is original. What looks like restoration is actually the real thing.</p>`
       },
       {
         name:      'Enhjørningsgården',
         address:   'Bryggen 29, 5003 Bergen',
-        tag:       'Stopp 2 av 4 · Gå 4 min',
+        tag:       'Stop 2 of 4 · Walk 4 min',
         drink:     null,
-        audioMin:  'ca. 5 min',
-        nextLabel: 'Neste stopp →',
+        audioMin:  'approx. 5 min',
+        nextLabel: 'Next stop →',
         mapNext:   'The Theta Room · 6 min',
-        mapLabel:  'Neste stopp',
+        mapLabel:  'Next stop',
         body: `
-<p>Gå inn i denne smalen. De trebygde veggene heller mot hverandre ovenfor. Det lukter gammelt treverk og salt. Svært lite har endret seg her siden 1300-tallet.</p>
-<div class="pullquote"><p>"Under den hanseatiske okkupasjonen ankom gutter på tolv som lærlinger og levde under nær total kontroll i årevis — uten å få lov til å forlate bryggene."</p></div>
-<p>Enhjørningsgården — Enhørningens gård — fikk navnet sitt fra den utskårne enhørningen over porten. Den er fremdeles der. Se opp.</p>
-<p>Inne i disse veggene bodde tyske kjøpmenn i seks måneder av gangen, isolert fra det norske samfunnet rundt dem. De fikk ikke gifte seg. De fikk ikke ha norske venner. Hansaforbundet kontrollerte ikke bare handelen — det kontrollerte menneskene.</p>
-<p>Den tyske kjøpmannen som bodde i rommet over deg — vi kjenner navnet hans: Heinrich Schröder, 1392. Han kom aldri hjem til Lübeck. Arkivene sier: drukning. Men vannet var lavt den natten, og ingen andre var vitner til det.</p>`
+<p>Step into this alley. The timber walls lean toward each other overhead. It smells of old wood and salt. Very little has changed here since the 1300s.</p>
+<div class="pullquote"><p>"Under the Hanseatic occupation, boys as young as twelve arrived as apprentices and lived under near-total control for years — not permitted to leave the wharves."</p></div>
+<p>Enhjørningsgården — the Unicorn Courtyard — got its name from the carved unicorn above the gate. It is still there. Look up.</p>
+<p>Inside these walls, German merchants lived for six months at a time, isolated from the Norwegian society around them. They were not allowed to marry. They were not allowed to have Norwegian friends. The Hanseatic League controlled not just the trade — it controlled the people.</p>
+<p>The German merchant who lived in the room above you — we know his name: Heinrich Schröder, 1392. He never returned to Lübeck. The archives say: drowning. But the water was shallow that night, and no one else was a witness.</p>`
       },
       {
         name:      'The Theta Room',
         address:   'Nedre Korskirkeallmenning 4, Bergen',
-        tag:       'Stopp 3 av 4 · Gå 6 min',
+        tag:       'Stop 3 of 4 · Walk 6 min',
         drink:     null,
-        audioMin:  'ca. 6 min',
-        nextLabel: 'Siste stopp: Middag →',
+        audioMin:  'approx. 6 min',
+        nextLabel: 'Final stop: Dinner →',
         mapNext:   'Dinner, 1708 · 3 min',
-        mapLabel:  'Neste stopp',
+        mapLabel:  'Next stop',
         body: `
-<p>Dette er det stedet som vil gi deg frysninger. Se på fasaden. Ingenting antyder det som skjedde her mellom 1942 og 1944.</p>
-<div class="pullquote"><p>"I en liten leilighet i fjerde etasje opererte Bergens mest dristige motstandsgruppe sin hemmelige radiosendar. De kalte seg Theta."</p></div>
-<p>Hver natt klokken 22.00 sendte de krypterte meldinger til London. Koordinater for tyske ubåtbevegelser. Besetningslister. Forsendelsesruter. Informasjonen de sendte reddet hundrevis av allierte liv og hjalp med å vende krigen til sjøs.</p>
-<p>Gestapo lette i to år. De visste at signalene kom fra Bergen sentrum. De visste det var noen som bodde blant dem. De visste bare ikke hvem.</p>
-<p>I oktober 1944 fant de dem. Noen av gruppemedlemmene ble henrettet. Andre klarte å flykte til Sverige om natten. Theta-rommet er nå et lite museum — det eneste rommet i Bergen der veggene bokstavelig talt har hørt historien om krigen lyde.</p>`
+<p>This is the place that will give you chills. Look at the facade. Nothing suggests what happened here between 1942 and 1944.</p>
+<div class="pullquote"><p>"In a small apartment on the fourth floor, Bergen's most daring resistance group operated their secret radio transmitter. They called themselves Theta."</p></div>
+<p>Every night at 10 p.m. they broadcast encrypted messages to London. Coordinates for German submarine movements. Crew lists. Shipping routes. The information they sent saved hundreds of Allied lives and helped turn the war at sea.</p>
+<p>The Gestapo searched for two years. They knew the signals came from central Bergen. They knew someone lived among them. They just didn't know who.</p>
+<p>In October 1944, they found them. Some group members were executed. Others managed to escape to Sweden under cover of night. The Theta Room is now a small museum — the only room in Bergen where the walls have literally heard the story of the war ring out.</p>`
       },
       {
         name:      'Dinner, 1708',
         address:   'Enhjørningsgården · Bryggen, Bergen',
-        tag:       'Stopp 4 av 4 · Avslutning',
+        tag:       'Stop 4 of 4 · Final stop',
         drink:     null,
-        audioMin:  'ca. 3 min',
+        audioMin:  'approx. 3 min',
         nextLabel: null,
-        mapNext:   'Ruten er fullført 🎉',
+        mapNext:   'Route complete 🎉',
         mapLabel:  'Status',
         body: `
-<p>Du er tilbake der du begynte — men nå vet du hva disse veggene er laget av. Gå inn i Enhjørningsgårdens restaurant. Rommet du spiser i har ikke endret seg siden 1708.</p>
-<div class="pullquote"><p>"Kjøpmennene som spiste her betalte i sølvmynter. De drakk rhinsk vin. Lysene var stearin — nøyaktig som de du ser foran deg nå."</p></div>
-<p>Be om bordet lengst inne til høyre. Der er stolen som — ifølge restaurantens egne arkiver — tilhørte kjøpmannen Claus Meyenberg i over femti år. Han satt der hver fredag kveld fra 1712 til 1763. Han bestilte alltid det samme: saltet torsk, øl, en pipe.</p>
-<p>Ingen vet hva han tenkte på. Men byen utenfor var den samme byen du nettopp har gått gjennom. Festningen. Smalene. Havet. Historiene som aldri ble fortalt til noen — men som nå er dine.</p>
-<p style="font-style:italic;color:var(--muted);">God appetitt. Du har fortjent det.</p>`
+<p>You are back where you began — but now you know what these walls are made of. Enter the restaurant in Enhjørningsgården. The room you eat in has not changed since 1708.</p>
+<div class="pullquote"><p>"The merchants who ate here paid in silver coins. They drank Rhine wine. The candles were tallow — exactly like the ones you see in front of you now."</p></div>
+<p>Ask for the table at the far back right. That is the chair which — according to the restaurant's own archives — belonged to the merchant Claus Meyenberg for over fifty years. He sat there every Friday evening from 1712 to 1763. He always ordered the same thing: salted cod, beer, a pipe.</p>
+<p>No one knows what he thought about. But the city outside was the same city you have just walked through. The fortress. The alleyways. The sea. The stories that were never told to anyone — but which are now yours.</p>
+<p style="font-style:italic;color:var(--muted);">Enjoy your meal. You have earned it.</p>`
       }
     ]
   },
@@ -89,90 +89,90 @@ const ROUTES = {
   // ── BERGEN: DYVEKE'S EVENING ────────────────
   'dyveke': {
     title:    "Dyveke's Evening",
-    kicker:   'Bergen · Vin, sider & mat · Kveld · 3–4 timer',
-    subtitle: 'Fra en nederlandsk gate til et kongelig kjærlighetshistorie. Fire stopp. Tre drinker. Åtte hundre år med Bergen-historier som aldri kom med i guidebøkene.',
+    kicker:   'Bergen · Wine, cider & food · Evening · 3–4 hours',
+    subtitle: 'From a Dutch street to a royal love story. Four stops. Three drinks. Eight hundred years of Bergen stories that never made the guidebooks.',
     meta: [
-      ['4 stopp',     'inkl. middag'],
-      ['Starter',     'Hollendergaten'],
-      ['Tema',        'Vin · Sider · Mat'],
+      ['4 stops',     'incl. dinner'],
+      ['Starts at',   'Hollendergaten'],
+      ['Theme',       'Wine · Cider · Food'],
       ['GPS + Audio', 'guide']
     ],
-    completion: "Du har gått Dyveke's Evening. 4 stopp. Fra Hollendergaten til Pergola. Nederlandske kjøpmenn, et kongelig hjerte og syv hundre år med sider.",
+    completion: "You have walked Dyveke's Evening. 4 stops. From Hollendergaten to Pergola. Dutch merchants, a royal heart and seven hundred years of cider.",
     stops: [
       {
         name:      'Hollendergaten',
         address:   'Hollendergaten, Bergen sentrum',
-        tag:       'Stopp 1 av 4 · Start her',
-        drink:     '🚶 Startpunkt · Ingen drink ennå · Gå sakte',
-        audioMin:  'ca. 4 min',
-        nextLabel: 'Neste: Dyveke →',
+        tag:       'Stop 1 of 4 · Start here',
+        drink:     '🚶 Starting point · No drink yet · Walk slowly',
+        audioMin:  'approx. 4 min',
+        nextLabel: 'Next: Dyveke →',
         mapNext:   'Dyveke · 5 min',
-        mapLabel:  'Neste stopp',
+        mapLabel:  'Next stop',
         body: `
-<p>Se deg rundt. Gaten heter Hollendergaten — nederlandernes gate. Det er ikke tilfeldig. I hundre år, fra midten av 1500-tallet, var dette en av de mest internasjonale gatene i Norge.</p>
-<div class="pullquote"><p>"Da hanseatenes jerngrep om Bergen begynte å løsne, strømmet nederlandske kjøpmenn inn. De tok med seg vin fra Rhinen, silke fra Frankrike — og historier ingen har hørt siden."</p></div>
-<p>Nederlanderne — «hollenderne» som nordmennene kalte dem — var ikke velkomne av alle. Hansaforbundet i Bryggen hadde hatt monopol på utenlandsk handel i over to hundre år. Men fra 1550-tallet begynte det å slå sprekker, og de nederlandske kjøpmennene fylte gapet raskt.</p>
-<div class="history-box"><p class="hb-label">📜 Historisk bakgrunn</p><p class="hb-text">Bergen var på 1500-tallet Nordens mest internasjonale by. Her bodde tyskere, nederlandere, skotter, engelskmenn og dansker side om side i egne kvartal. Hollendergaten er det eneste stedet i Bergen som fremdeles bærer et nasjonalitetsnavn — et levende minne om den multietniske handelsbyen.</p></div>
-<p>Men det viktigste sporet nederlanderne etterlot seg her var ikke tøy eller krydder. Det var en ung jente ved navn Sigbrit — datter av en nederlandsk kjøpmannsfamilie — som holdt en liten butikk i dette området. Hennes datter skulle bli den mest omtalte kvinnen i 1500-tallets Norden.</p>
-<p>Du møter henne om tolv minutter.</p>
-<p>Men før du går: legg merke til gatebredden. Den er nøyaktig den samme som på 1500-tallet. Husene er nye. Gaten er gammel. Du tråkker på den samme steinen som nederlandske kjøpmenn tråkket på for fem hundre år siden.</p>`
+<p>Look around you. The street is called Hollendergaten — the street of the Dutch. That is no accident. For a hundred years, from the mid-1500s, this was one of the most international streets in Norway.</p>
+<div class="pullquote"><p>"As the Hanseatic iron grip on Bergen began to loosen, Dutch merchants flooded in. They brought wine from the Rhine, silk from France — and stories no one has heard since."</p></div>
+<p>The Dutch — «hollenderne» as the Norwegians called them — were not welcomed by all. The Hanseatic League at Bryggen had held a monopoly on foreign trade for over two hundred years. But from the 1550s cracks appeared, and Dutch merchants quickly filled the gap.</p>
+<div class="history-box"><p class="hb-label">📜 Historical background</p><p class="hb-text">In the 1500s Bergen was the most international city in northern Europe. Germans, Dutch, Scots, English and Danes lived side by side in their own quarters. Hollendergaten is the only street in Bergen that still carries a nationality name — a living reminder of the multiethnic trading city.</p></div>
+<p>But the most important trace the Dutch left here was not cloth or spices. It was a young girl named Sigbrit — daughter of a Dutch merchant family — who kept a small shop in this area. Her daughter would become the most talked-about woman in sixteenth-century Scandinavia.</p>
+<p>You will meet her in twelve minutes.</p>
+<p>But before you go: notice the street width. It is exactly the same as in the 1500s. The buildings are new. The street is old. You are treading the same stone as Dutch merchants trod five hundred years ago.</p>`
       },
       {
         name:      'Dyveke',
         address:   'Dyveke Wine Bar, Bergen sentrum',
-        tag:       'Stopp 2 av 4 · 5 min gange',
-        drink:     '🍷 Din drink her: Spør etter noe fra Rhinen — det er historisk riktig',
-        audioMin:  'ca. 6 min',
-        nextLabel: 'Neste: Siderbar →',
+        tag:       'Stop 2 of 4 · 5 min walk',
+        drink:     '🍷 Your drink here: Ask for something from the Rhine — it is historically correct',
+        audioMin:  'approx. 6 min',
+        nextLabel: 'Next: Siderbar →',
         mapNext:   'Siderbar · 6 min',
-        mapLabel:  'Neste stopp',
+        mapLabel:  'Next stop',
         body: `
-<p>Baren er oppkalt etter henne. De fleste som bestiller vin her vet ikke hvem hun var. Du gjør det.</p>
-<p>Hennes navn var Dyveke Sigritsdatter. «Dyveke» betyr «lille due» på nederlandsk. Hun ble født rundt 1490 — enten i Bergen eller Amsterdam, historikerne er ikke helt enige. Det de er enige om er dette: hun var vakker, hun var klok, og hun omgjorde en kjedelig dansk prins til en forelsket narr.</p>
-<div class="pullquote"><p>"Da den unge kongen Christian II red gjennom Bergen i 1507 og fikk øye på Dyveke, stoppet han opp. Han kom aldri ordentlig videre."</p></div>
-<div class="history-box"><p class="hb-label">👑 Dyveke og Kong Christian II</p><p class="hb-text">Christian II ble senere en av Skandinavias mest kontroversielle konger — kjent for Stockholms blodbad i 1520 der han henrettet 80–90 svenske adelsmenn. Men før han ble en dronning, var han forelsket i en nederlandsk-norsk pike fra Bergen. Han tok henne med til Danmark, lot henne bo i nærheten av slottet, og nektet å gifte seg med henne til tross for press fra kirken og adelen i årevis.</p></div>
-<p>Dyvekes mor, Sigbrit Villoms, var alt annet enn en passiv mor. Hun fulgte datteren til København og ble en av de mest innflytelsesrike rådgiverne i hele riket. Nederlandsk og norsk handelskunnskap i én person — og kongen lyttet til henne mer enn til sine egne ministre.</p>
-<p>I 1517 var Dyveke omtrent 27 år gammel. En dag spiste hun kirsebær — en gave, sies det, fra en adelsmann ved navn Torben Oxe som var kjent for å mislike henne. Neste dag var hun syk. Uken etter var hun død.</p>
-<p>Forgiftning, mente kongen. Drapet, mente hoffet. Uheldig fordøyelse, mente kirken. Torben Oxe ble henrettet — om han var skyldig er aldri bevist. Christian II gråt offentlig. Han betalte for en vakker grav. Og han ble, ifølge alle samtidige kilder, aldri den samme igjen.</p>
-<div class="drink-tip"><div class="dt-icon">🍷</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>Spør etter noe fra Rhinen eller Mosel.</strong> På 1500-tallet var Rhine-vin det prestisjefulle valget i Bergen — den kom med nederlandske handelsskip. En tørr Riesling fra Mosel eller en Spätburgunder fra Rhinen er det nærmeste du kommer Dyvekes verden i et glass.</p></div></div>
-<p>Nå vet du hvem baren er oppkalt etter. Den piken i profilen over bardisken — det er henne. Lille due fra Bergen. Kongens store kjærlighet. Et mysterium som aldri ble løst.</p>`
+<p>The bar is named after her. Most people ordering wine here do not know who she was. You do.</p>
+<p>Her name was Dyveke Sigritsdatter. "Dyveke" means "little dove" in Dutch. She was born around 1490 — either in Bergen or Amsterdam, historians are not entirely agreed. What they do agree on is this: she was beautiful, she was clever, and she turned a dull Danish prince into a lovesick fool.</p>
+<div class="pullquote"><p>"When the young king Christian II rode through Bergen in 1507 and caught sight of Dyveke, he stopped. He never quite moved on."</p></div>
+<div class="history-box"><p class="hb-label">👑 Dyveke and King Christian II</p><p class="hb-text">Christian II later became one of Scandinavia's most controversial kings — known for the Stockholm Bloodbath of 1520 in which he executed 80–90 Swedish noblemen. But before he became a tyrant, he was in love with a Dutch-Norwegian girl from Bergen. He brought her to Denmark, let her live near the castle, and refused to marry her despite pressure from the church and nobility for years.</p></div>
+<p>Dyveke's mother, Sigbrit Villoms, was anything but a passive parent. She followed her daughter to Copenhagen and became one of the most influential advisers in the entire realm. Dutch and Norwegian commercial knowledge in one person — and the king listened to her more than to his own ministers.</p>
+<p>In 1517 Dyveke was about 27 years old. One day she ate cherries — a gift, it is said, from a nobleman named Torben Oxe who was known to dislike her. The next day she was ill. A week later she was dead.</p>
+<p>Poison, thought the king. Murder, thought the court. Unfortunate digestion, said the church. Torben Oxe was executed — whether he was guilty has never been proven. Christian II wept publicly. He paid for a beautiful grave. And he became, according to all contemporary sources, never the same again.</p>
+<div class="drink-tip"><div class="dt-icon">🍷</div><div><p class="dt-label">Drink tip for this stop</p><p class="dt-text"><strong>Ask for something from the Rhine or Mosel.</strong> In the 1500s Rhine wine was the prestige choice in Bergen — it arrived on Dutch trading ships. A dry Riesling from the Mosel or a Spätburgunder from the Rhine is as close as you can get to Dyveke's world in a glass.</p></div></div>
+<p>Now you know who the bar is named after. That girl in the profile above the bar counter — that is her. Little dove from Bergen. The king's great love. A mystery that was never solved.</p>`
       },
       {
         name:      'Siderbar',
         address:   'Siderbar Bergen, sentrum',
-        tag:       'Stopp 3 av 4 · 6 min gange',
-        drink:     '🍎 Din drink her: En tørr norsk sider — Hardanger hvis de har det',
-        audioMin:  'ca. 5 min',
-        nextLabel: 'Siste stopp: Middag →',
+        tag:       'Stop 3 of 4 · 6 min walk',
+        drink:     '🍎 Your drink here: A dry Norwegian cider — Hardanger if they have it',
+        audioMin:  'approx. 5 min',
+        nextLabel: 'Final stop: Dinner →',
         mapNext:   'Pergola · 4 min',
-        mapLabel:  'Neste stopp',
+        mapLabel:  'Next stop',
         body: `
-<p>Før vinen kom til Bergen per skip. Før de nederlandske kjøpmennene rullet sine Rhinfat inn på bryggen. Lenge før det — var det sider.</p>
-<div class="pullquote"><p>"Munkene på Munkeliv kloster, som lå noen hundre meter fra der du står nå, dyrket epler og presset sin egen sider. Klosteret brant i 1455. Tradisjonen overlevde."</p></div>
-<div class="history-box"><p class="hb-label">🍎 Norsk sider — 700 år med tradisjon</p><p class="hb-text">Munkeliv kloster (grunnlagt ca. 1110) var ett av Bergens to store benediktinerkloster. Munkene var selvforsynte — de dyrket urter, grønnsaker og frukt. Eplehager er dokumentert. Sider var hverdagsdrikken, brukt både til mat og som medisin. Da reformasjonen i 1537 nedla klostrene, fortsatte bøndene i Hardanger tradisjonen som ikke er brutt den dag i dag.</p></div>
-<p>Hardanger — dalen bak fjellene til øst for Bergen — er Norges eplebygd. Ikke fordi klimaet er særlig fordelaktig, men fordi folk her aldri sluttet å dyrke. I dag produserer Hardanger omtrent 40 % av all norsk frukt. Produsenter som <a href="https://www.storenaasiderkompani.com" target="_blank" style="color:var(--amber);text-decoration:none;border-bottom:1px solid rgba(176,120,48,.3);">Store Naa Siderkompani</a> holder tradisjoner i live som er syv hundre år gamle.</p>
-<p>Sider var dessuten demokratisk. Vin var for kjøpmenn og konger. Øl var for hverdagen. Men sider — fersk, fruktig, litt sur — var det bøndene, tjenestepikene og de reisende drakk. Det var Bergens eget alternativ til det som kom utenfra.</p>
-<div class="drink-tip"><div class="dt-icon">🍎</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>Spør etter «Brudeferd» fra <a href="https://www.storenaasiderkompani.com" target="_blank" style="color:var(--amber);text-decoration:none;">Store Naa Siderkompani</a>.</strong> En tørr, elegant sider fra Hardanger — nesten vinaktig, med fin syre og lang ettersmak. Akkurat slik munkene på Munkeliv ville ha likt det. Ser du den på menyen, er det det rette valget for dette stoppet.</p></div></div>
-<p>Bergen hadde sider lenge før den hadde vin. Neste gang noen forteller deg at norsk drikkekultur er ny — minn dem på munkene fra Munkeliv og de syv hundre år de har glemte.</p>`
+<p>Before wine came to Bergen by ship. Before Dutch merchants rolled their Rhine barrels onto the wharf. Long before that — there was cider.</p>
+<div class="pullquote"><p>"The monks at Munkeliv Monastery, which stood a few hundred metres from where you stand now, cultivated apples and pressed their own cider. The monastery burned in 1455. The tradition survived."</p></div>
+<div class="history-box"><p class="hb-label">🍎 Norwegian cider — 700 years of tradition</p><p class="hb-text">Munkeliv Monastery (founded c. 1110) was one of Bergen's two great Benedictine monasteries. The monks were self-sufficient — they grew herbs, vegetables and fruit. Apple orchards are documented. Cider was the everyday drink, used both with food and as medicine. When the Reformation in 1537 dissolved the monasteries, farmers in Hardanger continued a tradition unbroken to this day.</p></div>
+<p>Hardanger — the valley behind the mountains to the east of Bergen — is Norway's apple country. Not because the climate is especially favourable, but because people here never stopped growing. Today Hardanger produces about 40% of all Norwegian fruit. Producers like <a href="https://www.storenaasiderkompani.com" target="_blank" style="color:var(--amber);text-decoration:none;border-bottom:1px solid rgba(176,120,48,.3);">Store Naa Siderkompani</a> keep alive traditions that are seven hundred years old.</p>
+<p>Cider was also democratic. Wine was for merchants and kings. Beer was for everyday life. But cider — fresh, fruity, slightly tart — was what farmers, servant girls and travellers drank. It was Bergen's own alternative to what came from outside.</p>
+<div class="drink-tip"><div class="dt-icon">🍎</div><div><p class="dt-label">Drink tip for this stop</p><p class="dt-text"><strong>Ask for "Brudeferd" from <a href="https://www.storenaasiderkompani.com" target="_blank" style="color:var(--amber);text-decoration:none;">Store Naa Siderkompani</a>.</strong> A dry, elegant cider from Hardanger — almost wine-like, with clean acidity and a long finish. Exactly as the monks at Munkeliv would have liked it. If you see it on the menu, it is the right choice for this stop.</p></div></div>
+<p>Bergen had cider long before it had wine. Next time someone tells you Norwegian drinking culture is new — remind them of the monks of Munkeliv and the seven hundred years they have forgotten.</p>`
       },
       {
         name:      'Pergola',
         address:   'Pergola Mat og Vinbar, Bergen sentrum',
-        tag:       'Stopp 4 av 4 · Avslutning',
-        drink:     '🍽️ Din drink her: Velg det du har lyst på — du har fortjent det',
-        audioMin:  'ca. 4 min',
+        tag:       'Stop 4 of 4 · Final stop',
+        drink:     '🍽️ Your drink here: Choose whatever you feel like — you have earned it',
+        audioMin:  'approx. 4 min',
         nextLabel: null,
-        mapNext:   'Ruten er fullført 🎉',
+        mapNext:   'Route complete 🎉',
         mapLabel:  'Status',
         body: `
-<p>Du er fremme. Sett deg ned. Pust ut.</p>
-<p>«Pergola» kommer fra det latinske ordet for et fremskytende tak — et sted med skygge, le for vinden, og det langsomme kveldsmåltidet. Romerne hadde dem. Middelhavskulturen bygde alt rundt dem. Bergen har alltid hatt sin egen versjon — ikke i stein og marmor, men i varme rom og vinduer mot bryggene.</p>
-<div class="pullquote"><p>"Det å spise godt, drikke godt og fortelle historier er Bergens eldste tradisjon. Det var det de nederlandske kjøpmennene kom hit for. Det er det du er her for."</p></div>
-<div class="history-box"><p class="hb-label">🍽️ Mat som handelsvare</p><p class="hb-text">Bergen var i middelalderen kjent for tørrfisk — klippfisk eksportert til hele Europa. Men de velstående kjøpmennene spiste noe helt annet: importerte krydder, Rhinvin, nederlandske oster, franske sauser. Det som i dag er «norsk mat» på restaurantmenyer var i 1500-tallets Bergen eksklusiv luksusvare, kjøpt og solgt på de samme kai-sidene utenfor dette vinduet.</p></div>
-<p>I over fem hundre år har folk kommet til Bergen for å handle, spise og drikke. Hanseatene kom fra Lübeck. Nederlanderne kom fra Amsterdam. Skottene kom fra Edinburgh. De satt i gjestgiveri langs bryggene, drakk vin de hadde med seg fra hjemlandet, og snakket i timevis om priser, ruter og storpolitikk.</p>
-<p>Det er ikke så annerledes i kveld.</p>
-<p>Du sitter i en by som har feiret det gode bordet i åtte hundre år. Du har gått gjennom den nederlandske gaten. Du har drukket Dyvekes vin. Du har smakt munkenes sider. Nå spiser du.</p>
-<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">God appetitt. Bergen er glad for at du kom.</p>`
+<p>You have arrived. Sit down. Breathe.</p>
+<p>"Pergola" comes from the Latin word for a projecting roof — a place of shade, shelter from the wind, and the unhurried evening meal. The Romans had them. Mediterranean culture built everything around them. Bergen has always had its own version — not in stone and marble, but in warm rooms and windows toward the wharves.</p>
+<div class="pullquote"><p>"To eat well, drink well and tell stories is Bergen's oldest tradition. It is what the Dutch merchants came here for. It is what you are here for."</p></div>
+<div class="history-box"><p class="hb-label">🍽️ Food as trade</p><p class="hb-text">In the Middle Ages Bergen was known for stockfish — dried cod exported across Europe. But the wealthy merchants ate something quite different: imported spices, Rhine wine, Dutch cheeses, French sauces. What today appears on restaurant menus as "Norwegian food" was in 1500s Bergen an exclusive luxury, bought and sold on the same quaysides outside this window.</p></div>
+<p>For over five hundred years people have come to Bergen to trade, eat and drink. The Hanseatics came from Lübeck. The Dutch came from Amsterdam. The Scots came from Edinburgh. They sat in inns along the wharves, drank wine they had brought from home, and talked for hours about prices, routes and grand politics.</p>
+<p>This evening is not so different.</p>
+<p>You are sitting in a city that has celebrated the good table for eight hundred years. You have walked through the Dutch street. You have drunk Dyveke's wine. You have tasted the monks' cider. Now you eat.</p>
+<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Enjoy your meal. Bergen is glad you came.</p>`
       }
     ]
   },
@@ -180,75 +180,75 @@ const ROUTES = {
   // ── OSLO: NORA'S QUARTER ────────────────────
   'noras-quarter': {
     title:    "Nora's Quarter",
-    kicker:   'Oslo · Kveld · 2–3 timer · Youngstorget til Grünerløkka',
-    subtitle: 'En rute om menneskene som bygde Oslo — fabrikkjentene langs Akerselva, dikteren som fortalte verden hva de ikke fikk lov til, og nabolaget de etterlot seg.',
+    kicker:   'Oslo · Evening · 2–3 hours · Youngstorget to Grünerløkka',
+    subtitle: 'A route about the people who built Oslo — the factory girls along the Akerselva, the playwright who told the world what they were not allowed to do, and the neighbourhood they left behind.',
     meta: [
-      ['3 stopp',     'inkl. middag'],
-      ['Starter',     'Youngstorget'],
-      ['Tema',        'Øl · Vin · Mat'],
+      ['3 stops',     'incl. dinner'],
+      ['Starts at',   'Youngstorget'],
+      ['Theme',       'Beer · Wine · Food'],
       ['GPS + Audio', 'guide']
     ],
-    completion: "Du har gått Nora's Quarter. 3 stopp. Fra Youngstorget til Grünerløkka. Arbeiderbevegelsen, Ibsens kvinner og nabolaget de bygde med hendene.",
+    completion: "You have walked Nora's Quarter. 3 stops. From Youngstorget to Grünerløkka. The labour movement, Ibsen's women and the neighbourhood they built with their hands.",
     stops: [
       {
         name:      'Internasjonalen',
         address:   'Møllergata 10, Oslo',
-        tag:       'Stopp 1 av 3 · Start her',
-        drink:     '🍺 Din drink her: En Ringnes på fat — det er historisk riktig',
-        audioMin:  'ca. 5 min',
-        nextLabel: 'Neste: Blå ved Akerselva →',
-        mapNext:   'Blå · 12 min nordover langs elven',
-        mapLabel:  'Neste stopp',
+        tag:       'Stop 1 of 3 · Start here',
+        drink:     '🍺 Your drink here: A Ringnes on tap — it is historically correct',
+        audioMin:  'approx. 5 min',
+        nextLabel: 'Next: Blå by the Akerselva →',
+        mapNext:   'Blå · 12 min north along the river',
+        mapLabel:  'Next stop',
         body: `
-<p>Torget utenfor heter Youngstorget. Ikke etter noe ungt og lovende — men etter en kjøpmann ved navn Jørgen Young som eide tomtene her på 1800-tallet. Et mer upretensiøst navn på et mer presist sted er vanskelig å tenke seg.</p>
-<p>For det som skjedde her var ikke kjøpmannenes verk. Det var arbeidernes.</p>
-<div class="pullquote"><p>"Hver 1. mai, fra 1890-tallet og fremover, strømmet tusenvis av Oslo-arbeidere inn på dette torget. De sang Internasjonalen. De krevde åtte timers arbeidsdag. Mange av dem hadde nettopp gått tolvtimers skift."</p></div>
-<div class="history-box"><p class="hb-label">✊ Folkets Hus og arbeiderbevegelsen</p><p class="hb-text">Bygningen du sitter i — Folkets Hus — ble reist av fagbevegelsen selv, stein for stein, krone for krone, innsamlet blant Oslo-arbeidere. LO (Landsorganisasjonen) ble stiftet i 1899. Det Norske Arbeiderparti hadde sitt hovedkvarter her i tiår. Baren du sitter i er ikke oppkalt etter et slagord. Den er oppkalt etter sangen de sang på dette torget mens politiet så på: «L'Internationale» — skrevet i Paris i 1871, oversatt til norsk av arbeidere som aldri hadde vært i Frankrike.</p></div>
-<p>Norge i dag — seks ukers ferie, statsfinansiert helsevesen, verdens høyeste fagforeningsandel — er ikke en tilfeldighet. Det er resultatet av hva som skjedde på dette torget. Av streiker som ble slått ned med politiet. Av kvinner som nektet å gå tilbake til fabrikkene uten bedre lønn. Av menn som ble sparket for å ha organisert kollegene sine.</p>
-<p>De fleste turistguidene tar deg til Slottet. Akershus. Vigelandsparken. Men dette torget — dette upretentiøse, litt slitte torget — er der det faktisk ble avgjort hva slags land Norge skulle bli.</p>
-<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>En Ringnes på fat.</strong> Ringnes ble grunnlagt i 1877 — midt i arbeiderbevegelsens formative år. Det er Oslos eget bryggeri, og det er det arbeiderne drakk når de endelig fikk fri. Ingen pretensjon. Bare øl.</p></div></div>
-<p>Gaten utenfor heter Møllergata. Og om ti minutters gange nordover langs den vil du forstå hvorfor.</p>`
+<p>The square outside is called Youngstorget. Not named after anything young and promising — but after a merchant named Jørgen Young who owned the lots here in the 1800s. A more unpretentious name for a more precise place is hard to imagine.</p>
+<p>Because what happened here was not the merchants' work. It was the workers'.</p>
+<div class="pullquote"><p>"Every 1st of May, from the 1890s onward, thousands of Oslo workers streamed onto this square. They sang the Internationale. They demanded an eight-hour working day. Many of them had just come off twelve-hour shifts."</p></div>
+<div class="history-box"><p class="hb-label">✊ Folkets Hus and the labour movement</p><p class="hb-text">The building you are sitting in — Folkets Hus, the People's House — was built by the trade union movement itself, brick by brick, krone by krone, collected among Oslo workers. LO (the Norwegian Confederation of Trade Unions) was founded in 1899. The Norwegian Labour Party had its headquarters here for decades. The bar you are sitting in is not named after a slogan. It is named after the song they sang on this square while police looked on: "L'Internationale" — written in Paris in 1871, translated into Norwegian by workers who had never been to France.</p></div>
+<p>Norway today — six weeks' holiday, state-funded healthcare, the world's highest rate of trade union membership — is not an accident. It is the result of what happened on this square. Of strikes beaten down by police. Of women who refused to return to the factories without better pay. Of men who were fired for organising their colleagues.</p>
+<p>Most tourist guides take you to the Palace. Akershus. Vigeland Park. But this square — this unpretentious, slightly worn square — is where it was actually decided what kind of country Norway would become.</p>
+<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink tip for this stop</p><p class="dt-text"><strong>A Ringnes on tap.</strong> Ringnes was founded in 1877 — in the middle of the labour movement's formative years. It is Oslo's own brewery, and it is what workers drank when they finally got time off. No pretension. Just beer.</p></div></div>
+<p>The street outside is called Møllergata. And ten minutes' walk north along it you will understand why.</p>`
       },
       {
         name:      'Blå',
         address:   'Brenneriveien 9C, Oslo',
-        tag:       'Stopp 2 av 3 · 12 min gange nordover',
-        drink:     '🍷 Din drink her: En glass norsk naturvin eller lokal craft — hva enn de anbefaler',
-        audioMin:  'ca. 6 min',
-        nextLabel: 'Siste stopp: Middag →',
+        tag:       'Stop 2 of 3 · 12 min walk north',
+        drink:     '🍷 Your drink here: A glass of Norwegian natural wine or local craft — whatever they recommend',
+        audioMin:  'approx. 6 min',
+        nextLabel: 'Final stop: Dinner →',
         mapNext:   'Villa Paradiso · 5 min',
-        mapLabel:  'Neste stopp',
+        mapLabel:  'Next stop',
         body: `
-<p>Bygningen du er i nå var en fabrikk. Mursteinen er original. Taket er høyt fordi maskineriet krevde det. Vinduene er store fordi de trengte dagslys til å arbeide i — det var lenge ingen elektrisk belysning.</p>
-<p>Elven utenfor heter Akerselva. Den er 8 kilometer lang og faller fra Maridalsvannet ned til Bjørvika. I 1880 lå det 43 registrerte fabrikker langs disse 8 kilometerne. I dag finnes ingen av dem som fabrikker. Men mange av dem finnes fremdeles som vegger og tak og stemning.</p>
-<div class="pullquote"><p>"Flertallet av dem som arbeidet her var kvinner. Mange var tenåringer. Noen var yngre. De sto ved vevstoler i tolv timer om dagen, seks dager i uken, i luften som smakte av tekstilfibre."</p></div>
-<div class="history-box"><p class="hb-label">🏭 Akerselva — elven som bygde Oslo</p><p class="hb-text">Akerselva drev sagbruk fra middelalderen og tekstilfabrikker fra 1840-tallet. Nydalens Compagnie, grunnlagt 1845, var Skandinavias største tekstilfabrikk i sin tid og sysselsatte over 1.200 arbeidere — de fleste kvinner. Arbeidsforholdene var brutale: lungesykdom var utbredt, barnearbeid var vanlig frem til 1892, og det var ingen sikkerhetsnett om du ble skadet. Elven ble så forurenset av tekstilfarger og kjemikalier at fisken forsvant. Ikke før 1990-tallet ble den ryddet opp.</p></div>
-<p>I 1879 — mens disse fabrikkjentene sto ved sine maskiner — satt en norsk forfatter i Roma og skrev et skuespill om en annen slags fanget kvinne.</p>
-<p>Henrik Ibsen hadde forlatt Norge i 1864, bitter og ubetalt. Han kom aldri ordentlig hjem igjen i sinnet. Men i Roma og Dresden og München observerte han noe han gjenkjente fra Christiania: kvinner som ikke eide seg selv. Ikke fattige fabrikarbeiderinner, men velstående borgerskapskvinner — gift bort, avskåret fra å signere kontrakter, uten lov til å ta egne avgjørelser.</p>
-<p>Han kalte henne Nora. Og det siste hun gjør i «Et Dukkehjem» er å gå ut gjennom en dør og smelle den igjen.</p>
-<div class="history-box"><p class="hb-label">🎭 Ibsen og skandalen i 1880</p><p class="hb-text">Da «Et Dukkehjem» ble uroppført i 1879, krevde en tysk skuespillerinne at Ibsen skrev en alternativ slutt — hun nektet å forlate barna sine på scenen. Ibsen kalte det «en barbarisk vold mot stykket», men skrev slutten likevel. Den originale — der Nora smeller igjen døren — ble stående som den eneste sanne. Stykket ble oversatt til 14 språk på fire år. I Japan, Egypt, Kina og Brasil ble det spilt som politisk teater. Og alt startet fordi Ibsen kjente igjen fangenskap fra de samme Christiania-gatene du gikk gjennom i aften.</p></div>
-<p>Fabrikkjentene langs Akerselva og Nora i dukkehjem — to helt ulike fangenskap. Men ikke like ulike som man skulle tro.</p>
-<div class="drink-tip"><div class="dt-icon">🍷</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>Spør hva de anbefaler.</strong> Blå er kjent for å ha folk som kan drikke. La dem velge. Det er det Ibsen ville ha gjort — han var god på å la andre ta initiativet, og så observere.</p></div></div>`
+<p>The building you are in was a factory. The brickwork is original. The ceiling is high because the machinery required it. The windows are large because they needed daylight to work by — there was no electric lighting for a long time.</p>
+<p>The river outside is called Akerselva. It is 8 kilometres long and falls from Maridalsvannet down to Bjørvika. In 1880 there were 43 registered factories along those 8 kilometres. Today none of them exist as factories. But many still exist as walls and ceilings and atmosphere.</p>
+<div class="pullquote"><p>"The majority of those who worked here were women. Many were teenagers. Some were younger. They stood at looms for twelve hours a day, six days a week, breathing air that tasted of textile fibres."</p></div>
+<div class="history-box"><p class="hb-label">🏭 Akerselva — the river that built Oslo</p><p class="hb-text">Akerselva powered sawmills from the Middle Ages and textile factories from the 1840s. Nydalen Company, founded 1845, was Scandinavia's largest textile factory in its time, employing over 1,200 workers — most of them women. Conditions were brutal: lung disease was widespread, child labour was common until 1892, and there was no safety net if you were injured. The river became so polluted with textile dyes and chemicals that the fish disappeared. It was not cleaned up until the 1990s.</p></div>
+<p>In 1879 — while these factory girls stood at their machines — a Norwegian author was sitting in Rome writing a play about a different kind of trapped woman.</p>
+<p>Henrik Ibsen had left Norway in 1864, bitter and unpaid. He never quite returned in spirit. But in Rome and Dresden and Munich he observed something he recognised from Christiania: women who did not own themselves. Not poor factory workers, but prosperous bourgeois women — married off, barred from signing contracts, not permitted to make their own decisions.</p>
+<p>He called her Nora. And the last thing she does in "A Doll's House" is walk out through a door and slam it shut.</p>
+<div class="history-box"><p class="hb-label">🎭 Ibsen and the scandal of 1880</p><p class="hb-text">When "A Doll's House" premiered in 1879, a German actress demanded that Ibsen write an alternative ending — she refused to abandon her children on stage. Ibsen called it "a barbaric act of violence against the play", but wrote the ending anyway. The original — in which Nora slams the door — stood as the only true version. The play was translated into 14 languages within four years. In Japan, Egypt, China and Brazil it was performed as political theatre. And it all began because Ibsen recognised captivity in the same Christiania streets you walked through this evening.</p></div>
+<p>The factory girls along Akerselva and Nora in the doll's house — two entirely different kinds of captivity. But not as different as one might think.</p>
+<div class="drink-tip"><div class="dt-icon">🍷</div><div><p class="dt-label">Drink tip for this stop</p><p class="dt-text"><strong>Ask what they recommend.</strong> Blå is known for having people who know how to drink. Let them choose. That is what Ibsen would have done — he was good at letting others take the initiative, then observing.</p></div></div>`
       },
       {
         name:      'Villa Paradiso',
         address:   'Olaf Ryes plass 8, Oslo',
-        tag:       'Stopp 3 av 3 · 5 min gange · Avslutning',
-        drink:     '🍽️ Din drink her: Velg en naturvin til maten — du er i paradis',
-        audioMin:  'ca. 4 min',
+        tag:       'Stop 3 of 3 · 5 min walk · Final stop',
+        drink:     '🍽️ Your drink here: Choose a natural wine with your food — you are in paradise',
+        audioMin:  'approx. 4 min',
         nextLabel: null,
-        mapNext:   'Ruten er fullført 🎉',
+        mapNext:   'Route complete 🎉',
         mapLabel:  'Status',
         body: `
-<p>Plassen utenfor vinduet er Olaf Ryes plass. Den er oppkalt etter en general som ble drept i Danmark i 1849 — i en krig mellom danskene og hertugdømmene i sør. Han het Olaf Rye, var dansk-norsk offiser, og ble en helt fordi han holdt stillingen lenge nok til at andre kunne rømme.</p>
-<p>Han satte aldri sin fot i Grünerløkka. Men plassen bærer hans navn, fordi noen i 1850 bestemte at generaler burde hedres med gate- og plassnamn, og det var ikke mange plasser igjen uten navn.</p>
-<div class="pullquote"><p>"I 1890-årene var dette en av de tettest befolkede plassene i hele Nord-Europa. Fem familier i leiligheter beregnet for én. Tuberkulose. Kald-vannskraner i bakgården. Og ingenting som lignet paradis."</p></div>
-<div class="history-box"><p class="hb-label">🌿 Fra slum til Grünerløkka</p><p class="hb-text">Grünerløkka var på 1980-tallet et av Oslos mest forsømte nabolag. Billig husleie, forfalne gårder, høy arbeidsledighet etter at fabrikkene langs Akerselva hadde stengt. Kunstnere og studenter flyttet inn fordi det var det eneste de hadde råd til. Kafeer åpnet. Gallerier. Bruktbutikker. Så kom de som hadde råd til å betale mer. I dag er en leilighet på Grünerløkka blant de dyreste kvadratmeterne i Oslo. De samme menneskene som reddet nabolaget hadde ikke lenger råd til å bo der.</p></div>
-<p>«Villa Paradiso» — Paradisvillaen. Det er et dristig navn for en pizzarestaurant i et nabolag der noen av Oslos fattigste familier bodde for hundre år siden. Men det er kanskje poenget: paradis er ikke et sted du er. Det er et sted du kaller det du har, etter alt det var.</p>
-<p>Fabrikkjentene som bodde i gatene rundt denne plassen drømte nok ikke om San Marzano-tomater og fior di latte. De drømte om varm mat og litt tid til seg selv.</p>
-<p>Det er det du sitter med nå.</p>
-<div class="drink-tip"><div class="dt-icon">🍕</div><div><p class="dt-label">Mat- og drink-tips til dette stoppet</p><p class="dt-text"><strong>Margherita laget med San Marzano-tomater og fior di latte.</strong> Be om et glass naturvin — det er det som passer til maten og til kvelden. Spis sakte. Du er ikke i kø. Du er ikke på vei til et skift. Det er noe ikke mange generasjoner i dette nabolaget har kunnet si.</p></div></div>
-<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">God appetitt. Nora forlot huset. Du fant ditt.</p>`
+<p>The square outside the window is Olaf Ryes plass. It is named after a general who was killed in Denmark in 1849 — in a war between the Danes and the duchies to the south. His name was Olaf Rye, he was a Danish-Norwegian officer, and he became a hero because he held his position long enough for others to escape.</p>
+<p>He never set foot in Grünerløkka. But the square bears his name, because someone in 1850 decided that generals should be honoured with street and square names, and there were not many squares left without names.</p>
+<div class="pullquote"><p>"In the 1890s this was one of the most densely populated squares in all of northern Europe. Five families in apartments designed for one. Tuberculosis. Cold-water taps in the back yard. And nothing resembling paradise."</p></div>
+<div class="history-box"><p class="hb-label">🌿 From slum to Grünerløkka</p><p class="hb-text">Grünerløkka in the 1980s was one of Oslo's most neglected neighbourhoods. Cheap rents, dilapidated buildings, high unemployment after the factories along Akerselva had closed. Artists and students moved in because it was all they could afford. Cafés opened. Galleries. Second-hand shops. Then came those who could afford to pay more. Today an apartment in Grünerløkka is among the most expensive square metres in Oslo. The very people who saved the neighbourhood could no longer afford to live there.</p></div>
+<p>"Villa Paradiso" — the Paradise Villa. It is a bold name for a pizza restaurant in a neighbourhood where some of Oslo's poorest families lived a hundred years ago. But that may be the point: paradise is not a place you are. It is a place you call what you have, after everything it was.</p>
+<p>The factory girls who lived in the streets around this square probably did not dream of San Marzano tomatoes and fior di latte. They dreamed of hot food and a little time to themselves.</p>
+<p>That is what you are sitting with now.</p>
+<div class="drink-tip"><div class="dt-icon">🍕</div><div><p class="dt-label">Food and drink tip for this stop</p><p class="dt-text"><strong>Margherita made with San Marzano tomatoes and fior di latte.</strong> Ask for a glass of natural wine — it fits the food and the evening. Eat slowly. You are not queuing. You are not heading to a shift. That is something not many generations in this neighbourhood have been able to say.</p></div></div>
+<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Enjoy your meal. Nora left the house. You found yours.</p>`
       }
     ]
   },
@@ -256,228 +256,228 @@ const ROUTES = {
   // ── OSLO: THE OTHER OSLO ────────────────────
   'other-oslo': {
     title:    'The Other Oslo',
-    kicker:   'Oslo · Kveld · 2–3 timer · Grønland',
-    subtitle: 'Det Oslo turistguidene ikke tar deg til. Et nabolag som har vært norsk, irsk, pakistansk og alt imellom — og en pub som ikke har endret seg på 130 år.',
+    kicker:   'Oslo · Evening · 2–3 hours · Grønland',
+    subtitle: 'The Oslo the tourist guides do not take you to. A neighbourhood that has been Norwegian, Irish, Pakistani and everything in between — and a pub that has not changed in 130 years.',
     meta: [
-      ['3 stopp',       'inkl. middag'],
-      ['Starter',       'Grønland torg'],
-      ['Tema',          'Skjulte steder'],
+      ['3 stops',       'incl. dinner'],
+      ['Starts at',     'Grønland torg'],
+      ['Theme',         'Hidden places'],
       ['GPS + Audio',   'guide']
     ],
-    completion: 'Du har gått The Other Oslo. 3 stopp. Grønland — lag på lag med mennesker, historier og mat som aldri ble turistattraksjon.',
+    completion: 'You have walked The Other Oslo. 3 stops. Grønland — layer upon layer of people, stories and food that never became a tourist attraction.',
     stops: [
       {
         name:      'Dattera til Hagen',
         address:   'Grønland 10, Oslo · Grønland torg',
-        tag:       'Stopp 1 av 3 · Start her · Grønland torg',
-        drink:     '🍺 Din drink her: Hva enn som er på tap — dette er ikke et sted for posisjoner',
-        audioMin:  'ca. 5 min',
-        nextLabel: 'Neste: Olympen →',
-        mapNext:   'Olympen · 4 min å gå',
-        mapLabel:  'Neste stopp',
+        tag:       'Stop 1 of 3 · Start here · Grønland torg',
+        drink:     '🍺 Your drink here: Whatever is on tap — this is not a place for positions',
+        audioMin:  'approx. 5 min',
+        nextLabel: 'Next: Olympen →',
+        mapNext:   'Olympen · 4 min walk',
+        mapLabel:  'Next stop',
         body: `
-<p>Du er i Grønland. Ikke det grønne landet med isfjell — dette grønland var en gang bokstavelig talt grønt. Marker og enger sør for den gamle bygrensen. På 1700-tallet var dette utenfor Oslo, og folk som ikke hadde råd til å bo i byen bodde her.</p>
-<p>Navnet betyr ingenting mystisk: «grønn land» — åpent landbruksareal. Det er alt det var. Men det avsløret noe viktig: dette var alltid stedet der de som ikke passet inn andre steder, endte opp.</p>
-<div class="pullquote"><p>"Grønland har vært norsk arbeiderklasse, irsk innvandrerkvarter, østeuropeisk eksil og pakistansk hjemsted — ofte på samme tiår, noen ganger i samme gård."</p></div>
-<div class="history-box"><p class="hb-label">🌍 Grønland — Oslos eldste innvandrerkvarter</p><p class="hb-text">På 1840- og 50-tallet flyktet irske familier til Oslo (da Christiania) fra hungersnøden hjemme. Mange slo seg ned i Grønland, som var billig og uten for mye oppsyn. Senere kom svensker, dansker og østeuropeere. Fra 1970-tallet begynte pakistanske familier å slå seg ned her — og i dag er Grønland et av Oslos mest levende flerkulturelle nabolag. Grønland torg, der du sitter nå, har vært markedsplass, rettferdighetsplass og møtested for alle disse bølgene — lag på lag, uten at noen av lagene er borte.</p></div>
-<p>«Dattera til Hagen» — datterens til hagen. Det er et navn som ikke forklarer seg selv, og det er poenget. Dette er et sted for folk som allerede vet. Ikke et skilt i vinduet som roper på forbipasserende. Ikke en turistattraksjon. Et stamsted for den typen Oslo som ikke legger ut bilder på Instagram.</p>
-<p>Baren har huset musikere, skribenter og nattarbeidere fra Grønland i årevis. Konsertscenen bak er liten nok til at du kan se svettperlene på pannebandet til den som spiller. Det er slik musikk skal høres.</p>
-<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>Hva enn som er på tap i kveld.</strong> Grønland er ikke et sted for pretensjon. Å spørre etter den «riktige» ølen her er å misse poenget. Ta hva som helst. Snakk med personen ved siden av deg i stedet.</p></div></div>`
+<p>You are in Grønland. Not the green land with icebergs — this grønland was once literally green. Fields and meadows south of the old city boundary. In the 1700s this was outside Oslo, and people who could not afford to live in the city lived here.</p>
+<p>The name means nothing mysterious: "green land" — open farmland. That is all it was. But it revealed something important: this was always the place where those who did not fit elsewhere ended up.</p>
+<div class="pullquote"><p>"Grønland has been Norwegian working class, Irish immigrant quarter, Eastern European exile and Pakistani home — often in the same decade, sometimes in the same building."</p></div>
+<div class="history-box"><p class="hb-label">🌍 Grønland — Oslo's oldest immigrant quarter</p><p class="hb-text">In the 1840s and 50s Irish families fled to Oslo (then Christiania) from the famine at home. Many settled in Grønland, which was cheap and without too much oversight. Later came Swedes, Danes and Eastern Europeans. From the 1970s Pakistani families began settling here — and today Grønland is one of Oslo's most vibrant multicultural neighbourhoods. Grønland torg, where you are sitting now, has been a marketplace, a justice square and a meeting place for all these waves — layer upon layer, without any of the layers disappearing.</p></div>
+<p>"Dattera til Hagen" — the daughter of the garden. It is a name that does not explain itself, and that is the point. This is a place for people who already know. Not a sign in the window shouting at passers-by. Not a tourist attraction. A local for the kind of Oslo that does not post photos on Instagram.</p>
+<p>The bar has housed musicians, writers and night workers from Grønland for years. The concert stage at the back is small enough that you can see the sweat on the headband of whoever is playing. That is how music should be heard.</p>
+<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink tip for this stop</p><p class="dt-text"><strong>Whatever is on tap this evening.</strong> Grønland is not a place for pretension. Asking for the "correct" beer here is to miss the point. Take whatever. Talk to the person next to you instead.</p></div></div>`
       },
       {
         name:      'Olympen',
         address:   'Grønland 15, Oslo',
-        tag:       'Stopp 2 av 3 · 4 min gange',
-        drink:     '🥃 Din drink her: En akevitt — det eneste riktige valget i dette rommet',
-        audioMin:  'ca. 6 min',
-        nextLabel: 'Siste stopp: Middag →',
-        mapNext:   'Middag i Grønland · 2 min',
-        mapLabel:  'Neste stopp',
+        tag:       'Stop 2 of 3 · 4 min walk',
+        drink:     '🥃 Your drink here: An aquavit — the only correct choice in this room',
+        audioMin:  'approx. 6 min',
+        nextLabel: 'Final stop: Dinner →',
+        mapNext:   'Dinner in Grønland · 2 min',
+        mapLabel:  'Next stop',
         body: `
-<p>Stopp opp i døren. Se deg rundt før du setter deg.</p>
-<p>Taket er det originale. Veggene er de originale. Bardisken er skiftet ut noen ganger, men stilen er den samme. Maleriene som henger der — store, romantiske norske landskapsmotiver med fjorder og fjell og dramatiske skyer — de henger der de alltid har hengt.</p>
-<p>Olympen åpnet i 1892. Det er ikke en rekonstruksjon. Det er ikke en «inspirert av»-versjon. Det er det opprinnelige stedet, og det har servert Oslo siden Grønland var en av byens fattigste adresser.</p>
-<div class="pullquote"><p>"I 1892 var Olympen et arbeidersted. Menn kom hit etter skift. De drakk akevitt og øl. De snakket ikke om kunst. Maleriene på veggen viste et Norge ingen av dem hadde råd til å besøke."</p></div>
-<div class="history-box"><p class="hb-label">🏛️ Olympen — 130 år i samme rom</p><p class="hb-text">Olympen er en av Oslos eldste restauranter og puber i sammenhengende drift. Den har overlevd to verdenskriger, en okkupasjon, Grønlands nedgang og Grønlands oppgang. Under andre verdenskrig var det norske gjester og tyske soldater i de samme rommene — noe ingen snakket høyt om. Etter krigen kom sosialister, kunstnere og folk som ikke passet inn i de mer «respektable» bydelene. I dag er det turister, lokale og alle kategorier imellom. Rommet behandler alle likt.</p></div>
-<p>Det er noe uredelig riktig med et sted som ikke prøver å fortelle deg hva det er. Olympen har ikke konsept. Det har ikke «vibe» i den markedsführte forstand. Det er bare et rom som har sett mer enn de fleste rom noensinne vil se — og som fremdeles mener det er tilstrekkelig å sette frem et glass og la folk sitte.</p>
-<p>Maleriene på veggen viser fjorder og fjell og dramatiske norske himler. De ble malt for å gi arbeidere i 1892 en følelse av et land de ikke hadde tid til å oppleve. Nå henger de som en slags arkeologi — malt for én Oslo, seende ned på et helt annet.</p>
-<div class="drink-tip"><div class="dt-icon">🥃</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>En Linie Aquavit.</strong> Linie er destillert i Lyngseidet, sendt over ekvator og tilbake i eikefat om bord på skip — tradisjonen startet i 1805. Det er det eneste som har reist mer enn rommet du sitter i. Drikk det sakte. Det fortjener det.</p></div></div>`
+<p>Stop in the doorway. Look around before you sit down.</p>
+<p>The ceiling is the original. The walls are the original. The bar counter has been replaced a few times, but the style is the same. The paintings hanging there — large, romantic Norwegian landscape motifs with fjords and mountains and dramatic skies — they hang where they have always hung.</p>
+<p>Olympen opened in 1892. It is not a reconstruction. It is not an "inspired by" version. It is the original place, and it has served Oslo since Grønland was one of the city's poorest addresses.</p>
+<div class="pullquote"><p>"In 1892 Olympen was a workers' place. Men came here after shifts. They drank aquavit and beer. They did not talk about art. The paintings on the wall showed a Norway none of them could afford to visit."</p></div>
+<div class="history-box"><p class="hb-label">🏛️ Olympen — 130 years in the same room</p><p class="hb-text">Olympen is one of Oslo's oldest restaurants and pubs in continuous operation. It has survived two world wars, an occupation, Grønland's decline and Grønland's rise. During the Second World War there were Norwegian guests and German soldiers in the same rooms — something no one spoke loudly about. After the war came socialists, artists and people who did not fit into the more "respectable" districts. Today it is tourists, locals and every category in between. The room treats everyone equally.</p></div>
+<p>There is something honestly right about a place that does not try to tell you what it is. Olympen has no concept. It has no "vibe" in the marketed sense. It is simply a room that has seen more than most rooms will ever see — and still believes it is sufficient to set a glass down and let people sit.</p>
+<p>The paintings on the wall show fjords and mountains and dramatic Norwegian skies. They were painted to give workers in 1892 a sense of a country they did not have time to experience. Now they hang as a kind of archaeology — painted for one Oslo, looking down on an entirely different one.</p>
+<div class="drink-tip"><div class="dt-icon">🥃</div><div><p class="dt-label">Drink tip for this stop</p><p class="dt-text"><strong>A Linie Aquavit.</strong> Linie is distilled in Lyngseidet, sent across the equator and back in oak casks on board a ship — the tradition started in 1805. It is the only thing that has travelled more than the room you are sitting in. Drink it slowly. It deserves it.</p></div></div>`
       },
       {
-        name:      'Middag i Grønland',
-        address:   'Grønland — spis der lukten tar deg',
-        tag:       'Stopp 3 av 3 · 2 min gange · Avslutning',
-        drink:     '🍽️ Din drink her: Te, lassi, mineralvann — du har drukket nok. Nå er det mat som gjelder.',
-        audioMin:  'ca. 3 min',
+        name:      'Dinner in Grønland',
+        address:   'Grønland — eat where the smell takes you',
+        tag:       'Stop 3 of 3 · 2 min walk · Final stop',
+        drink:     '🍽️ Your drink here: Tea, lassi, mineral water — you have drunk enough. Now it is all about the food.',
+        audioMin:  'approx. 3 min',
         nextLabel: null,
-        mapNext:   'Ruten er fullført 🎉',
+        mapNext:   'Route complete 🎉',
         mapLabel:  'Status',
         body: `
-<p>Grønland er en av de få stedene i Oslo der du ikke trenger en restaurantguide. Du trenger bare en nese.</p>
-<p>Gå langs Grønland-gaten. Det du lukter — kardemomme, koriander, stekt løk, nybakt brød — det er det du skal spise. Det er slik mat alltid ble valgt, og det er fortsatt den beste metoden.</p>
-<div class="pullquote"><p>"De pakistanske familiene som kom til Oslo på 1970-tallet brakte med seg noe ingen på den tiden visste at de trengte: maten. I dag er den uløselig knyttet til hva Oslo smaker."</p></div>
-<div class="history-box"><p class="hb-label">🍛 Grønlands mat — Oslos best bevarte hemmelighet</p><p class="hb-text">Mens resten av Oslo betaler 400 kroner for en deigbar med rødbeter, serverer restaurantene i Grønland ekte hjemmelaget mat til priser som ikke har fulgt med byens inflasjon. Det er ikke fordi maten er dårligere — det er fordi eierne ikke har spekulert i beliggenhet. De er her fordi de alltid har vært her. Spør etter hva som er fersk i dag. Det er alltid noe.</p></div>
-<p>Dette er det Oslo turistguidene ikke tar deg til. Ikke fordi det er skjult — det er rett her, midt i byen, femten minutters gange fra Slottet. Men fordi det ikke passer inn i fortellingen om hva Oslo «er».</p>
-<p>Oslo er ikke bare Aker Brygge og Vigelandsparken og Munchmuseet. Det er også dette: et nabolag som har rommet alle som trengte plass, og matet alle som trengte mat, uten å gjøre et poeng av det.</p>
-<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Spis godt. Du fant det andre Oslo. Det fleste gjør aldri det.</p>`
+<p>Grønland is one of the few places in Oslo where you do not need a restaurant guide. You only need a nose.</p>
+<p>Walk along Grønlandsleiret. What you smell — cardamom, coriander, fried onion, freshly baked bread — that is what you should eat. That is how food was always chosen, and it is still the best method.</p>
+<div class="pullquote"><p>"The Pakistani families who came to Oslo in the 1970s brought something no one at the time knew they needed: the food. Today it is inseparably part of what Oslo tastes like."</p></div>
+<div class="history-box"><p class="hb-label">🍛 Grønland's food — Oslo's best-kept secret</p><p class="hb-text">While the rest of Oslo pays 400 kroner for a pastry with beetroot, the restaurants in Grønland serve genuine home-cooked food at prices that have not kept pace with the city's inflation. Not because the food is inferior — but because the owners have not speculated in location. They are here because they have always been here. Ask what is fresh today. There is always something.</p></div>
+<p>This is the Oslo the tourist guides do not take you to. Not because it is hidden — it is right here, in the middle of the city, fifteen minutes' walk from the Palace. But because it does not fit the story of what Oslo "is".</p>
+<p>Oslo is not just Aker Brygge and Vigeland Park and the Munch Museum. It is also this: a neighbourhood that has made room for everyone who needed space, and fed everyone who needed food, without making a point of it.</p>
+<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Eat well. You found the other Oslo. Most people never do.</p>`
       }
     ]
   },
 
 
-  // ── ANTWERPEN: THE MERCHANT'S EVENING ───────
+  // ── ANTWERP: THE MERCHANT'S EVENING ─────────
   'antwerp': {
     title:    "The Merchant's Evening",
-    kicker:   'Antwerpen · Kveld · 3–4 timer · Grote Markt til Eilandje',
-    subtitle: 'Om en by som en gang var rikere enn Roma. Om geneveren som ble til gin. Og om en elv som ble stengt i to hundre år — og hva som skjedde da den ble åpnet igjen.',
+    kicker:   'Antwerp · Evening · 3–4 hours · Grote Markt to Eilandje',
+    subtitle: 'About a city that was once richer than Rome. About the genever that became gin. And about a river that was closed for two hundred years — and what happened when it was opened again.',
     meta: [
-      ['4 stopp',     'inkl. middag'],
-      ['Starter',     'Grote Markt'],
-      ['Tema',        'Øl · Jenever · Mat'],
+      ['4 stops',     'incl. dinner'],
+      ['Starts at',   'Grote Markt'],
+      ['Theme',       'Beer · Jenever · Food'],
       ['GPS + Audio', 'guide']
     ],
-    completion: "Du har gått The Merchant's Evening. 4 stopp. Fra Grote Markt til Eilandje. En by som falt fra verdens topp og fant seg selv på nytt — og geneveren som ble til gin.",
+    completion: "You have walked The Merchant's Evening. 4 stops. From Grote Markt to Eilandje. A city that fell from the top of the world and found itself again — and the genever that became gin.",
     stops: [
       {
         name:      'Café Den Engel',
         address:   'Grote Markt 3, Antwerpen',
-        tag:       'Stopp 1 av 4 · Start her · Grote Markt',
-        drink:     '🍺 Din drink her: En Duvel eller Westmalle Tripel — velg noe belgisk og stolt',
-        audioMin:  'ca. 5 min',
-        nextLabel: 'Neste: De Vagant →',
-        mapNext:   'De Vagant · 8 min å gå',
-        mapLabel:  'Neste stopp',
+        tag:       'Stop 1 of 4 · Start here · Grote Markt',
+        drink:     '🍺 Your drink here: A Duvel or Westmalle Tripel — choose something Belgian and proud',
+        audioMin:  'approx. 5 min',
+        nextLabel: 'Next: De Vagant →',
+        mapNext:   'De Vagant · 8 min walk',
+        mapLabel:  'Next stop',
         body: `
-<p>Se deg rundt. Gildebyggningene rundt plassen — med forgylte fasader og overdådige skulpturer — ble oppført av byens mektigste kjøpmenn. De ville at alle som ankom Antwerpen skulle forstå én ting med en gang: dette er en rik by. Faktisk var det mer enn det.</p>
-<div class="pullquote"><p>"I 1540 var Antwerpen den rikeste byen i Europa. Kanskje i verden. Tre fjerdedeler av all handel mellom England og kontinentet gikk gjennom denne plassen."</p></div>
-<div class="history-box"><p class="hb-label">💰 Verdens første børs</p><p class="hb-text">I 1531 ble Antwerpen hjemsted for verdens første formelle børs — Beurzen. Kjøpmenn fra Portugal, England, Spania og det tyske riket møttes her for å handle ikke bare varer, men fremtidige leveranser, vekslerbrev og kreditt. Ideen om å handle i papir i stedet for korn og klede var revolusjonerende — og ble selve grunnlaget for moderne kapitalisme. London, Amsterdam og New York kopierte modellen. Originalen var her.</p></div>
-<p>En samtid beskrev det slik: «I Antwerpen tales alle språk, alle nasjoners skikker er å se.» Det var ikke overdrivelse. I 1550-tallets Antwerpen bodde det portugisere, jøder fra Spania, engelskmenn, tyskere og flamlendere side om side. Byens havn tok imot krydder fra den nye verden, silke fra Orienten og ull fra England. Alt ble omsatt. Alt hadde en pris.</p>
-<p>Men fontenen foran deg forteller en annen historie. Legenden om Brabo: en romersk soldat som drepte kjempen Druon Antigoon, som krevde toll av alle som passerte elven, og kastet hånden hans i Scheldt. «Hand werpen» — å kaste en hånd. Derav: Antwerpen.</p>
-<p>Det er selvfølgelig bare en legende. Men det er byens legende om seg selv: vi betalte prisen, vi kastet hånden til undertrykkeren i elven, og vi ble frie. Sannheten er mer brutal og mer fascinerende. Det kommer du til å forstå.</p>
-<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>En Duvel eller Westmalle Tripel.</strong> Duvel er belgisk for djevel — en blond sterk øl med mer bak fasaden enn den ser ut til å ha. Akkurat som denne byen. Westmalle Tripel er et trappistøl fra abbediet i Malle, 25 km herfra, brygget av munker siden 1836. Belgisk ølkultur er ikke en trend. Det er en sivilisasjon.</p></div></div>`
+<p>Look around. The guild buildings around the square — with gilded facades and lavish sculptures — were erected by the city's most powerful merchants. They wanted everyone arriving in Antwerp to understand one thing immediately: this is a wealthy city. Actually, it was more than that.</p>
+<div class="pullquote"><p>"In 1540 Antwerp was the richest city in Europe. Perhaps in the world. Three quarters of all trade between England and the continent passed through this square."</p></div>
+<div class="history-box"><p class="hb-label">💰 The world's first stock exchange</p><p class="hb-text">In 1531 Antwerp became home to the world's first formal stock exchange — the Beurzen. Merchants from Portugal, England, Spain and the German Empire gathered here to trade not just goods, but future deliveries, bills of exchange and credit. The idea of trading in paper rather than grain and cloth was revolutionary — and became the very foundation of modern capitalism. London, Amsterdam and New York copied the model. The original was here.</p></div>
+<p>A contemporary described it thus: "In Antwerp all languages are spoken, the customs of all nations are on display." That was no exaggeration. In 1550s Antwerp there lived Portuguese, Spanish Jews, English, Germans and Flemings side by side. The city's harbour received spices from the New World, silk from the Orient and wool from England. Everything was traded. Everything had a price.</p>
+<p>But the fountain before you tells another story. The legend of Brabo: a Roman soldier who killed the giant Druon Antigoon, who demanded a toll from everyone passing the river, and threw his hand into the Scheldt. "Hand werpen" — to throw a hand. Hence: Antwerp.</p>
+<p>It is of course only a legend. But it is the city's legend about itself: we paid the price, we threw the oppressor's hand into the river, and we became free. The truth is more brutal and more fascinating. You are about to understand it.</p>
+<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink tip for this stop</p><p class="dt-text"><strong>A Duvel or Westmalle Tripel.</strong> Duvel is Belgian for devil — a blond strong beer with more behind the facade than it appears to have. Much like this city. Westmalle Tripel is a Trappist beer from the abbey at Malle, 25 km from here, brewed by monks since 1836. Belgian beer culture is not a trend. It is a civilisation.</p></div></div>`
       },
       {
         name:      'De Vagant',
         address:   'Reyndersstraat 25, Antwerpen',
-        tag:       'Stopp 2 av 4 · 8 min gange',
-        drink:     '🥃 Din drink her: En oude jenever — ta den ren, i romtemperatur',
-        audioMin:  'ca. 5 min',
-        nextLabel: 'Neste: Café Beveren →',
-        mapNext:   'Café Beveren · 5 min å gå',
-        mapLabel:  'Neste stopp',
+        tag:       'Stop 2 of 4 · 8 min walk',
+        drink:     '🥃 Your drink here: An oude jenever — take it neat, at room temperature',
+        audioMin:  'approx. 5 min',
+        nextLabel: 'Next: Café Beveren →',
+        mapNext:   'Café Beveren · 5 min walk',
+        mapLabel:  'Next stop',
         body: `
-<p>Du er nå i et av Europas beste jenever-barer. De Vagant har over 200 varianter. Ikke begynn å lese menyen ennå — det tar resten av kvelden. Hør historien først.</p>
-<p>Jenever er ikke gin. Gin er jenever som ble forenklet, anglisert og rebrandlet. Originalen ble til her i de lave land på 1500-tallet — destillert korn med einebær, brukt som medisin mot nyresten og reumatisme.</p>
-<div class="pullquote"><p>"Under trettiårskrigen, i 1618–1648, gav engelske soldater som kjempet side om side med nederlandske allierte noe de aldri hadde smakt. De kalte det «Dutch courage» — nederlandsk mot. De tok det med hjem."</p></div>
-<div class="history-box"><p class="hb-label">🥃 Fra medisin til gin — jenevers reise</p><p class="hb-text">Jenever ble opprinnelig solgt på apotek som kur mot magesykdom, febersykdom og nyrestein — det ble kalt «genever» etter det nederlandske ordet for einebær. Da engelske soldater begynte å drikke det i felt, returnerte de hjem med en ny smak. Innen 1720-30 hadde London en ginkrise: 11 millioner gallons gin ble produsert per år til en befolkning på 600.000. William Hogarths berømte stikk «Gin Lane» fra 1751 er arven etter det. Og det startet med en medisinsk destillat fra de lave land.</p></div>
-<p>Antwerpen var ikke bare et handelssentrum. Det var et spredningspunkt. Ideer, varer, drinker, sykdommer og oppdagelser gikk ut i verden herfra som ringer i vann. London fikk gin fra nederlandske soldater. New York het opprinnelig New Amsterdam. Wall Street er en direkte etterfølger av Antwerpens børs.</p>
-<p>Og du sitter nå og drikker selve originalen. Ikke en hyllest. Ikke en rekonstruksjon. Oude jenever, lagret på eikefat, er nøyaktig det engelske soldatene drakk i skyttergravene i Flandern mens de ventet på at noe forferdelig skulle skje.</p>
-<div class="drink-tip"><div class="dt-icon">🥃</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>Be om en oude jenever</strong> — den lagrede varianten. Ikke den unge, gjennomsiktige. Gammel jenever er mørk, myk og nesten whisky-aktig. Drikk den ren, i et lite glass, i romtemperatur. Tilsett ikke is. Ikke tonic. Bare drikken, slik den alltid har vært drukket her.</p></div></div>`
+<p>You are now in one of Europe's finest jenever bars. De Vagant has over 200 varieties. Do not start reading the menu yet — it will take the rest of the evening. Hear the story first.</p>
+<p>Jenever is not gin. Gin is jenever that was simplified, anglicised and rebranded. The original was created here in the Low Countries in the 1500s — distilled grain with juniper berries, used as medicine for kidney stones and rheumatism.</p>
+<div class="pullquote"><p>"During the Thirty Years' War, 1618–1648, English soldiers fighting alongside Dutch allies were given something they had never tasted. They called it 'Dutch courage'. They took it home."</p></div>
+<div class="history-box"><p class="hb-label">🥃 From medicine to gin — jenever's journey</p><p class="hb-text">Jenever was originally sold in pharmacies as a cure for stomach ailments, fever and kidney stones — it was called "genever" after the Dutch word for juniper. When English soldiers began drinking it in the field, they returned home with a new taste. By 1720–30 London had a gin crisis: 11 million gallons of gin were produced per year for a population of 600,000. William Hogarth's famous engraving "Gin Lane" from 1751 is the legacy of that. And it all started with a medicinal distillate from the Low Countries.</p></div>
+<p>Antwerp was not just a trading centre. It was a point of dispersal. Ideas, goods, drinks, diseases and discoveries went out into the world from here like ripples on water. London got gin from Dutch soldiers. New York was originally called New Amsterdam. Wall Street is a direct descendant of Antwerp's stock exchange.</p>
+<p>And you are now sitting drinking the very original. Not a tribute. Not a reconstruction. Oude jenever, aged in oak casks, is exactly what English soldiers drank in the trenches in Flanders while waiting for something terrible to happen.</p>
+<div class="drink-tip"><div class="dt-icon">🥃</div><div><p class="dt-label">Drink tip for this stop</p><p class="dt-text"><strong>Ask for an oude jenever</strong> — the aged variety. Not the young, clear one. Old jenever is dark, smooth and almost whisky-like. Drink it neat, in a small glass, at room temperature. Do not add ice. Not tonic. Just the drink, as it has always been drunk here.</p></div></div>`
       },
       {
         name:      'Café Beveren',
         address:   'Vlasmarkt 2, Antwerpen',
-        tag:       'Stopp 3 av 4 · 5 min gange',
-        drink:     '🍺 Din drink her: En Bolleke De Koninck — Antwerpens eget bryggeri siden 1827',
-        audioMin:  'ca. 6 min',
-        nextLabel: 'Siste stopp: Middag →',
-        mapNext:   'Het Pomphuis · 15 min å gå (eller taxi)',
-        mapLabel:  'Neste stopp',
+        tag:       'Stop 3 of 4 · 5 min walk',
+        drink:     "🍺 Your drink here: A Bolleke De Koninck — Antwerp's own brewery since 1827",
+        audioMin:  'approx. 6 min',
+        nextLabel: 'Final stop: Dinner →',
+        mapNext:   'Het Pomphuis · 15 min walk (or taxi)',
+        mapLabel:  'Next stop',
         body: `
-<p>Stopp opp. Se innover. Taket er det originale Art Deco-taket. Lampene er originale. Og orgelet — det store mekaniske orgelet som henger der på veggen — er ekte. Det spiller fremdeles. Noen kvelder starter det bare av seg selv.</p>
-<p>Café Beveren er fra tidlig 1900-tall og er et av Antwerpens mest autentiske brune kafeer. Men dens virkelige funksjon i kveld er å hjelpe deg forstå hva som skjedde med den rikeste byen i verden — etter at den falt.</p>
-<div class="pullquote"><p>"I 1585 tok den spanske feltherren Alexander Farnese Antwerpen etter en 14 måneder lang beleiring. Det som skjedde de neste ti årene endret Europa for alltid."</p></div>
-<div class="history-box"><p class="hb-label">⚓ Den lukkede elven — 210 år i isolasjon</p><p class="hb-text">Da Antwerpen falt til Spania i 1585, flyktet omtrent halvparten av byens befolkning nordover til det nye, protestantiske Nederland. Kjøpmenn, bankierer, kunstnere og håndverkere tok med seg kapitalen sin. Amsterdam ble den nye verdensfinanshovedstaden — ikke fordi Amsterdam var bedre, men fordi Antwerpen ble stengt. De nederlandske provinsene, som nå var i krig med Spania, stengte Scheldt-elven for skipstrafikk. Ingen skip inn. Ingen skip ut. I 210 år. Fra 1585 til 1795, da Napoleon endelig åpnet elven igjen.</p></div>
-<p>Tenk på det: 210 år. Antwerpen, verdens handelshovedstad, fikk ikke lov til å bruke sin egen elv. Mens Amsterdam, London og Rotterdam blomstret, satt Antwerpen fast. Byens befolkning falt fra 100.000 til 40.000 på et tiår.</p>
-<p>Men noe overlevde. Portugisiske og spanske jøder — drevet ut av Iberia av inkvisitorene — hadde allerede funnet veien til Antwerpen. De brakte med seg diamanthandelen. Og den ble igjen. Selv da alt annet forlot byen, satt diamanthandlerne og slepte og polerte og handlet. I dag passerer fremdeles omtrent 80 % av verdens uslipte diamanter gjennom Antwerpen. En direkte arv fra flyktningene som kom hit og aldri dro.</p>
-<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink-tips til dette stoppet</p><p class="dt-text"><strong>En Bolleke De Koninck.</strong> «Bolleke» betyr «lite kuppel» på antwerpsk dialekt — en referanse til den runde, kuppelformede glasset ølen serveres i. De Koninck ble grunnlagt i 1827 og brygger fremdeles i Antwerpen sentrum. Å bestille en Bolleke her er ikke å velge en øl. Det er å si at du vet hvor du er.</p></div></div>`
+<p>Stop. Look inside. The ceiling is the original Art Deco ceiling. The lamps are original. And the organ — the large mechanical organ hanging on the wall there — is real. It still plays. Some evenings it simply starts by itself.</p>
+<p>Café Beveren is from the early 1900s and is one of Antwerp's most authentic brown cafés. But its real function this evening is to help you understand what happened to the richest city in the world — after it fell.</p>
+<div class="pullquote"><p>"In 1585 the Spanish general Alexander Farnese took Antwerp after a 14-month siege. What happened in the next ten years changed Europe for ever."</p></div>
+<div class="history-box"><p class="hb-label">⚓ The closed river — 210 years of isolation</p><p class="hb-text">When Antwerp fell to Spain in 1585, roughly half the city's population fled north to the new, Protestant Netherlands. Merchants, bankers, artists and craftsmen took their capital with them. Amsterdam became the new world financial capital — not because Amsterdam was better, but because Antwerp was closed. The Dutch provinces, now at war with Spain, closed the Scheldt river to shipping. No ships in. No ships out. For 210 years. From 1585 to 1795, when Napoleon finally opened the river again.</p></div>
+<p>Think about it: 210 years. Antwerp, the world's trading capital, was not permitted to use its own river. While Amsterdam, London and Rotterdam flourished, Antwerp was stuck. The city's population fell from 100,000 to 40,000 in a decade.</p>
+<p>But something survived. Portuguese and Spanish Jews — driven out of Iberia by the Inquisitors — had already found their way to Antwerp. They brought the diamond trade with them. And it stayed. Even when everything else left the city, the diamond merchants sat and cut and polished and traded. Today roughly 80% of the world's uncut diamonds still pass through Antwerp. A direct legacy from the refugees who came here and never left.</p>
+<div class="drink-tip"><div class="dt-icon">🍺</div><div><p class="dt-label">Drink tip for this stop</p><p class="dt-text"><strong>A Bolleke De Koninck.</strong> "Bolleke" means "little dome" in Antwerp dialect — a reference to the round, dome-shaped glass the beer is served in. De Koninck was founded in 1827 and still brews in central Antwerp. Ordering a Bolleke here is not choosing a beer. It is saying you know where you are.</p></div></div>`
       },
       {
         name:      'Het Pomphuis',
         address:   'Hanzestedenplaats 1, Eilandje, Antwerpen',
-        tag:       'Stopp 4 av 4 · Avslutning · Eilandje',
-        drink:     '🍽️ Din drink her: Hva du vil — du er fremme',
-        audioMin:  'ca. 4 min',
+        tag:       'Stop 4 of 4 · Final stop · Eilandje',
+        drink:     '🍽️ Your drink here: Whatever you want — you have arrived',
+        audioMin:  'approx. 4 min',
         nextLabel: null,
-        mapNext:   'Ruten er fullført 🎉',
+        mapNext:   'Route complete 🎉',
         mapLabel:  'Status',
         body: `
-<p>Du sitter inne i en pumpemaskin. Ikke metaforisk — bygningen rundt deg er en ekte industriell pumpemaskin fra 1920. Maskineriet er fremdeles der, omgitt av gjester og kvelds-belysning. Det heter «het pomphuis» — pumpehuset.</p>
-<p>Og pumpehuset er der fordi Napoleon Bonaparte en dag i 1795 beordret at Scheldt-elven skulle åpnes igjen.</p>
-<div class="pullquote"><p>"Napoleon besøkte Antwerpen i 1803 og erklærte: «Jeg har tenkt å gjøre Antwerpen til en pistol rettet mot hjertet av England.» Han mente havnen. Han mente elven. Han mente frihet til å seile ut og inn igjen."</p></div>
-<div class="history-box"><p class="hb-label">⚓ Napoleons havn og Antwerpens gjenoppstandelse</p><p class="hb-text">Napoleon beordret bygging av to store dokker i Antwerpen — nøyaktig det komplekset du ser utenfor vinduet akkurat nå: Willemdok og Bonapartedok. De ble bygd mellom 1803 og 1811 av soldater og tvangsarbeidere. Det var ikke filantropi — Napoleon ville bruke Antwerpen som marinebasis mot britene. Men effekten var permanent: elven var åpen, havnen var ny, og Antwerpen begynte langsomt å puste igjen. I dag er Antwerpen Europas nest største havn målt i tonnasje. Bare Rotterdam er større.</p></div>
-<p>Eilandje — «den lille øya» — er kvarteret rundt disse dokkene. Inntil for tjue år siden var det et forlatt industriområde. Entrepotdok-lagerbygningene sto tomme. Kaiene var rusten. Så begynte det som alltid skjer med slike steder: kunstnere kom. Deretter kafeer. Deretter restauranter. Deretter eiendomsutviklere. I dag er Eilandje et av Antwerpens fineste nabolag. Men gammelt gods er ikke borte — det er blitt til gulv og tak og stemning.</p>
-<p>Du sitter i et rom som ble bygd for å flytte vann, og som nå fyller deg med mat og drikke. Det er ikke så langt fra hva denne byen alltid har gjort: ta det som strømmer gjennom den, og gjøre noe nyttig av det.</p>
-<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">God appetitt. Antwerpen er glad for at du fant veien hit.</p>`
+<p>You are sitting inside a pumping machine. Not metaphorically — the building around you is a genuine industrial pumping station from 1920. The machinery is still there, surrounded by guests and evening lighting. It is called "het pomphuis" — the pump house.</p>
+<p>And the pump house is there because Napoleon Bonaparte one day in 1795 ordered the Scheldt river to be opened again.</p>
+<div class="pullquote"><p>"Napoleon visited Antwerp in 1803 and declared: 'I have decided to make Antwerp a pistol aimed at the heart of England.' He meant the harbour. He meant the river. He meant the freedom to sail out and back in again."</p></div>
+<div class="history-box"><p class="hb-label">⚓ Napoleon's harbour and Antwerp's resurrection</p><p class="hb-text">Napoleon ordered the construction of two large docks in Antwerp — exactly the complex you can see out of the window right now: Willemdok and Bonapartedok. They were built between 1803 and 1811 by soldiers and forced labourers. It was not philanthropy — Napoleon wanted to use Antwerp as a naval base against the British. But the effect was permanent: the river was open, the harbour was new, and Antwerp began slowly to breathe again. Today Antwerp is Europe's second largest port measured in tonnage. Only Rotterdam is larger.</p></div>
+<p>Eilandje — "the little island" — is the quarter around these docks. Until twenty years ago it was an abandoned industrial area. The Entrepotdok warehouse buildings stood empty. The quaysides were rusting. Then what always happens with such places began: artists came. Then cafés. Then restaurants. Then property developers. Today Eilandje is one of Antwerp's finest neighbourhoods. But the old fabric is not gone — it has become floors and ceilings and atmosphere.</p>
+<p>You are sitting in a room built to move water, which now fills you with food and drink. That is not so far from what this city has always done: take what flows through it, and make something useful of it.</p>
+<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Enjoy your meal. Antwerp is glad you found your way here.</p>`
       }
     ]
   },
 
-  // ── BERGEN: GRIEG OG STAVKIRKEN (KOLSTIEN, LANDÅS) ──
+  // ── BERGEN: GRIEG AND THE STAVE CHURCH ──────
   'bergen-kolstien': {
-    title:    'Grieg og stavkirken',
-    kicker:   'Bergen · Dagstur · 1–2 timer · Fra Kolstien, Landås',
-    subtitle: 'En times gange fra Kolstien på Landås, gjennom to av Bergens mest usannsynlige steder: en stavkirke som brant ned og ble reist på nytt — og et komponisthjem ved et stille vann.',
+    title:    'Grieg and the Stave Church',
+    kicker:   'Bergen · Day walk · 1–2 hours · From Kolstien, Landås',
+    subtitle: "An hour's walk from Kolstien on Landås, through two of Bergen's most unlikely places: a stave church that burned down and was raised again — and a composer's home by a still lake.",
     meta: [
-      ['3 stopp',       'ingen barer'],
-      ['Starter',       'Kolstien, Landås'],
-      ['Tema',          'Natur · Musikk · Historie'],
+      ['3 stops',       'no bars'],
+      ['Starts at',     'Kolstien, Landås'],
+      ['Theme',         'Nature · Music · History'],
       ['GPS + Audio',   'guide']
     ],
-    completion: 'Du har gått Grieg og stavkirken. Fra Kolstien på Landås, via Fantoft til Troldhaugen. En time som dekker 900 år med Bergen-historie.',
+    completion: 'You have walked Grieg and the Stave Church. From Kolstien on Landås, via Fantoft to Troldhaugen. One hour covering 900 years of Bergen history.',
     stops: [
       {
-        name:      'Fantoft stavkirke',
-        address:   'Fantoftvegen 38, Bergen — ca. 20 min fra Kolstien',
-        tag:       'Stopp 1 av 3 · 20 min gange fra Kolstien',
+        name:      'Fantoft Stave Church',
+        address:   'Fantoftvegen 38, Bergen — approx. 20 min from Kolstien',
+        tag:       'Stop 1 of 3 · 20 min walk from Kolstien',
         drink:     null,
-        audioMin:  'ca. 6 min',
-        nextLabel: 'Neste stopp →',
-        mapNext:   'Nordåsvannet · 15 min gange',
-        mapLabel:  'Neste stopp',
+        audioMin:  'approx. 6 min',
+        nextLabel: 'Next stop →',
+        mapNext:   'Nordåsvannet · 15 min walk',
+        mapLabel:  'Next stop',
         body: `
-<p>Det du ser foran deg er ikke originalen. Men historien om hvorfor — og om hva som skjedde natten den brant — er kanskje viktigere enn om det hadde stått urørt siden middelalderen.</p>
-<p>Fantoft stavkirke ble bygd rundt år 1150 i Fortun i Sognefjord. Den var én av tusenvis. I middelalderen hadde Norge mellom 1.300 og 2.000 stavkirker — en helt særegen byggetradisjon der veggene er laget av vertikale staver, ikke horisontale laftede stokker. De er teknisk dristige, vakre og til dels mystiske. Av alle disse kirkene finnes i dag bare 28 igjen.</p>
-<div class="pullquote"><p>"I 1883 ville sognefolket i Fortun rive stavkirken og bygge noe større. Bergenskonsul Fredrik Gade hørte om det, reiste dit og kjøpte kirken. Han fraktet den, planke for planke, til sin tomt i Fantoft utenfor Bergen."</p></div>
-<div class="history-box"><p class="hb-label">🔥 Natten kirken brant — 6. juni 1992</p><p class="hb-text">Klokken 02.00 natt til 6. juni 1992 brant Fantoft stavkirke ned på under en time. Brannen var påsatt. Noen måneder senere ble Varg Vikernes — kjent under artistnavnet Count Grishnackh fra black metal-bandet Burzum — pågrepet og til slutt dømt for drapet på gitaristen Euronymous og for en rekke andre kirkebranner i Norge. Fantoft var en av dem. Kirken var totalødelagt. Bare steintrappen og grunnmuren sto igjen. Fem år etter startet gjenoppbyggingen, basert på gamle tegninger og fotografier. I 1997 sto den der igjen.</p></div>
-<p>Gå rundt kirken. Den er mørk av tjære — slik alle stavkirker opprinnelig var. Tjæren beskyttet mot råte og regn, og ga kirken den svarte, litt truende silhuetten som ble et ikon for norsk middelalder. De dragehodene som stikker ut fra taket er ikke bare dekorasjon. De er en direkte arvtager fra vikingtidens skipsbygging — det samme håndverket, de samme hendene, bare brukt til et gudshus i stedet for et langskip.</p>
-<p>Stå litt. Se opp mot toppen. Tenk på at kirken reiste seg to ganger: én gang i Fortun i 1150, én gang i Bergen i 1997. Noen ting nekter å forsvinne.</p>`
+<p>What you see in front of you is not the original. But the story of why — and what happened on the night it burned — is perhaps more important than if it had stood untouched since the Middle Ages.</p>
+<p>Fantoft Stave Church was built around the year 1150 in Fortun in the Sognefjord. It was one of thousands. In the Middle Ages Norway had between 1,300 and 2,000 stave churches — a completely unique building tradition in which the walls are made of vertical staves, not horizontal log timbers. They are technically daring, beautiful and partly mysterious. Of all those churches, only 28 remain today.</p>
+<div class="pullquote"><p>"In 1883 the congregation in Fortun wanted to demolish the stave church and build something larger. Bergen consul Fredrik Gade heard about it, travelled there and bought the church. He transported it, plank by plank, to his property in Fantoft outside Bergen."</p></div>
+<div class="history-box"><p class="hb-label">🔥 The night the church burned — 6 June 1992</p><p class="hb-text">At 2 a.m. on the night of 6 June 1992, Fantoft Stave Church burned down in under an hour. The fire was arson. Some months later, Varg Vikernes — known under the stage name Count Grishnackh from the black metal band Burzum — was arrested and eventually convicted of the murder of guitarist Euronymous and of a series of church arsons in Norway. Fantoft was one of them. The church was completely destroyed. Only the stone steps and the foundations remained. Five years later, reconstruction began, based on old drawings and photographs. In 1997 it stood there again.</p></div>
+<p>Walk around the church. It is dark with tar — as all stave churches originally were. The tar protected against rot and rain, and gave the church the black, slightly menacing silhouette that became an icon of Norwegian medieval history. The dragon heads protruding from the roof are not mere decoration. They are a direct descendant of the Viking shipbuilding tradition — the same craft, the same hands, simply used for a house of God instead of a longship.</p>
+<p>Stand for a moment. Look up toward the top. Think about the fact that this church rose twice: once in Fortun in 1150, once in Bergen in 1997. Some things refuse to disappear.</p>`
       },
       {
         name:      'Nordåsvannet',
-        address:   'Nordåsvannet, Hop — langs strandveien',
-        tag:       'Stopp 2 av 3 · 15 min gange fra Fantoft',
+        address:   'Nordåsvannet, Hop — along the shore path',
+        tag:       'Stop 2 of 3 · 15 min walk from Fantoft',
         drink:     null,
-        audioMin:  'ca. 4 min',
-        nextLabel: 'Siste stopp: Troldhaugen →',
-        mapNext:   'Troldhaugen · 10 min gange',
-        mapLabel:  'Neste stopp',
+        audioMin:  'approx. 4 min',
+        nextLabel: 'Final stop: Troldhaugen →',
+        mapNext:   'Troldhaugen · 10 min walk',
+        mapLabel:  'Next stop',
         body: `
-<p>Du er nå ved Nordåsvannet. Det ser ut som en innsjø. Det er faktisk en fjordarm — havet trenger seg inn her, og tidevann bestemmer fortsatt vannstanden. Om morgenen høyvann, om kvelden lavvann. Vannet er stille uansett. Det har alltid vært stille her.</p>
-<p>Nabolaget rundt heter delvis «Paradis». Det er ikke et turistnavn. Det er det folk faktisk har kalt det siden 1800-tallet — trolig fordi det er uvanlig skjermet og grønt, med vann på alle kanter og fjell i bakgrunnen. Bergensere som hadde råd til å bo utenfor bykjernen kom hit. Det var det nærmeste man kom landlig ro uten å forlate Bergen.</p>
-<div class="pullquote"><p>"Edvard Grieg fant Nordåsvannet i 1884. Han var 41 år gammel, hadde bodd det meste av livet i utlandet, og var lei av å leie rom. Han ville ha et eget sted. Vannet, skogen og stillheten hjalp ham bestemme seg."</p></div>
-<div class="history-box"><p class="hb-label">🎵 Vannet som inspirerte musikken</p><p class="hb-text">Nordåsvannet og naturen rundt Troldhaugen er ikke bare bakgrunn for Griegs liv — det er direkte til stede i musikken. «Lyriske stykker», som han skrev i over 30 år, er fulle av norsk natur omsatt til toner: morgenstillhet, bølgenes bevegelse, skogens sus. Grieg sa selv at han ikke komponerte musikk om naturen — han omsatte naturen til musikk. Forskjellen er viktig. Og det var denne naturen han hadde rundt seg.</p></div>
-<p>Finn et sted å stå ved vannet i ett minutt. Ikke for å se på noe spesielt — bare for å lytte. Det er stille på en annen måte enn ellers. Den typen stillhet der lydene finnes, men ikke forstyrrer.</p>
-<p>Grieg gikk her. Hver sommer i over tjue år. Du har igjen ti minutters gange til huset der han bodde, komponerte og ble begravet. Vannet du ser nå er det samme vannet han så fra stuevinduet.</p>`
+<p>You are now at Nordåsvannet. It looks like a lake. It is actually a fjord arm — the sea reaches in here, and the tides still govern the water level. High water in the morning, low water in the evening. The water is still regardless. It has always been still here.</p>
+<p>The neighbourhood around it is partly called "Paradis" — Paradise. That is not a tourist name. It is what people have actually called it since the 1800s — probably because it is unusually sheltered and green, with water on all sides and mountains in the background. Bergensers who could afford to live outside the city centre came here. It was the closest one could get to rural peace without leaving Bergen.</p>
+<div class="pullquote"><p>"Edvard Grieg discovered Nordåsvannet in 1884. He was 41 years old, had spent most of his life abroad, and was tired of renting rooms. He wanted a place of his own. The water, the forest and the silence helped him decide."</p></div>
+<div class="history-box"><p class="hb-label">🎵 The lake that inspired the music</p><p class="hb-text">Nordåsvannet and the nature around Troldhaugen are not merely a backdrop for Grieg's life — they are directly present in the music. The "Lyric Pieces", which he wrote over more than 30 years, are full of Norwegian nature translated into notes: morning stillness, the movement of waves, the rustling of forest. Grieg himself said he did not compose music about nature — he translated nature into music. The difference is important. And this was the nature he had around him.</p></div>
+<p>Find a place to stand by the water for one minute. Not to look at anything in particular — just to listen. It is quiet in a different way than elsewhere. The kind of stillness where sounds exist but do not disturb.</p>
+<p>Grieg walked here. Every summer for over twenty years. You have ten minutes' walk left to the house where he lived, composed and was buried. The water you see now is the same water he saw from his living room window.</p>`
       },
       {
         name:      'Troldhaugen',
-        address:   'Troldhaugveien 65, Bergen · Edvard Griegs hjem',
-        tag:       'Stopp 3 av 3 · 10 min gange · Avslutning',
+        address:   'Troldhaugveien 65, Bergen · Edvard Grieg\'s home',
+        tag:       'Stop 3 of 3 · 10 min walk · Final stop',
         drink:     null,
-        audioMin:  'ca. 6 min',
+        audioMin:  'approx. 6 min',
         nextLabel: null,
-        mapNext:   'Ruten er fullført 🎉',
+        mapNext:   'Route complete 🎉',
         mapLabel:  'Status',
         body: `
-<p>Troldhaugen — Trollhøyden. Grieg mente det var et noe merkelig navn, og han visste ikke hvem som hadde kalt stedet det. Men han likte det. Det passet til noe han alltid hadde hatt i musikken: det litt uforklarlige, det som ikke helt lar seg sette ord på.</p>
-<p>Han bygde villaen i 1885 og bodde her hver sommer frem til sin død i 1907. Om vinteren reiste han på konsertturneer rundt i Europa — han var en internasjonal stjerne, spilte for keisere og konger — og om sommeren kom han tilbake hit, til stillheten og vannet og hytten.</p>
-<div class="pullquote"><p>"Nede ved vannet, noen meter fra villaen, bygde Grieg seg en liten komposisjonshytte. Den er på knappe seks kvadratmeter. Det er her han egentlig jobbet. Det er der musikken ble til."</p></div>
-<div class="history-box"><p class="hb-label">🪨 Graven i fjellet</p><p class="hb-text">Edvard Grieg døde 4. september 1907 på Hotel Norge i Bergen, på vei til en konsertturné til England. Hans siste ord skal ha vært: «Vel, hvis det må være.» Han og konen Nina — som overlevde ham med 28 år — er begravet i en nisje hugget direkte inn i fjellveggen ved Nordåsvannet, på Troldhaugen-eiendommen. Ikke på en kirkegård. Ikke under et kors. I selve fjellet, med utsikt over vannet han elsket. Det er vanskelig å se det uten å bli stille.</p></div>
-<p>Gå ned mot vannet etter at du har sett huset og hytten. Finn graven i fjellet. Se ned på Nordåsvannet derfra. Du har nå gått den samme turen Grieg gikk — fra nabolaget og skogen, til vannet, til dette punktet.</p>
-<p>Det finnes en kafé på Troldhaugen med terrasse mot vannet. Sett deg der. Bestill noe. Bli sittende litt lenger enn du planla.</p>
-<div class="drink-tip"><div class="dt-icon">☕</div><div><p class="dt-label">Avslutt her</p><p class="dt-text"><strong>Kaféen på Troldhaugen har terrasse mot Nordåsvannet.</strong> En kaffe, et glass — hva du vil. Du har gått 1 time og 900 år med Bergen-historie. Det fortjener en pause der du ikke er i ferd med å gå videre.</p></div></div>
-<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Vel gått. Grieg ville ha likt at noen tok seg tid til dette.</p>`
+<p>Troldhaugen — Troll Hill. Grieg thought it a somewhat strange name, and he did not know who had called the place that. But he liked it. It suited something he had always had in his music: the slightly inexplicable, the thing that cannot quite be put into words.</p>
+<p>He built the villa in 1885 and lived here every summer until his death in 1907. In winter he went on concert tours around Europe — he was an international star, performed for emperors and kings — and in summer he came back here, to the stillness and the water and the cabin.</p>
+<div class="pullquote"><p>"Down by the water, a few metres from the villa, Grieg built himself a small composing hut. It is barely six square metres. This is where he really worked. This is where the music was made."</p></div>
+<div class="history-box"><p class="hb-label">🪨 The grave in the rock</p><p class="hb-text">Edvard Grieg died on 4 September 1907 at Hotel Norge in Bergen, on his way to a concert tour in England. His last words are said to have been: "Well, if it must be." He and his wife Nina — who survived him by 28 years — are buried in a niche carved directly into the rock face beside Nordåsvannet, on the Troldhaugen estate. Not in a churchyard. Not beneath a cross. In the rock itself, with a view over the lake he loved. It is hard to see it without falling silent.</p></div>
+<p>Walk down toward the water after you have seen the house and the hut. Find the grave in the rock. Look down at Nordåsvannet from there. You have now walked the same route Grieg walked — from the neighbourhood and the forest, to the water, to this point.</p>
+<p>There is a café at Troldhaugen with a terrace overlooking the water. Sit down there. Order something. Stay a little longer than you planned.</p>
+<div class="drink-tip"><div class="dt-icon">☕</div><div><p class="dt-label">End here</p><p class="dt-text"><strong>The café at Troldhaugen has a terrace overlooking Nordåsvannet.</strong> A coffee, a glass — whatever you like. You have walked 1 hour and 900 years of Bergen history. That deserves a pause where you are not about to move on.</p></div></div>
+<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Well walked. Grieg would have liked that someone took the time for this.</p>`
       }
     ]
   },
@@ -486,79 +486,79 @@ const ROUTES = {
   // ── BERGEN: KOLSTIEN & LYSTGÅRDEN ──────────
   'kolstien-landaas': {
     title:    'Kolstien & Lystgården',
-    kicker:   'Bergen · Landås · Historisk dagstur · 1 time',
-    subtitle: 'Fra gammel mølledal til borgerskapets lystgård og kirkebygg på Kanonhaugen — ein time med Bergens stille historia.',
+    kicker:   'Bergen · Landås · Historic day walk · 1 hour',
+    subtitle: 'From an old mill valley to a bourgeois summer retreat and a church building on Kanonhaugen — one hour with the quiet history of Bergen.',
     meta: [
-      ['4 stopp',      'ingen barer'],
-      ['Starter',      'Kolstien, Landås'],
-      ['Varighet',     '1 time · 3,5 km'],
-      ['Nivå',         'Lett']
+      ['4 stops',      'no bars'],
+      ['Starts at',    'Kolstien, Landås'],
+      ['Duration',     '1 hour · 3.5 km'],
+      ['Level',        'Easy']
     ],
-    completion: 'Du har gått Kolstien & Lystgården. 4 stopp. Møllendalen, borgerskapets sommerflukt og Kanonhaugen — ein time og tre hundre år.',
+    completion: 'You have walked Kolstien & Lystgården. 4 stops. Møllendal, the bourgeois summer escape and Kanonhaugen — one hour and three hundred years.',
     stops: [
       {
         name:      'Kolstien',
         address:   'Kolstien, Landås, Bergen',
-        tag:       'Startpunkt · Stopp 1 av 4',
+        tag:       'Starting point · Stop 1 of 4',
         drink:     null,
-        audioMin:  'ca. 3 min',
-        nextLabel: 'Neste: Christie Mølle →',
-        mapNext:   'Christie Mølle · 10 min sørover langs Gimlevegen',
-        mapLabel:  'Neste stopp',
+        audioMin:  'approx. 3 min',
+        nextLabel: 'Next: Christie Mill →',
+        mapNext:   'Christie Mill · 10 min south along Gimlevegen',
+        mapLabel:  'Next stop',
         body: `
-<p>Landås-navnet strekker seg tilbake til middelalderen. «Landås» betyr simpelthen «ås ved landeveien», og området fungerte som en naturlig passasje mellom Bergens indre daldrag og det åpne terrenget mot sør. Gårdene her var i bruk langt inn på 1800-tallet, og den rolige strukturen med private hager og brede tomter er et ekko av det gamle jordbrukslandskapet.</p>
-<div class="pullquote"><p>"Kolstien er en stille blindvei med en atmosfære som føles fjern fra Bergen sentrum — selv om du er bare 15 minutter unna."</p></div>
-<p>Du starter herfra, går ned mot Gimlevegen og orienterer deg mot daldraget der Møllendal-elven renner. Legg merke til hageporene, brevkassene med lokale navn og den lavmælte stoltheten i bebyggelsen.</p>
-<p style="font-style:italic;color:var(--muted);">Gå langsomt herfra. Turen er ikke om distansen — det er om å legge merke til det.</p>`
+<p>The name Landås stretches back to the Middle Ages. "Landås" simply means "ridge by the road", and the area served as a natural passage between Bergen's inner valleys and the open terrain to the south. The farms here were in use well into the 1800s, and the quiet layout of private gardens and spacious plots is an echo of the old agricultural landscape.</p>
+<div class="pullquote"><p>"Kolstien is a quiet cul-de-sac with an atmosphere that feels remote from central Bergen — even though you are only 15 minutes away."</p></div>
+<p>You start here, walk down toward Gimlevegen and orient yourself toward the valley where the Møllendal stream runs. Notice the garden gates, the letter boxes with local names and the understated pride in the buildings.</p>
+<p style="font-style:italic;color:var(--muted);">Walk slowly from here. The walk is not about the distance — it is about noticing.</p>`
       },
       {
-        name:      'Christie Mølle',
+        name:      'Christie Mill',
         address:   'Gimleveien 97, Bergen',
-        tag:       'Stopp 2 av 4 · 10 min gange',
+        tag:       'Stop 2 of 4 · 10 min walk',
         drink:     null,
-        audioMin:  'ca. 5 min',
-        nextLabel: 'Neste: Lystgården →',
-        mapNext:   'Kanonhaugen · 20 min opp fra mølleparken',
-        mapLabel:  'Neste stopp',
+        audioMin:  'approx. 5 min',
+        nextLabel: 'Next: The Summer Estate →',
+        mapNext:   'Kanonhaugen · 20 min up from the mill park',
+        mapLabel:  'Next stop',
         body: `
-<p>Mølla bærer navnet etter den bergenske slekten Christie — en av byens mest innflytelsesrike familier på 17- og 1800-tallet. Statsminister Wilhelm Frimann Koren Christie (1778–1849), kjent som en av grunnlovsfedre og initiativtaker til Universitetet i Bergen, tilhørte denne slekten.</p>
-<div class="pullquote"><p>"Den opprinnelige kvernmølla brukte vannkraften fra Møllendalsbekken til å male korn for bergenserne — en hverdagsinfrastruktur som i dag nesten er glemt."</p></div>
-<div class="history-box"><p class="hb-label">📜 Møllendalen</p><p class="hb-text">Selve dalen — Møllendal — har navn etter nettopp disse møllene. På 1800-tallet var det flere vandringer hit fra Bergen sentrum, og dalen ble et populært utfartssted for borgerskapet, som søkte fred bort fra byens havn og de tette middelalderkvartaler.</p></div>
-<p>Den restaurerte mølla og den lille parken rundt henne er blant Bergens mest diskrete skjulte skatter. Bekken renner fortsatt, og lyden av rennende vann dominerer fullstendig — det er nesten utrolig at du er midt i en stor by.</p>
-<p>Legg merke til steinhuset, vannhjulet og det lille fossefallet. Tenk deg at denne lyden — vann over stein — er den samme som folk hørte her for 200 år siden, mens de ventet på malt korn.</p>`
+<p>The mill bears the name of the Bergen family Christie — one of the city's most influential families in the seventeenth and eighteenth centuries. Prime Minister Wilhelm Frimann Koren Christie (1778–1849), known as one of the fathers of the Norwegian constitution and initiator of the University of Bergen, belonged to this family.</p>
+<div class="pullquote"><p>"The original grain mill used the water power of the Møllendal stream to grind corn for Bergen's inhabitants — an everyday piece of infrastructure that is today almost forgotten."</p></div>
+<div class="history-box"><p class="hb-label">📜 Møllendalen</p><p class="hb-text">The valley itself — Møllendal — is named after these very mills. In the 1800s people often walked here from central Bergen, and the valley became a popular excursion destination for the bourgeoisie, who sought peace away from the city's harbour and the dense medieval quarters.</p></div>
+<p>The restored mill and the small park around it are among Bergen's most discreet hidden treasures. The stream still runs, and the sound of flowing water dominates completely — it is almost incredible that you are in the middle of a large city.</p>
+<p>Notice the stone building, the waterwheel and the small waterfall. Imagine that this sound — water over stone — is the same sound people heard here 200 years ago, while they waited for their grain to be ground.</p>`
       },
       {
-        name:      'Lystgården & Presteboligen',
+        name:      'Lystgården & the Rectory',
         address:   'Kanonhaugen 39, Bergen',
-        tag:       'Stopp 3 av 4 · Historisk kjernestopp',
+        tag:       'Stop 3 of 4 · Historic centrepiece',
         drink:     null,
-        audioMin:  'ca. 6 min',
-        nextLabel: 'Tilbake til Kolstien →',
-        mapNext:   'Benk ved Kolstien · 20 min via Gimlevegen',
-        mapLabel:  'Neste stopp',
+        audioMin:  'approx. 6 min',
+        nextLabel: 'Back to Kolstien →',
+        mapNext:   'Bench at Kolstien · 20 min via Gimlevegen',
+        mapLabel:  'Next stop',
         body: `
-<p>Lystgården på Kanonhaugen er en av de eldste bevarte bygningene i Landås og bærer i seg hele bydelens sosialhistorie. Slike «lystgårder» — sommerboliger for byens velstående borgere — ble vanlige utenfor Bergen fra 1700-tallet av.</p>
-<div class="pullquote"><p>"Borgere med råd til det flyktet fra byens trangboddhet, lukt og sykdomsfare til luftigere omgivelser i åssidene. Landås, med sin sørvendte helling og utsikt over dalen, var et yndet sted."</p></div>
-<p>Eiendommen skiftet hender mange ganger gjennom 1800-tallet og inn i det 20. århundre. I nyere tid er Lystgården blitt et aktivt kultursted med urbant landbruk, hagebrukskurs, konserter og matarrangementer.</p>
-<div class="history-box"><p class="hb-label">🏔 Kanonhaugen-navnet</p><p class="hb-text">Kanonhaugen-navnet er eldre enn kirken. Det sikter trolig til kanonstillinger eller militær aktivitet på høyden, fra en tid da Bergen trengte forsvar — kanskje fra 1700-tallets fryktsomme år da sjøfarten var full av pirater og krigstrusler langs kysten.</p></div>
-<p>Rett ved siden av Lystgården ligger Landås kirke og den tilhørende presteboligen — en rødmalt trehusbebyggelse i tradisjonell bergensk stil. Kirken fungerte som lokalt gravitasjonspunkt, ikke bare religiøst men sosialt, for generasjoner av Landås-beboere. Presteboligens trepanel er vedlikeholdt med en stille stolthet.</p>
-<p>Hagen ved Lystgården er vakker og velstelt. Fra tomten er det utsikt som minner deg på at du befinner deg høyere enn du kanskje tror.</p>`
+<p>The Lystgård on Kanonhaugen is one of the oldest preserved buildings in Landås and contains the entire social history of the district. These "lystgårder" — summer residences for the city's wealthy citizens — became common outside Bergen from the 1700s onward.</p>
+<div class="pullquote"><p>"Citizens who could afford it fled from the city's crowding, smells and disease risk to the airier surroundings on the hillsides. Landås, with its south-facing slope and view over the valley, was a favoured spot."</p></div>
+<p>The property changed hands many times through the 1800s and into the twentieth century. In recent times Lystgården has become an active cultural venue with urban farming, gardening courses, concerts and food events.</p>
+<div class="history-box"><p class="hb-label">🏔 The name Kanonhaugen</p><p class="hb-text">The name Kanonhaugen is older than the church. It most likely refers to cannon positions or military activity on the hill, from a time when Bergen needed defence — perhaps from the 1700s when seafaring was full of pirates and war threats along the coast.</p></div>
+<p>Right next to Lystgården stands Landås Church and the associated rectory — a red-painted timber building in the traditional Bergen style. The church served as a local centre of gravity, not just religiously but socially, for generations of Landås residents. The rectory's timber panelling is maintained with a quiet pride.</p>
+<p>The garden at Lystgården is beautiful and well kept. From the property there is a view that reminds you that you are higher up than you might think.</p>`
       },
       {
-        name:      'Benken ved Kolstien',
+        name:      'The Bench at Kolstien',
         address:   'Kolstien, Landås, Bergen',
-        tag:       'Stopp 4 av 4 · Avslutning',
+        tag:       'Stop 4 of 4 · Final stop',
         drink:     null,
-        audioMin:  'ca. 2 min',
+        audioMin:  'approx. 2 min',
         nextLabel: null,
-        mapNext:   'Ruten er fullført 🎉',
+        mapNext:   'Route complete 🎉',
         mapLabel:  'Status',
         body: `
-<p>Du er tilbake der du startet, men du er ikke den samme som gikk herfra for en time siden. Du har gått gjennom en mølledal som har malt korn i to hundre år. Du har stått i hagen til en lystgård der byens borgere søkte ro fra en by som aldri sto stille. Du har sett presteboligen som har holdt stand gjennom generasjoner av Landås sine store og små hendelser.</p>
-<div class="pullquote"><p>"Bergen er ikke bare syv fjell. Det er alle dalene imellom."</p></div>
-<p>Og du har gått det hele på én time — uten å skynde deg.</p>
-<p>Finn en benk. Si ingenting. Se på bladene eller himmelen. La det som har beveget seg inni deg, sette seg.</p>
-<p style="font-style:italic;color:var(--muted);">Det er ikke noe mer å gjøre. Landås er ett av de nabolagene Bergen glemmer å vise frem — men de som går rolig gjennom det, vet hva de har.</p>`
+<p>You are back where you started, but you are not the same person who left here an hour ago. You have walked through a mill valley that has ground corn for two hundred years. You have stood in the garden of a summer estate where the city's citizens sought respite from a city that never stood still. You have seen the rectory that has stood firm through generations of Landås's great and small events.</p>
+<div class="pullquote"><p>"Bergen is not just seven mountains. It is all the valleys in between."</p></div>
+<p>And you have walked all of it in one hour — without hurrying.</p>
+<p>Find a bench. Say nothing. Look at the leaves or the sky. Let what has moved inside you settle.</p>
+<p style="font-style:italic;color:var(--muted);">There is nothing more to do. Landås is one of the neighbourhoods Bergen forgets to show off — but those who walk through it slowly know what they have.</p>`
       }
     ]
   }
