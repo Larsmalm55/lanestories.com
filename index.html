@@ -13,6 +13,8 @@
   gtag('config', 'G-XBM1G0X2N0');
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Gumroad overlay checkout -->
+<script src="https://gumroad.com/js/gumroad.js"></script>
 <style>
 :root {
   --ink: #0C0B09;
@@ -660,39 +662,10 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
         </div>
         <div class="rc-footer">
           <div><div class="rc-price">€5</div><div class="rc-price-note">one-time · instant</div></div>
-          <button class="rc-cta" onclick="openRoute('The Dark Lanes','dark-lanes')">Start walking →</button>
+          <a class="rc-cta" href="https://YOUR-NAME.gumroad.com/l/dark-lanes" data-gumroad-overlay-checkout="true">Start walking →</a>
         </div>
       </div>
 
-      <div class="result-card" data-city="bergen" data-tags="wine,romance">
-        <p class="rc-label">Bergen · Wine &amp; Bars · Evening</p>
-        <h3 class="rc-title">The Wine Evening</h3>
-        <p class="rc-snippet">"A 16th-century cellar. The sommelier pours something you won't find on any list."</p>
-        <div class="rc-meta-row">
-          <div class="rc-meta-item"><strong>4 stops</strong> 4 bars</div>
-          <div class="rc-meta-item"><strong>3–4 hrs</strong></div>
-          <div class="rc-meta-item"><strong>GPS + Audio</strong></div>
-        </div>
-        <div class="rc-footer">
-          <div><div class="rc-price">€5</div><div class="rc-price-note">one-time · instant</div></div>
-          <button class="rc-cta" onclick="openRoute('The Wine Evening','wine-evening')">Start walking →</button>
-        </div>
-      </div>
-
-      <div class="result-card" data-city="bergen" data-tags="food,romance">
-        <p class="rc-label">Bergen · Food &amp; Taste · Daytime</p>
-        <h3 class="rc-title">Bergen on a Plate</h3>
-        <p class="rc-snippet">"The fisherman hands you something still moving. This was on the bottom of the fjord four hours ago."</p>
-        <div class="rc-meta-row">
-          <div class="rc-meta-item"><strong>4 stops</strong> eat at each</div>
-          <div class="rc-meta-item"><strong>3–5 hrs</strong></div>
-          <div class="rc-meta-item"><strong>GPS + Audio</strong></div>
-        </div>
-        <div class="rc-footer">
-          <div><div class="rc-price">€5</div><div class="rc-price-note">one-time · instant</div></div>
-          <button class="rc-cta" onclick="openRoute('Bergen on a Plate','')">Start walking →</button>
-        </div>
-      </div>
 
       <div class="result-card" data-city="bergen" data-tags="family,hidden">
         <p class="rc-label">Bergen · Family · All day</p>
@@ -896,9 +869,7 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
         <select id="rf-route">
           <option value="">Choose route...</option>
           <option>The Dark Lanes · Bergen</option>
-          <option>The Wine Evening · Bergen</option>
           <option>Dyveke's Evening · Bergen</option>
-          <option>Bergen on a Plate · Bergen</option>
           <option>Kolstien & Lystgården · Bergen</option>
           <option>Nora's Quarter · Oslo</option>
           <option>The Other Oslo · Oslo</option>
