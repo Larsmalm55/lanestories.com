@@ -49,8 +49,13 @@ nav {
 }
 .nav-logo { font-family:'Libre Baskerville',serif; font-size:1rem; color:var(--paper); text-decoration:none; }
 .nav-logo span { color:var(--amber); }
-.nav-back { font-size:.7rem; color:rgba(240,235,224,.35); text-decoration:none; letter-spacing:.03em; transition:color .2s; }
-.nav-back:hover { color:var(--amber); }
+.nav-back {
+  font-size:.72rem; color:var(--paper); text-decoration:none;
+  letter-spacing:.06em; font-weight:500; transition:color .2s;
+  background:rgba(255,255,255,.1); padding:7px 14px;
+  border:1px solid rgba(255,255,255,.18);
+}
+.nav-back:hover { color:var(--amber); border-color:var(--amber); }
 
 /* ROUTE HEADER */
 .route-header {
