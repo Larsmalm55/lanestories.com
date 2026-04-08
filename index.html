@@ -187,21 +187,24 @@ nav {
 .st-dot.active { background:var(--amber); width:32px; }
 
 /* ── BACK BUTTON ── */
-.panel-back {
-  position:sticky; top:0; z-index:50;
-  display:flex; align-items:center; gap:10px;
-  padding:14px 6vw;
-  background:rgba(240,235,224,.95);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line);
+button.panel-back {
+  position:sticky; top:0; z-index:300;
+  width:100%;
+  display:flex; align-items:center; gap:14px;
+  padding:18px 6vw;
+  background:var(--dark);
+  border:none; border-bottom:2px solid var(--amber);
   cursor:pointer;
-  font-size:.72rem; letter-spacing:.06em; color:var(--muted);
-  font-family:'Outfit',sans-serif;
-  transition:color .2s;
-  user-select:none;
+  font-size:.8rem; letter-spacing:.06em;
+  color:var(--paper);
+  font-family:'Outfit',sans-serif; font-weight:500;
+  transition:background .2s;
+  text-align:left;
 }
-.panel-back:hover { color:var(--ink); }
-.panel-back svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+button.panel-back:hover { background:#2c2620; }
+button.panel-back svg { width:20px; height:20px; stroke:var(--amber); fill:none; stroke-width:2.5; flex-shrink:0; }
+.panel-back-label { display:flex; flex-direction:column; gap:2px; }
+.panel-back-sub { font-size:.6rem; color:var(--amber); letter-spacing:.18em; text-transform:uppercase; font-weight:400; }
 
 /* ── FIND YOUR ROUTE ── */
 .routes-section { background:var(--paper); padding:80px 6vw 96px; }
@@ -561,10 +564,7 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
 </head>
 <body>
 
-<!-- PANEL 1: HERO -->
-<div class="panel panel-hero" id="panel-hero">
-
-<!-- NAV -->
+<!-- GLOBAL NAV (outside all panels) -->
 <nav>
   <a href="#" class="nav-logo">Lane<span>Stories</span></a>
   <div class="nav-links">
@@ -573,6 +573,9 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
     <button class="nav-cta" onclick="showPanel('routes')">Start exploring</button>
   </div>
 </nav>
+
+<!-- PANEL 1: HERO -->
+<div class="panel panel-hero" id="panel-hero">
 
 <!-- HERO -->
 <section class="hero">
@@ -609,10 +612,13 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
 
 <!-- PANEL 2: FIND YOUR ROUTE -->
 <div class="panel panel-routes" id="panel-routes">
-<div class="panel-back" onclick="showPanel('hero')">
+<button class="panel-back" onclick="showPanel('hero')">
   <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-  Back to home
-</div>
+  <div class="panel-back-label">
+    <span>Lane Stories</span>
+    <span class="panel-back-sub">← Back to home</span>
+  </div>
+</button>
 <section class="routes-section" id="routes">
   <div class="rs-intro">
     <p class="rs-kicker">Find your route</p>
@@ -810,10 +816,13 @@ footer { background:var(--dark); color:var(--paper); padding:32px 6vw; display:f
 
 <!-- PANEL 3: HOW IT WORKS -->
 <div class="panel panel-how" id="panel-how">
-<div class="panel-back" onclick="showPanel('hero')">
+<button class="panel-back" onclick="showPanel('hero')">
   <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-  Back to home
-</div>
+  <div class="panel-back-label">
+    <span>Lane Stories</span>
+    <span class="panel-back-sub">← Back to home</span>
+  </div>
+</button>
 
 <!-- HOW IT WORKS -->
 <section class="how-section" id="how">
@@ -997,13 +1006,22 @@ function showPanel(name) {
   if (name === currentPanel) return;
   const leaving = document.getElementById(PANELS[currentPanel]);
   const arriving = document.getElementById(PANELS[name]);
+  const goingBack = (name === 'hero');
 
-  // Hero leaves upward when navigating away from it
-  leaving.classList.add('hidden');
-  arriving.classList.remove('slide-down');
-  arriving.classList.add('slide-up');
+  if (goingBack) {
+    // Current panel slides back down
+    leaving.classList.remove('slide-up');
+    leaving.classList.add('slide-down');
+    // Hero comes back (remove hidden)
+    arriving.classList.remove('hidden');
+  } else {
+    // Hero slides away upward, new panel rises from below
+    leaving.classList.add('hidden');
+    arriving.classList.remove('slide-down');
+    arriving.classList.add('slide-up');
+  }
+
   arriving.scrollTop = 0;
-
   currentPanel = name;
 }
 
