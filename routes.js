@@ -21,7 +21,8 @@ const ROUTES = {
     stops: [
       {
         name:      'Bergenhus Fortress',
-        address:   'Bergenhus, 5003 Bergen',
+        address:   'Håkonshallen, Bergenhus festning, Bergen',
+        coords:    [60.400427, 5.318511],
         tag:       'Stop 1 of 4 · You are here',
         drink:     null,
         audioMin:  'approx. 4 min',
@@ -29,15 +30,28 @@ const ROUTES = {
         mapNext:   'Enhjørningsgården · 4 min',
         mapLabel:  'Next stop',
         body: `
-<p>You are standing at the very heart of Bergen's entire history. This place — once called Holmen — has been continuously inhabited since before the year 1000. Viking kings held court here. Norway's first capital was here. And in the early hours of 9 April 1940, it fell in darkness.</p>
-<div class="pullquote"><p>"Before all this, this was a place of extraordinary ceremony. King Håkon Håkonsson built the great stone hall to your left between 1247 and 1261."</p></div>
-<p>It was here, on 11 September 1261, that his son Magnus Lagabøte was crowned. You can almost see the torchlight against the stone wall, hear the Latin from the bishop's mouth arching up under the vault.</p>
-<p>When the Nazis landed in Bergen at dawn on 9 April, the fortress was held by a small garrison for hours. The commandant refused to surrender. Shots were fired. And in that tangle of confusion and fear and heroism, a resistance movement began that would eventually help win the war — largely from a secret apartment a few hundred metres away.</p>
+<p>You are standing at the very heart of Bergen's entire history. This place — once called Holmen — has been continuously inhabited since before the year 1000. For over a thousand years, power has never really left this place.</p>
+
+<div class="pullquote"><p>"This was not just a fortress. This was the seat of power. For a time, this was Norway."</p></div>
+
+<p>Viking kings held court here. Bergen was Norway's first true capital, and under King Håkon Håkonsson it became the centre of a kingdom that reached from Iceland to the Russian border. The great stone hall to your left — Håkonshallen — was built between 1247 and 1261. It was not built simply to house a king. It was built to impress Europe. And it did.</p>
+
+<p>On 11 September 1261, Håkon's son Magnus Lagabøte was crowned here. You can almost see the torchlight against the stone wall, hear the Latin from the bishop's mouth arching up under the vault. Hundreds of guests. Silver goblets. The full weight of a medieval kingdom gathered in one room.</p>
+
+<div class="pullquote"><p>"Right beneath your feet once stood Christ Church — the most important church in medieval Norway. Kings were crowned here. Kings were buried here. In 1531, it was torn down — and the stone was shipped to Denmark, to build fortresses for a foreign king."</p></div>
+
+<p>That is perhaps the most powerful detail of this place — and the least told. Kristkirken, Christ Church, stood for centuries as Norway's spiritual and political heart. When Norway fell under Danish rule, the church was dismantled stone by stone. The material was loaded onto ships and sailed south to build Kronborg Castle in Denmark. The church that had witnessed the birth of a nation was exported. What you are standing on now is silence where something irreplaceable once stood.</p>
+
+<div class="history-box"><p class="hb-label">💥 The explosion of 1944</p><p class="hb-text">The German occupation brought violence to this place twice. First in 1940 — and again in April 1944, when a Dutch ammunition ship exploded in the harbour. The blast shattered windows across the city, cracked walls that had survived seven centuries, and killed over 160 people. Even here, on ground that had endured so much, history cracked again.</p></div>
+
+<p>When the Nazis landed in Bergen at dawn on 9 April 1940, the fortress was held by a small garrison for hours. The commandant refused to surrender. Shots were fired. And in that tangle of confusion and fear and heroism, a resistance movement began that would eventually help win the war — largely from a secret apartment a few hundred metres away.</p>
+
 <p>You will see that place in twelve minutes. But first: look back at the tower. The brick is from the 1200s. The mortar is original. What looks like restoration is actually the real thing.</p>`
       },
       {
         name:      'Enhjørningsgården',
         address:   'Bryggen 29, 5003 Bergen',
+        coords:    [60.397218796350714, 5.323395882537313],
         tag:       'Stop 2 of 4 · Walk 4 min',
         drink:     null,
         audioMin:  'approx. 5 min',
@@ -46,14 +60,23 @@ const ROUTES = {
         mapLabel:  'Next stop',
         body: `
 <p>Step into this alley. The timber walls lean toward each other overhead. It smells of old wood and salt. Very little has changed here since the 1300s.</p>
-<div class="pullquote"><p>"Under the Hanseatic occupation, boys as young as twelve arrived as apprentices and lived under near-total control for years — not permitted to leave the wharves."</p></div>
-<p>Enhjørningsgården — the Unicorn Courtyard — got its name from the carved unicorn above the gate. It is still there. Look up.</p>
-<p>Inside these walls, German merchants lived for six months at a time, isolated from the Norwegian society around them. They were not allowed to marry. They were not allowed to have Norwegian friends. The Hanseatic League controlled not just the trade — it controlled the people.</p>
+
+<div class="pullquote"><p>"Enhjørningsgården was not just a building. It was part of a closed system. Norwegian law did not apply here. Low German was spoken. The accounts were kept for Lübeck. And the rules belonged to a city far away."</p></div>
+
+<p>Enhjørningsgården — the Unicorn Courtyard — got its name from the carved unicorn above the gate. It is still there. Look up. But what surrounded that gate was something harder to see: a world within a world. The Hanseatic League did not simply trade with Bergen — it occupied it. Inside these walls, German merchants lived for six months at a time, completely cut off from the Norwegian society around them. They were not allowed to marry. They were not allowed to have Norwegian friends. They were not allowed to leave the wharves without permission.</p>
+
+<p>The League controlled not just the trade — it controlled the people. Boys as young as twelve arrived as apprentices and lived under near-total authority for years. Some adapted. Some broke. And the ones who broke left no record.</p>
+
+<div class="history-box"><p class="hb-label">🔥 Fire and continuity</p><p class="hb-text">Bryggen burned — again and again. The fires of 1170, 1198, 1248, 1413, 1476, 1527, 1702. Each time, the buildings were raised again on the same narrow plots, with the same passages, the same proportions, the same logic. What you are standing in now is not a reconstruction. It is a continuation. The city refused to redesign itself. It simply rebuilt what it already knew.</p></div>
+
+<p>The stories that were never written down are the most disturbing. Men disappeared. Apprentices were broken by years of confinement and cold. And the sea took what no one asked questions about.</p>
+
 <p>The German merchant who lived in the room above you — we know his name: Heinrich Schröder, 1392. He never returned to Lübeck. The archives say: drowning. But the water was shallow that night, and no one else was a witness.</p>`
       },
       {
         name:      'The Theta Room',
         address:   'Nedre Korskirkeallmenning 4, Bergen',
+        coords:    [60.39786407091539, 5.324067782332288],
         tag:       'Stop 3 of 4 · Walk 6 min',
         drink:     null,
         audioMin:  'approx. 6 min',
@@ -61,15 +84,24 @@ const ROUTES = {
         mapNext:   'Dinner, 1708 · 3 min',
         mapLabel:  'Next stop',
         body: `
-<p>This is the place that will give you chills. Look at the facade. Nothing suggests what happened here between 1942 and 1944.</p>
-<div class="pullquote"><p>"In a small apartment on the fourth floor, Bergen's most daring resistance group operated their secret radio transmitter. They called themselves Theta."</p></div>
+<p>This is the place that will give you chills. Look at the facade. Nothing suggests what happened here between 1942 and 1944. And that, of course, was exactly the point.</p>
+
+<div class="pullquote"><p>"The room is hidden inside Enhjørningsgården — the same Hanseatic courtyard you just walked through. The Germans were searching every building in Bergen. They never found it. Not for two years."</p></div>
+
+<p>The young members of the Theta group were engineers. They built a concealed electrical locking system to hide the door — invisible to anyone who didn't know where to press. By that time, most doors in the Bryggen buildings had been sealed and closed off. One more locked door meant nothing. It meant everything.</p>
+
 <p>Every night at 10 p.m. they broadcast encrypted messages to London. Coordinates for German submarine movements. Crew lists. Shipping routes. The information they sent saved hundreds of Allied lives and helped turn the war at sea.</p>
-<p>The Gestapo searched for two years. They knew the signals came from central Bergen. They knew someone lived among them. They just didn't know who.</p>
-<p>In October 1944, they found them. Some group members were executed. Others managed to escape to Sweden under cover of night. The Theta Room is now a small museum — the only room in Bergen where the walls have literally heard the story of the war ring out.</p>`
+
+<div class="history-box"><p class="hb-label">🪖 The raid — 17 October 1942</p><p class="hb-text">German forces carried out a raid at Bryggen. A soldier stepped on a rotten floorboard in the room above — and it gave way. The hidden room was accidentally discovered. But none of the Theta members were there. They had prepared for exactly this moment: a large batch of TNT was hidden in a cupboard, rigged to explode if the door was opened. The charge did not go off. Had it done so, it is said the entire Bryggen wharf would have been destroyed — centuries of history, gone in seconds.</p></div>
+
+<p>After the raid, the room was stripped bare. Everything was removed. What you see inside today — the Hallicrafter receiver, the homemade HF transmitter, the copies of intelligence reports — are assembled objects donated from across Norway to approximate what was once there. Only a few original pieces remain: a coffee table, the receiver, the transmitter. At 16 square metres, it is the smallest museum in Norway.</p>
+
+<p>The Gestapo searched for two years. They knew the signals came from central Bergen. They knew someone lived among them. They just didn't know who. The group continued operating until 1944 — long after the raid, from a new location. Some members were eventually caught. Others escaped to Sweden under cover of night. The room they left behind opened to the public in 1982. The walls have not forgotten.</p>`
       },
       {
-        name:      'Dinner, 1708',
-        address:   'Enhjørningsgården · Bryggen, Bergen',
+        name:      'Dinner, Bryggen Tracteursted',
+        address:   'Bryggen Tracteursted, Bergen',
+        coords:    [60.39766719656354, 5.3245291773633046],
         tag:       'Stop 4 of 4 · Final stop',
         drink:     null,
         audioMin:  'approx. 3 min',
@@ -402,13 +434,17 @@ const ROUTES = {
         mapNext:   'Route complete 🎉',
         mapLabel:  'Status',
         body: `
-<p>You are sitting inside a pumping machine. Not metaphorically — the building around you is a genuine industrial pumping station from 1920. The machinery is still there, surrounded by guests and evening lighting. It is called "het pomphuis" — the pump house.</p>
+<div class="info-box" style="background:#fff8e1;border-left:3px solid #f59e0b;padding:14px 18px;margin-bottom:22px;font-size:.9rem;line-height:1.6;">
+  <strong>⚠️ Temporary closure</strong><br>
+  Het Pomphuis is currently temporarily closed. The Eilandje quarter has several good restaurants and bars along the docks — walk the quayside and pick what looks right.
+</div>
+<p>You are standing in front of a pumping machine. Not metaphorically — the building in front of you is a genuine industrial pumping station from 1920. The machinery is still there, visible through the windows, surrounding the dining room with engineering and evening lighting. It is called "het pomphuis" — the pump house.</p>
 <p>And the pump house is there because Napoleon Bonaparte one day in 1795 ordered the Scheldt river to be opened again.</p>
 <div class="pullquote"><p>"Napoleon visited Antwerp in 1803 and declared: 'I have decided to make Antwerp a pistol aimed at the heart of England.' He meant the harbour. He meant the river. He meant the freedom to sail out and back in again."</p></div>
 <div class="history-box"><p class="hb-label">⚓ Napoleon's harbour and Antwerp's resurrection</p><p class="hb-text">Napoleon ordered the construction of two large docks in Antwerp — exactly the complex you can see out of the window right now: Willemdok and Bonapartedok. They were built between 1803 and 1811 by soldiers and forced labourers. It was not philanthropy — Napoleon wanted to use Antwerp as a naval base against the British. But the effect was permanent: the river was open, the harbour was new, and Antwerp began slowly to breathe again. Today Antwerp is Europe's second largest port measured in tonnage. Only Rotterdam is larger.</p></div>
 <p>Eilandje — "the little island" — is the quarter around these docks. Until twenty years ago it was an abandoned industrial area. The Entrepotdok warehouse buildings stood empty. The quaysides were rusting. Then what always happens with such places began: artists came. Then cafés. Then restaurants. Then property developers. Today Eilandje is one of Antwerp's finest neighbourhoods. But the old fabric is not gone — it has become floors and ceilings and atmosphere.</p>
-<p>You are sitting in a room built to move water, which now fills you with food and drink. That is not so far from what this city has always done: take what flows through it, and make something useful of it.</p>
-<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Enjoy your meal. Antwerp is glad you found your way here.</p>`
+<p>A room built to move water, which was going to fill you with food and drink. That is not so far from what this city has always done: take what flows through it, and make something useful of it.</p>
+<p style="font-style:italic;color:var(--muted);font-family:'Libre Baskerville',serif;">Walk the quayside and find your table. Antwerp is glad you found your way here.</p>`
       }
     ]
   },

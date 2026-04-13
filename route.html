@@ -445,6 +445,71 @@ function chunkText(text) {
 var audioStopIdx = -1;
 var audioQueue   = [];
 var audioQueuePos = 0;
+var selectedVoice = null;
+
+// ── Velg beste stemme automatisk ─────────────
+// Prioriterer premium/neural stemmer fra Google, Microsoft og Apple
+var PREFERRED_VOICES = [
+  'Google UK English Female',
+  'Google UK English Male',
+  'Microsoft Libby Online (Natural)',
+  'Microsoft Ryan Online (Natural)',
+  'Microsoft Sonia Online (Natural)',
+  'Microsoft George Online (Natural)',
+  'Daniel',        // Apple macOS/iOS
+  'Karen',         // Apple
+  'Moira',         // Apple
+  'Google US English',
+  'Samantha',      // Apple
+];
+
+function pickBestVoice() {
+  var voices = speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  // Prøv foretrukne stemmer i rekkefølge
+  for (var p = 0; p < PREFERRED_VOICES.length; p++) {
+    for (var v = 0; v < voices.length; v++) {
+      if (voices[v].name === PREFERRED_VOICES[p]) return voices[v];
+    }
+  }
+  // Fallback: første engelske stemme
+  for (var v = 0; v < voices.length; v++) {
+    if (voices[v].lang.startsWith('en')) return voices[v];
+  }
+  return voices[0];
+}
+
+function buildVoiceSelector() {
+  var voices = speechSynthesis.getVoices().filter(function(v) {
+    return v.lang.startsWith('en');
+  });
+  if (!voices.length) return;
+  selectedVoice = selectedVoice || pickBestVoice();
+
+  // Bygg velger-element hvis det ikke finnes
+  if (document.getElementById('voice-selector')) return;
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'padding:10px 24px 0;';
+  wrap.innerHTML = '<label style="font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px;">Voice</label>'
+    + '<select id="voice-selector" style="font-family:inherit;font-size:.78rem;padding:6px 10px;border:1px solid rgba(12,11,9,.15);background:#fff;color:var(--ink);width:100%;max-width:300px;"></select>';
+  var audioPlayer = document.querySelector('.audio-player');
+  if (audioPlayer) audioPlayer.parentNode.insertBefore(wrap, audioPlayer.nextSibling);
+
+  var sel = document.getElementById('voice-selector');
+  voices.forEach(function(v) {
+    var opt = document.createElement('option');
+    opt.value = v.name;
+    opt.textContent = v.name + (v.localService ? '' : ' ✦');
+    if (selectedVoice && v.name === selectedVoice.name) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  sel.onchange = function() {
+    var all = speechSynthesis.getVoices();
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].name === sel.value) { selectedVoice = all[i]; break; }
+    }
+  };
+}
 
 function setAudioUI(i, playing) {
   var btn   = document.getElementById('audio-btn-'   + i);
@@ -462,8 +527,9 @@ function speakChunk(stopIndex) {
 
   var utt = new SpeechSynthesisUtterance(audioQueue[audioQueuePos]);
   utt.lang  = 'en-GB';
-  utt.rate  = 0.9;
-  utt.pitch = 1;
+  utt.rate  = 0.88;
+  utt.pitch = 1.0;
+  if (selectedVoice) utt.voice = selectedVoice;
   utt.onend = function() {
     audioQueuePos++;
     speakChunk(stopIndex);
@@ -538,29 +604,36 @@ function initMap() {
 }
 
 function geocodeAndPan(address) {
-  const url = 'https://nominatim.openstreetmap.org/search?q='
-    + encodeURIComponent(address)
-    + '&format=json&limit=1';
+  const stop = route.stops[current];
+  const stopIcon = L.divIcon({
+    className: '',
+    html: '<div style="width:22px;height:22px;background:#B07830;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;"></div>',
+    iconSize: [22, 22], iconAnchor: [11, 11]
+  });
 
+  function placeMarker(ll) {
+    if (stopMarker) map.removeLayer(stopMarker);
+    stopMarker = L.marker(ll, { icon: stopIcon })
+      .addTo(map)
+      .bindPopup(stop.name, { closeButton: false })
+      .openPopup();
+    map.setView(ll, 16, { animate: true });
+  }
+
+  // Bruk eksakte koordinater hvis de finnes
+  if (stop.coords) {
+    placeMarker(stop.coords);
+    return;
+  }
+
+  // Fallback: søk via Nominatim
+  const url = 'https://nominatim.openstreetmap.org/search?q='
+    + encodeURIComponent(address) + '&format=json&limit=1';
   fetch(url, { headers: { 'Accept-Language': 'en' } })
     .then(r => r.json())
     .then(data => {
       if (!data.length) return;
-      const ll = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-
-      if (stopMarker) map.removeLayer(stopMarker);
-
-      const stopIcon = L.divIcon({
-        className: '',
-        html: '<div style="width:22px;height:22px;background:#B07830;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;"></div>',
-        iconSize: [22, 22], iconAnchor: [11, 11]
-      });
-      stopMarker = L.marker(ll, { icon: stopIcon })
-        .addTo(map)
-        .bindPopup(route.stops[current].name, { closeButton: false })
-        .openPopup();
-
-      map.setView(ll, 16, { animate: true });
+      placeMarker([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
     })
     .catch(() => {});
 }
@@ -605,21 +678,32 @@ function closeMapModal() {
 
 function geocodeForModal(address) {
   if (!mobileMap) return;
+  const stop = route.stops[current];
+  const stopIcon = L.divIcon({
+    className:'',
+    html:'<div style="width:22px;height:22px;background:#B07830;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.4);"></div>',
+    iconSize:[22,22], iconAnchor:[11,11]
+  });
+
+  function placeMobileMarker(ll) {
+    if (mobileStopMarker) mobileMap.removeLayer(mobileStopMarker);
+    mobileStopMarker = L.marker(ll, { icon:stopIcon }).addTo(mobileMap)
+      .bindPopup(stop.name, { closeButton:false }).openPopup();
+    mobileMap.setView(ll, 16, { animate:true });
+  }
+
+  // Bruk eksakte koordinater hvis de finnes
+  if (stop.coords) {
+    placeMobileMarker(stop.coords);
+    return;
+  }
+
   const url = 'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(address) + '&format=json&limit=1';
   fetch(url, { headers:{ 'Accept-Language':'no' } })
     .then(function(r){ return r.json(); })
     .then(function(data) {
       if (!data.length) return;
-      const ll = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-      if (mobileStopMarker) mobileMap.removeLayer(mobileStopMarker);
-      const stopIcon = L.divIcon({
-        className:'',
-        html:'<div style="width:22px;height:22px;background:#B07830;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.4);"></div>',
-        iconSize:[22,22], iconAnchor:[11,11]
-      });
-      mobileStopMarker = L.marker(ll, { icon:stopIcon }).addTo(mobileMap)
-        .bindPopup(route.stops[current].name, { closeButton:false }).openPopup();
-      mobileMap.setView(ll, 16, { animate:true });
+      placeMobileMarker([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
     }).catch(function(){});
 }
 
@@ -658,9 +742,16 @@ function goToStop(i) {
 }
 
 // ── Init ─────────────────────────────────────
-// Voices may load async in some browsers
 if (window.speechSynthesis) {
-  speechSynthesis.onvoiceschanged = () => {};
+  speechSynthesis.onvoiceschanged = function() {
+    selectedVoice = pickBestVoice();
+    buildVoiceSelector();
+  };
+  // Noen nettlesere laster stemmer umiddelbart
+  if (speechSynthesis.getVoices().length) {
+    selectedVoice = pickBestVoice();
+    setTimeout(buildVoiceSelector, 500);
+  }
 }
 
 window.addEventListener('load', () => {
