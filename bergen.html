@@ -101,8 +101,17 @@
     .secret-lbl { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:10px; }
     .secret-txt { font-size:14px; color:var(--gold); line-height:1.75; }
 
-    .map-link { display:flex; align-items:center; gap:10px; padding:13px 18px; border:1px solid var(--border); border-radius:2px; color:var(--muted); font-size:13px; text-decoration:none; margin-bottom:20px; transition:border-color 0.2s,color 0.2s; }
-    .map-link:hover { border-color:var(--gold-dim); color:var(--cream); }
+    .map-wrap { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:20px; }
+    .map-canvas { width:100%; height:220px; background:#1a1208; position:relative; }
+    .map-canvas iframe { width:100%; height:100%; border:none; display:block; filter:sepia(0.15) contrast(1.05); }
+    .map-footer { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.02); border-top:1px solid var(--border); gap:10px; flex-wrap:wrap; }
+    .map-legend { display:flex; gap:14px; }
+    .map-legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); }
+    .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .legend-dot.you  { background:#4a9eff; box-shadow:0 0 0 3px rgba(74,158,255,0.25); }
+    .legend-dot.dest { background:#c9a96e; box-shadow:0 0 0 3px rgba(201,169,110,0.25); }
+    .map-nav-btn { padding:7px 14px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; text-decoration:none; display:inline-block; }
+    .map-gps-note { font-size:11px; color:var(--muted); padding:8px 14px; text-align:center; background:rgba(255,255,255,0.015); border-top:1px solid var(--border); display:none; }
     .map-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; animation:pulse 2s infinite; }
 
     .complete-wrap { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 24px 56px; }
@@ -270,10 +279,21 @@
     <h2 id="stop-name"></h2>
     <p class="sub" id="stop-sub"></p>
     <div class="story-box" id="stop-story"></div>
-    <a class="map-link" id="stop-map" href="#" target="_blank" rel="noopener">
-      <span class="map-dot"></span>
-      <span id="stop-map-lbl"></span>
-    </a>
+
+    <!-- MAP WIDGET -->
+    <div class="map-wrap">
+      <div class="map-canvas" id="map-canvas">
+        <iframe id="map-iframe" src="" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="map-footer">
+        <div class="map-legend">
+          <div class="map-legend-item"><span class="legend-dot you"></span><span id="map-lbl-you"></span></div>
+          <div class="map-legend-item"><span class="legend-dot dest"></span><span id="map-lbl-dest"></span></div>
+        </div>
+        <a class="map-nav-btn" id="map-nav-btn" href="#" target="_blank" rel="noopener" id="map-gmaps-link"></a>
+      </div>
+      <div class="map-gps-note" id="map-gps-note"></div>
+    </div>
     <div id="secret-area"></div>
     <button class="btn" id="next-btn" onclick="nextStop()"></button>
     <button class="btn-ghost" id="prev-btn" onclick="prevStop()" style="display:none;"></button>
@@ -363,6 +383,7 @@ const T = {
     codeOk:'✓ Kode godkjent — låser opp…', codeWrong:'Feil kode — kopier den fra skjermen over.',
     codeUnlocking:'✓ Låst opp — starter turen…', processing:'Behandler…',
     nextPrefix:'Neste stopp: ', nextSuffix:'... →', completeTour:'Fullfør turen →',
+    mapYou:'Din posisjon', mapDest:'Destinasjon', mapNav:'Naviger', mapGpsOff:'Posisjon ikke tilgjengelig — slå på GPS for å se deg selv på kartet.',
   },
   en: {
     region:'Norway · Bergen',
@@ -415,44 +436,53 @@ const T = {
     codeOk:'✓ Code accepted — unlocking…', codeWrong:'Wrong code — copy it from the screen above.',
     codeUnlocking:'✓ Unlocked — starting tour…', processing:'Processing…',
     nextPrefix:'Next stop: ', nextSuffix:'... →', completeTour:'Complete the tour →',
+    mapYou:'Your position', mapDest:'Destination', mapNav:'Navigate', mapGpsOff:'Position unavailable — enable GPS to see yourself on the map.',
   }
 };
 
 // ── STOP DATA (bilingual) ─────────────────────────────────────────────────
+// Verified coordinates for each physical location in Bergen
+const STOP_COORDS = [
+  { lat: 60.395074, lon: 5.326751 }, // Hollendergaten 3
+  { lat: 60.395089, lon: 5.326901 }, // Dyvekes Vinkjeller — Hollendergaten 7
+  { lat: 60.395300, lon: 5.329300 }, // Siderbar Bergen — Kong Oscars gate 11
+  { lat: 60.393900, lon: 5.325100 }, // Pergola — Nedre Korskirkeallmenningen 9B
+];
+
 const STOPS = {
   no: [
     { icon:'🏚️', year:'1641', name:'Hollendergaten 3', sub:'Der handelen skjulte hemmeligheter',
-      map:'https://www.google.com/maps/search/Hollendergaten+3+Bergen', mapLbl:'Hollendergaten 3, Bergen',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395074,5.326751',
       story:['I dette huset bodde den nederlandske kjøpmannen Pieter van der Berg i over tjue år — men ingen i Bergen visste hvem han egentlig var.','Van der Berg ankom Bergen i 1641 med et skip lastet med nederlandsk lin og krydder. Men ifølge kirkebøkene fra Domkirken fantes han ikke. Ingen dåpsattest. Ingen hjemstavnsbevis.','Naboene visste at han aldri spiste middag uten å trekke for gardinene. At han mottok brev skrevet med sitronsaft — synlig bare over en flamme. En natt i november 1659 forsvant han like stille som han hadde kommet.','Huset sto tomt i tre år. Da de endelig åpnet kjelleren, fant de 47 forseglete brever adressert til den nederlandske ambassaden i København. Ingen vet hva de inneholdt.'],
       secret:'Ser du det lille ankeremblemet øverst i vinduskarmen? Det var et hemmelig tegn til andre kjøpmenn — bare de innvidde kjente symbolet.' },
     { icon:'🍷', year:'1516', name:'Dyvekes Vinkjeller', sub:'Kjærlighet, makt og gift',
-      map:'https://www.google.com/maps/search/Dyvekes+Vinkjeller+Bergen', mapLbl:'Dyvekes Vinkjeller, Bergen',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395089,5.326901',
       story:['Dyveke Sigbritsdatter var den vakreste kvinnen i Bergen — og den farligste å elske.','Hun ble kong Christian IIs elskerinne i 1507. Men historien som ikke fortelles: Dyveke og hennes mor Sigbrit drev en liten vinhandel her i Bergen før de forlot byen for alltid.','Mor Sigbrit lærte datterens kunst ikke bare i vin, men i urter. I ekstrakter. I det som kunne blandes i et beger uten å smakes.','Da Dyveke døde plutselig i 1517 — tilsynelatende av forgiftede kirsebær — mente mange at kongenes hoff hadde snudd kunsten tilbake mot henne.'],
       secret:'Spør bartenderen om "Sigbrits utvalg" — det er ikke på menyen, men noen vet hva det betyr.' },
-    { icon:'🍺', year:'1887', name:'Den Skjulte Siderpuben', sub:'En pub som ikke vil bli funnet',
-      map:'https://www.google.com/maps/search/Hollendergaten+Bergen', mapLbl:'Hollendergaten, Bergen sentrum',
+    { icon:'🍺', year:'1887', name:'Siderbar Bergen', sub:'En pub som ikke vil bli funnet',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395300,5.329300',
       story:['Det er ingen skilt på døren. Adressen er teknisk sett feil — registrert som lager i kommunens bygningsregister fra 1887.','Puben oppsto i forbudstiden. Eieren, en fisker ved navn Olav Hanstveit, begynte å selge hjemmebryggd eplemost i 1919 — men mosen fikk gjære lenger enn loven tillot.','Det var en fast regel: tre bank, pause, to bank. Den regelen gjelder fortsatt.','Stamgjestene er ikke turister. De er håndverkere, sjøfolk og noen få forfattere — funnet stedet via en venn av en venn.'],
       secret:'Tre bank, pause, to bank. Si at du kom fra "visitkortet". Ta kontanter — de tar ikke kort.' },
     { icon:'🌿', year:'1923', name:'Pergola', sub:'Reisens slutt — og begynnelsen',
-      map:'https://www.google.com/maps/search/Pergola+Restaurant+Bergen', mapLbl:'Pergola Restaurant, Bergen',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.393900,5.325100',
       story:['Pergola åpnet i 1923 i et bygg som opprinnelig var et privatbibliotek tilhørende bergens-legen Edvard Mohr.','Mohr samlet på reiseskildringer. Over 3.000 bøker, alle om steder han aldri kom til. Han kjente hver havn i verden via andres ord.','Da biblioteket ble til restaurant, beholdt de én vegg med originale bokhyller — bak baren, halvt skjult av vin og sprit.','En liten rød bok med tittelen «Bergen, 1891» av en ukjent forfatter. Ingen vet hvem som skrev den. Ingen har noen gang åpnet den.'],
       secret:'Be om bordet ved vinduet i andre etasje. Derfra ser du nøyaktig den ruten du nettopp gikk. Vis skjermen for din gratis velkomstdrink.' }
   ],
   en: [
     { icon:'🏚️', year:'1641', name:'Hollendergaten 3', sub:'Where trade concealed its secrets',
-      map:'https://www.google.com/maps/search/Hollendergaten+3+Bergen', mapLbl:'Hollendergaten 3, Bergen',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395074,5.326751',
       story:['A Dutch merchant named Pieter van der Berg lived in this house for over twenty years — yet according to the church records of Bergen Cathedral, he did not exist. No baptismal certificate. No certificate of origin.','Van der Berg arrived in Bergen in 1641 with a ship loaded with Dutch linen and spices. Neighbours noticed that he never ate dinner without first drawing the curtains — and that he received letters written in lemon juice, visible only over a flame.','One night in November 1659, he vanished as quietly as he had arrived. The house stood empty for three years.','When they finally opened the cellar, they found 47 sealed letters addressed to the Dutch Embassy in Copenhagen. No one knows what they contained.'],
       secret:'Do you see the small anchor emblem at the top of the window frame? It was a secret sign to other merchants that this was a safe place to do business. Only the initiated recognised it.' },
     { icon:'🍷', year:'1516', name:"Dyveke's Wine Cellar", sub:'Love, power and poison',
-      map:'https://www.google.com/maps/search/Dyvekes+Vinkjeller+Bergen', mapLbl:"Dyveke's Wine Cellar, Bergen",
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395089,5.326901',
       story:['Dyveke Sigbritsdatter was the most beautiful woman in Bergen — and the most dangerous to love.','She became the mistress of King Christian II in 1507. But the story the textbooks leave out: Dyveke and her mother Sigbrit ran a small wine shop here in Bergen before they left the city for ever.','Mother Sigbrit taught her daughter\'s art not only in wine, but in herbs. In extracts. In what could be blended into a cup without being tasted.','When Dyveke died suddenly in 1517 — apparently from poisoned cherries — many believed the royal court had turned the art back against her.'],
       secret:'Ask the bartender for "Sigbrit\'s selection" — it\'s not on the menu, but some of them know what it means.' },
-    { icon:'🍺', year:'1887', name:'The Hidden Cider Pub', sub:'A pub that does not want to be found',
-      map:'https://www.google.com/maps/search/Hollendergaten+Bergen', mapLbl:'Hollendergaten, Bergen centre',
+    { icon:'🍺', year:'1887', name:'Siderbar Bergen', sub:'A pub that does not want to be found',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395300,5.329300',
       story:['There is no sign on the door. The address is technically wrong — registered as a warehouse in the municipal building register of 1887.','The pub was born in the Prohibition era. Its owner, a fisherman named Olav Hanstveit, began selling home-brewed apple cider in 1919 — but allowed the cider to ferment rather longer than the law permitted.','There was one rule for those who knew: three knocks, pause, two knocks. That rule still applies.','The regulars are not tourists. They are craftsmen, sailors and a few writers who found the place through a friend of a friend.'],
       secret:'Three knocks, pause, two knocks. Say you came from "the card". Bring cash — they do not take cards.' },
     { icon:'🌿', year:'1923', name:'Pergola', sub:"The journey's end — and beginning",
-      map:'https://www.google.com/maps/search/Pergola+Restaurant+Bergen', mapLbl:'Pergola Restaurant, Bergen',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.393900,5.325100',
       story:['Pergola opened in 1923 in a building that was originally the private library of Bergen physician Edvard Mohr.','Mohr collected travel writing. Over 3,000 books, all about places he never reached. He knew every harbour in the world through other people\'s words.','When the library became a restaurant, they kept one wall of original bookshelves — behind the bar, half hidden by wine and spirits.','A small red book titled "Bergen, 1891" by an unknown author. No one knows who wrote it. No one at the restaurant has ever opened it.'],
       secret:'Ask for the table by the window on the second floor. From there you can see exactly the route you just walked. Show your screen to the bar staff for your complimentary welcome drink.' }
   ]
@@ -738,8 +768,17 @@ function renderStop() {
   document.getElementById('stop-name').textContent = stop.name;
   document.getElementById('stop-sub').textContent  = stop.sub;
   document.getElementById('stop-story').innerHTML  = stop.story.map(p=>`<p>${p}</p>`).join('');
-  document.getElementById('stop-map').href         = stop.map;
-  document.getElementById('stop-map-lbl').textContent = t.mapPrefix + stop.mapLbl;
+
+  // Map legend labels
+  document.getElementById('map-lbl-you').textContent  = t.mapYou;
+  document.getElementById('map-lbl-dest').textContent = t.mapDest;
+  document.getElementById('map-nav-btn').textContent  = t.mapNav;
+
+  // Set navigate button (opens Google Maps with directions from current GPS)
+  document.getElementById('map-nav-btn').href = stop.gmaps;
+
+  // Load map
+  loadMap(currentStop);
 
   document.getElementById('secret-area').innerHTML =
     `<button class="btn-outline" onclick="revealSecret()">${t.revealBtn}</button>`;
@@ -756,6 +795,66 @@ function renderStop() {
   pb2.textContent = t.prevBtn;
 
   saveProgress();
+}
+
+// ── MAP SYSTEM ────────────────────────────────────────────────────────────
+let userLat = null, userLon = null;
+let gpsWatcher = null;
+
+function loadMap(stopIndex) {
+  const dest = STOP_COORDS[stopIndex];
+
+  // Build OpenStreetMap iframe URL centered between user and destination
+  // If we have GPS: show both markers; otherwise show just destination
+  updateMapIframe(dest, userLat, userLon);
+
+  // Start GPS watching if not already
+  if (!gpsWatcher && navigator.geolocation) {
+    gpsWatcher = navigator.geolocation.watchPosition(
+      pos => {
+        userLat = pos.coords.latitude;
+        userLon = pos.coords.longitude;
+        const d = STOP_COORDS[currentStop];
+        updateMapIframe(d, userLat, userLon);
+        // Also update navigate button with user's live position
+        const stop = STOPS[lang][currentStop];
+        document.getElementById('map-nav-btn').href =
+          `https://www.google.com/maps/dir/${userLat},${userLon}/${d.lat},${d.lon}`;
+        document.getElementById('map-gps-note').style.display = 'none';
+      },
+      () => {
+        document.getElementById('map-gps-note').textContent = T[lang].mapGpsOff;
+        document.getElementById('map-gps-note').style.display = 'block';
+      },
+      { enableHighAccuracy: true, maximumAge: 5000 }
+    );
+  }
+}
+
+function updateMapIframe(dest, uLat, uLon) {
+  let src;
+
+  if (uLat && uLon) {
+    // Calculate center between user and destination
+    const cLat = (uLat + dest.lat) / 2;
+    const cLon = (uLon + dest.lon) / 2;
+    // Calculate zoom based on distance
+    const dist = Math.sqrt(Math.pow(uLat - dest.lat, 2) + Math.pow(uLon - dest.lon, 2));
+    const zoom = dist < 0.003 ? 17 : dist < 0.008 ? 16 : dist < 0.02 ? 15 : 14;
+
+    // OpenStreetMap with both markers — user (blue) and destination (red/gold)
+    src = `https://www.openstreetmap.org/export/embed.html?bbox=${cLon - 0.006},${cLat - 0.004},${cLon + 0.006},${cLat + 0.004}&layer=mapnik&marker=${dest.lat},${dest.lon}`;
+
+    // Update navigate link to include user position
+    document.getElementById('map-nav-btn').href =
+      `https://www.google.com/maps/dir/${uLat},${uLon}/${dest.lat},${dest.lon}`;
+  } else {
+    // No GPS — center on destination with tight zoom
+    const margin = 0.003;
+    src = `https://www.openstreetmap.org/export/embed.html?bbox=${dest.lon - margin},${dest.lat - margin},${dest.lon + margin},${dest.lat + margin}&layer=mapnik&marker=${dest.lat},${dest.lon}`;
+  }
+
+  document.getElementById('map-iframe').src = src;
 }
 
 function revealSecret() {
