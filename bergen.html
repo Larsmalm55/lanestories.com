@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Bergen — Lane Stories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;500&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --gold:#c9a96e; --gold-dim:rgba(201,169,110,0.4); --gold-faint:rgba(201,169,110,0.08);
+      --ink:#0d0a07; --ink2:#121008; --cream:#f0e6d0; --cream-dim:#c8b896;
+      --muted:#7a6a52; --border:rgba(232,220,200,0.11);
+      --green:rgba(80,180,100,0.12); --green-b:rgba(80,180,100,0.4);
+      --red:rgba(200,80,60,0.12); --red-b:rgba(200,80,60,0.4);
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--ink); color:var(--cream); font-family:'EB Garamond',Georgia,serif; line-height:1.6; overflow-x:hidden; }
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; }
+
+    .screen { display:none; min-height:100vh; flex-direction:column; max-width:480px; margin:0 auto; }
+    .screen.active { display:flex; animation:fadeUp 0.3s ease both; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes shake  { 0%,100%{transform:translateX(0)} 25%,75%{transform:translateX(-5px)} 50%{transform:translateX(5px)} }
+    @keyframes spin   { to{transform:rotate(360deg)} }
+    @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    .topbar { display:flex; align-items:center; padding:18px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .topbar-logo { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.3em; color:var(--gold); text-decoration:none; }
+    .topbar-back { background:none; border:none; color:var(--muted); cursor:pointer; font-size:18px; padding:0; margin-right:14px; }
+    .topbar-count { margin-left:auto; font-size:11px; letter-spacing:0.15em; color:#4a4030; }
+
+    .prog-wrap { display:flex; gap:4px; padding:10px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .prog-seg { flex:1; height:2px; border-radius:2px; background:rgba(232,220,200,0.1); transition:background 0.4s; }
+    .prog-seg.done   { background:var(--gold); }
+    .prog-seg.active { background:rgba(201,169,110,0.45); }
+
+    .body { flex:1; padding:0 24px 56px; overflow-y:auto; }
+    .eyebrow { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:8px; }
+    h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(34px,8vw,50px); font-weight:300; line-height:1.1; color:var(--cream); margin-bottom:12px; }
+    h2 { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:400; color:var(--cream); margin-bottom:6px; line-height:1.2; }
+    .sub { font-size:13px; font-style:italic; color:var(--muted); margin-bottom:20px; }
+    .rule { width:36px; height:2px; background:linear-gradient(90deg,var(--gold),rgba(201,169,110,0.15)); border-radius:1px; margin-bottom:28px; }
+    p { font-size:15px; color:var(--cream-dim); line-height:1.85; margin-bottom:1em; }
+
+    .btn { display:block; width:100%; padding:15px 20px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:11px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:opacity 0.2s,transform 0.2s; text-align:center; }
+    .btn:hover:not(:disabled) { opacity:0.88; transform:translateY(-1px); }
+    .btn:disabled { opacity:0.5; cursor:default; transform:none; }
+    .btn-outline { display:block; width:100%; padding:15px 20px; background:transparent; color:var(--gold); border:1px solid var(--gold-dim); border-radius:2px; font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:background 0.2s; text-align:center; }
+    .btn-outline:hover { background:var(--gold-faint); }
+    .btn-ghost { display:block; width:100%; padding:13px 20px; background:transparent; color:var(--muted); border:1px solid var(--border); border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:border-color 0.2s,color 0.2s; }
+    .btn-ghost:hover { border-color:var(--gold-dim); color:var(--cream-dim); }
+
+    .route-card { border:1px solid var(--border); border-radius:2px; padding:22px; margin-bottom:14px; cursor:pointer; background:rgba(255,255,255,0.015); transition:border-color 0.25s,background 0.2s,transform 0.2s; position:relative; }
+    .route-card:hover { border-color:var(--gold-dim); background:rgba(201,169,110,0.04); transform:translateY(-2px); }
+    .route-card.locked { opacity:0.35; cursor:default; }
+    .route-card.locked:hover { transform:none; border-color:var(--border); background:rgba(255,255,255,0.015); }
+    .r-emoji { font-size:30px; margin-bottom:12px; display:block; }
+    .r-name  { font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--cream); margin-bottom:3px; }
+    .r-tag   { font-size:12px; font-style:italic; color:var(--muted); margin-bottom:14px; }
+    .tags    { display:flex; flex-wrap:wrap; gap:6px; }
+    .tag     { display:inline-block; padding:3px 10px; border:1px solid var(--gold-dim); border-radius:20px; font-size:10px; color:var(--gold); }
+    .tag.dim { border-color:var(--border); color:var(--muted); }
+    .soon-badge { position:absolute; top:14px; right:14px; padding:3px 10px; background:rgba(13,10,7,0.8); border:1px solid var(--border); border-radius:20px; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); }
+
+    .order-box { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:24px; }
+    .order-hdr { background:var(--gold-faint); border-bottom:1px solid var(--border); padding:18px 22px; display:flex; justify-content:space-between; align-items:center; }
+    .order-title { font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.12em; color:var(--cream); }
+    .order-price { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:300; color:var(--gold); }
+    .order-body { padding:20px 22px; }
+    .order-item { display:flex; gap:10px; font-size:13px; color:var(--cream-dim); margin-bottom:9px; }
+    .order-item::before { content:'—'; color:var(--gold); flex-shrink:0; }
+
+    .form-label { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px; }
+    .form-input { width:100%; padding:13px 16px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:2px; color:var(--cream); font-family:'EB Garamond',serif; font-size:16px; outline:none; transition:border-color 0.2s; margin-bottom:16px; }
+    .form-input:focus { border-color:var(--gold-dim); }
+    .form-input.err { border-color:var(--red-b); background:var(--red); animation:shake 0.35s ease; }
+    .card-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .spinner { width:18px; height:18px; border:2px solid rgba(13,10,7,0.3); border-top-color:var(--ink); border-radius:50%; animation:spin 0.7s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+    .or { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(--muted); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; }
+    .or::before, .or::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    .code-row   { display:flex; gap:8px; margin-bottom:8px; }
+    .code-input { flex:1; padding:13px 16px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:2px; color:var(--cream); font-family:'Cinzel',serif; font-size:16px; letter-spacing:0.3em; text-transform:uppercase; text-align:center; outline:none; transition:border-color 0.2s; }
+    .code-input:focus { border-color:var(--gold-dim); }
+    .code-input.err { border-color:var(--red-b); background:var(--red); animation:shake 0.35s ease; }
+    .code-input.ok  { border-color:var(--gold); background:var(--gold-faint); }
+    .code-btn { padding:13px 18px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+    .code-msg     { font-size:12px; text-align:center; min-height:18px; }
+    .code-msg.err { color:rgba(220,90,70,0.9); }
+    .code-msg.ok  { color:var(--gold); }
+
+    .stop-icon  { text-align:center; font-size:52px; margin:24px 0 16px; }
+    .story-box  { background:rgba(255,255,255,0.022); border:1px solid var(--border); border-radius:2px; padding:22px 24px; margin-bottom:20px; font-size:15px; color:var(--cream-dim); line-height:1.85; }
+    .story-box p { margin-bottom:1em; }
+    .story-box p:last-child { margin-bottom:0; }
+    .secret-box { background:rgba(201,169,110,0.06); border:1px solid rgba(201,169,110,0.28); border-radius:2px; padding:20px 22px; margin-bottom:20px; }
+    .secret-lbl { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:10px; }
+    .secret-txt { font-size:14px; color:var(--gold); line-height:1.75; }
+
+    .map-link { display:flex; align-items:center; gap:10px; padding:13px 18px; border:1px solid var(--border); border-radius:2px; color:var(--muted); font-size:13px; text-decoration:none; margin-bottom:20px; transition:border-color 0.2s,color 0.2s; }
+    .map-link:hover { border-color:var(--gold-dim); color:var(--cream); }
+    .map-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; animation:pulse 2s infinite; }
+
+    .complete-wrap { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 24px 56px; }
+    .reward-box { background:var(--gold-faint); border:1px solid rgba(201,169,110,0.25); border-radius:2px; padding:22px 28px; margin:24px 0 32px; width:100%; }
+
+    .modal { display:none; position:fixed; inset:0; background:rgba(13,10,7,0.9); z-index:300; align-items:center; justify-content:center; padding:24px; }
+    .modal-box { background:var(--ink2); border:1px solid var(--border); border-radius:2px; padding:32px; max-width:340px; width:100%; text-align:center; }
+
+    .mail-icon { font-size:52px; text-align:center; margin:32px 0 20px; }
+    .confirm-box { background:var(--green); border:1px solid var(--green-b); border-radius:2px; padding:20px 22px; margin-bottom:24px; }
+    .confirm-code { font-family:'Cinzel',serif; font-size:28px; letter-spacing:0.3em; color:var(--gold); text-align:center; margin:12px 0 6px; }
+    .confirm-note { font-size:13px; color:var(--muted); text-align:center; line-height:1.65; }
+
+    .hero-vis { height:190px; background:linear-gradient(160deg,#1a1208,#2e1e0a,#1a1208); display:flex; align-items:center; justify-content:center; font-size:70px; position:relative; overflow:hidden; flex-shrink:0; }
+    .hero-vis::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 60%,rgba(201,169,110,0.14) 0%,transparent 70%); }
+    .hero-vis::after  { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(201,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.04) 1px,transparent 1px); background-size:40px 40px; }
+    .incl-item { display:flex; gap:12px; font-size:13px; color:var(--muted); margin-bottom:8px; }
+    .incl-item span:first-child { color:var(--gold); }
+
+    /* Resume banner */
+    .resume-banner { background:rgba(201,169,110,0.08); border:1px solid rgba(201,169,110,0.25); border-radius:2px; padding:14px 18px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .resume-text { font-size:13px; color:var(--cream-dim); }
+    .resume-btn { padding:7px 14px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+  </style>
+</head>
+<body>
+
+<!-- ══ INTRO ══ -->
+<div class="screen active" id="s-intro">
+  <div class="hero-vis"><span style="position:relative;z-index:1">⚓</span></div>
+  <div class="topbar">
+    <a href="index.html" class="topbar-back">←</a>
+    <a href="index.html" class="topbar-logo">Lane Stories</a>
+  </div>
+  <div class="body">
+    <span class="eyebrow" style="margin-top:28px;" id="i-region"></span>
+    <h1 id="i-title"></h1>
+    <div class="rule"></div>
+    <p id="i-p1"></p>
+    <p style="margin-bottom:28px;" id="i-p2"></p>
+    <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:2px;padding:18px 20px;margin-bottom:28px;">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;" id="i-incl-hdr"></div>
+      <div class="incl-item"><span>—</span><span id="ii1"></span></div>
+      <div class="incl-item"><span>—</span><span id="ii2"></span></div>
+      <div class="incl-item"><span>—</span><span id="ii3"></span></div>
+      <div class="incl-item"><span>—</span><span id="ii4"></span></div>
+    </div>
+    <!-- Resume banner (shown if in-progress tour found) -->
+    <div class="resume-banner" id="resume-banner" style="display:none;">
+      <span class="resume-text" id="resume-text"></span>
+      <button class="resume-btn" id="resume-btn" onclick="resumeTour()"></button>
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;color:var(--cream-dim);line-height:1.5;margin-bottom:6px;" id="i-quote"></div>
+    <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:32px;" id="i-quote-attr"></div>
+    <button class="btn" id="i-cta" onclick="show('s-routes')"></button>
+  </div>
+</div>
+
+<!-- ══ ROUTES ══ -->
+<div class="screen" id="s-routes">
+  <div class="topbar">
+    <button class="topbar-back" onclick="show('s-intro')">←</button>
+    <span class="topbar-logo" id="r-topbar"></span>
+  </div>
+  <div class="body" style="padding-top:28px;">
+    <span class="eyebrow" id="r-eyebrow"></span>
+    <h2 style="margin-bottom:6px;" id="r-title"></h2>
+    <p class="sub" id="r-sub"></p>
+    <div class="route-card" onclick="selectRoute('hollender')">
+      <span class="r-emoji">⚓</span>
+      <div class="r-name" id="route1-name"></div>
+      <div class="r-tag"  id="route1-tag"></div>
+      <div class="tags"><span class="tag" id="route1-t1"></span><span class="tag" id="route1-t2"></span><span class="tag" id="route1-t3"></span><span class="tag" id="route1-t4"></span></div>
+    </div>
+    <div class="route-card locked">
+      <span class="soon-badge" id="r-soon"></span>
+      <span class="r-emoji">🔥</span>
+      <div class="r-name" id="route2-name"></div>
+      <div class="r-tag"  id="route2-tag"></div>
+      <div class="tags"><span class="tag dim" id="route2-t1"></span><span class="tag dim" id="route2-t2"></span></div>
+    </div>
+    <div class="route-card locked">
+      <span class="soon-badge" id="r-soon2"></span>
+      <span class="r-emoji">🐟</span>
+      <div class="r-name" id="route3-name"></div>
+      <div class="r-tag"  id="route3-tag"></div>
+      <div class="tags"><span class="tag dim" id="route3-t1"></span><span class="tag dim" id="route3-t2"></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ORDER ══ -->
+<div class="screen" id="s-order">
+  <div class="topbar">
+    <button class="topbar-back" onclick="show('s-routes')">←</button>
+    <span class="topbar-logo" id="o-topbar"></span>
+  </div>
+  <div class="body" style="padding-top:28px;">
+    <span class="eyebrow" id="o-eyebrow"></span>
+    <h2 id="order-route-name" style="margin-bottom:6px;"></h2>
+    <p class="sub" id="o-sub"></p>
+    <div class="order-box">
+      <div class="order-hdr"><div class="order-title" id="o-box-title"></div><div class="order-price" id="o-box-price"></div></div>
+      <div class="order-body">
+        <div class="order-item" id="oi1"></div>
+        <div class="order-item" id="oi2"></div>
+        <div class="order-item" id="oi3"></div>
+        <div class="order-item" id="oi4"></div>
+      </div>
+    </div>
+    <label class="form-label" id="o-email-lbl"></label>
+    <input class="form-input" id="emailInput" type="email" autocomplete="email" />
+    <label class="form-label" id="o-card-lbl"></label>
+    <input class="form-input" id="cardNumber" type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)" inputmode="numeric" />
+    <div class="card-row">
+      <input class="form-input" id="cardExp" type="text" maxlength="7" oninput="formatExp(this)" inputmode="numeric" />
+      <input class="form-input" id="cardCvc" type="text" placeholder="CVC" maxlength="3" inputmode="numeric" />
+    </div>
+    <button class="btn" id="payBtn" onclick="processPayment()"></button>
+    <p style="font-size:11px;color:#3a3028;text-align:center;margin-bottom:4px;" id="o-secure"></p>
+    <div class="or" id="o-or"></div>
+    <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;" id="o-haveCode"></div>
+    <div class="code-row">
+      <input class="code-input" id="codeInput" type="text" maxlength="8" placeholder="XXXXXXXX" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')" />
+      <button class="code-btn" id="o-unlock-btn" onclick="checkCode()"></button>
+    </div>
+    <div class="code-msg" id="codeMsg"></div>
+    <p style="font-size:10px;color:#2a2018;text-align:center;margin-top:20px;" id="o-test-hint"></p>
+  </div>
+</div>
+
+<!-- ══ CONFIRMATION ══ -->
+<div class="screen" id="s-confirm">
+  <div class="topbar"><span class="topbar-logo" style="margin:auto;">Lane Stories · Bergen</span></div>
+  <div class="body" style="padding-top:0;">
+    <div class="mail-icon">📬</div>
+    <span class="eyebrow" style="text-align:center;display:block;" id="cf-eyebrow"></span>
+    <h2 style="text-align:center;margin-bottom:16px;" id="cf-title"></h2>
+    <p style="text-align:center;color:var(--muted);margin-bottom:24px;" id="cf-body"></p>
+    <div class="confirm-box">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:4px;" id="cf-code-lbl"></div>
+      <div class="confirm-code" id="confirm-code"></div>
+      <div class="confirm-note" id="cf-note"></div>
+    </div>
+    <div class="code-row">
+      <input class="code-input" id="codeInput2" type="text" maxlength="8" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')" />
+      <button class="code-btn" id="cf-start-btn" onclick="checkCode2()"></button>
+    </div>
+    <div class="code-msg" id="codeMsg2"></div>
+    <p style="font-size:12px;color:#3a3028;text-align:center;margin-top:16px;" id="cf-noemail"></p>
+  </div>
+</div>
+
+<!-- ══ STOP ══ -->
+<div class="screen" id="s-stop">
+  <div class="topbar">
+    <button class="topbar-back" onclick="confirmBack()">←</button>
+    <span class="topbar-logo">Bergen</span>
+    <span class="topbar-count" id="stop-count"></span>
+  </div>
+  <div class="prog-wrap" id="prog-bar"></div>
+  <div class="body">
+    <div class="stop-icon" id="stop-icon"></div>
+    <span class="eyebrow" id="stop-year"></span>
+    <h2 id="stop-name"></h2>
+    <p class="sub" id="stop-sub"></p>
+    <div class="story-box" id="stop-story"></div>
+    <a class="map-link" id="stop-map" href="#" target="_blank" rel="noopener">
+      <span class="map-dot"></span>
+      <span id="stop-map-lbl"></span>
+    </a>
+    <div id="secret-area"></div>
+    <button class="btn" id="next-btn" onclick="nextStop()"></button>
+    <button class="btn-ghost" id="prev-btn" onclick="prevStop()" style="display:none;"></button>
+  </div>
+</div>
+
+<!-- ══ COMPLETE ══ -->
+<div class="screen" id="s-complete">
+  <div class="topbar"><span class="topbar-logo" style="margin:auto;">Lane Stories · Bergen</span></div>
+  <div class="complete-wrap">
+    <div style="font-size:44px;margin-bottom:20px;">✦</div>
+    <h2 style="text-align:center;font-size:28px;margin-bottom:8px;" id="done-title"></h2>
+    <div style="width:36px;height:2px;background:linear-gradient(90deg,var(--gold),rgba(201,169,110,0.2));border-radius:1px;margin:14px auto;"></div>
+    <p style="color:var(--muted);text-align:center;" id="secrets-count"></p>
+    <div class="reward-box">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:8px;" id="done-reward-lbl"></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--cream);text-align:center;margin-bottom:4px;">Pergola</div>
+      <div style="font-size:12px;color:var(--muted);text-align:center;" id="done-reward-note"></div>
+    </div>
+    <button class="btn" id="done-another" onclick="show('s-routes')" style="width:100%;"></button>
+    <button class="btn-outline" id="done-back" onclick="show('s-intro')" style="width:100%;"></button>
+  </div>
+</div>
+
+<!-- ══ BACK MODAL ══ -->
+<div class="modal" id="back-modal">
+  <div class="modal-box">
+    <div style="font-size:28px;margin-bottom:16px;">🚶</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:22px;color:var(--cream);margin-bottom:10px;" id="bm-title"></h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.7;" id="bm-body"></p>
+    <button class="btn" id="bm-leave" onclick="document.getElementById('back-modal').style.display='none';show('s-routes')" style="margin-bottom:0;"></button>
+    <button class="btn-outline" id="bm-stay" onclick="document.getElementById('back-modal').style.display='none'" style="margin-top:8px;"></button>
+  </div>
+</div>
+
+<script>
+// ── TRANSLATIONS ─────────────────────────────────────────────────────────
+const T = {
+  no: {
+    region:'Norge · Bergen',
+    iTitle:'Den skjulte<br><em style="font-style:italic;color:var(--gold)">byen</em>',
+    iP1:'Bergen har vært en av Europas viktigste handelsbyer i 700 år. Langs bryggene og i de smale gatebakker skjuler det seg historier som aldri kom med i guidebøkene.',
+    iP2:'Velg en rute. Gå i ditt eget tempo. Opplev Bergen slik de færreste gjør.',
+    iInclHdr:'Inkludert i alle ruter',
+    ii1:'Ekte historiske fortellinger ved hvert stopp',
+    ii2:'Skjulte insidertips — kun for deg',
+    ii3:'Google Maps-navigasjon mellom stopp',
+    ii4:'Velkomstdrink på siste destinasjon',
+    iQuote:'"Vi gikk forbi det smuget hundre ganger. Lane Stories var første gang vi faktisk stoppet."',
+    iQuoteAttr:'— Pilottester, Bergen',
+    iCta:'Se tilgjengelige ruter →',
+    resumeText:'Du har en påbegynt tur — stopp', resumeBtn:'Fortsett',
+    rTopbar:'Bergen — Velg rute', rEyebrow:'Tilgjengelige ruter',
+    rTitle:'Hvem vil du følge?', rSub:'Hver rute åpner et eget kapittel av Bergens skjulte historie.',
+    route1Name:'Hollendergaten & Hanseatisk mystikk', route1Tag:'Kjøpmenn, intriger og hemmelige kjellere',
+    t1:'90 min', t2:'1.4 km', t3:'Lett', t4:'4 stopp', rSoon:'Kommer snart',
+    route2Name:'Brannene som formet Bergen', route2Tag:'Sju branner. Sju gjenoppbygginger. Én by.',
+    r2t1:'2 t', r2t2:'2.1 km',
+    route3Name:'Fisketorgets hemmeligheter', route3Tag:'Fra vikingfiske til Europas matbors',
+    r3t1:'60 min', r3t2:'0.9 km',
+    oTopbar:'Bestill rute', oEyebrow:'Én betaling · Tilgang i 48 timer',
+    oSub:'Du mottar en unik tilgangskode på e-post umiddelbart etter betaling.',
+    oBoxTitle:'Én rute · Bergen', oBoxPrice:'kr 79',
+    oi1:'4 historiske stopp med fortellinger', oi2:'Skjult insidertips ved hvert stopp',
+    oi3:'Google Maps mellom stopp', oi4:'Velkomstdrink på Pergola',
+    oEmailLbl:'Din e-postadresse', oCardLbl:'Kortopplysninger',
+    oCardExpPh:'MM / ÅÅ', oPayBtn:'Betal kr 79 og motta kode',
+    oSecure:'🔒 Sikker betaling · Koden sendes til din e-post',
+    oOr:'eller', oHaveCode:'Har du allerede en kode?', oUnlockBtn:'Lås opp',
+    oTestHint:'TEST: bruk kode BERGEN01 for å teste flyten',
+    cfEyebrow:'Betaling mottatt', cfTitle:'Koden din er klar.',
+    cfBody:'Vi har sendt tilgangskoden til <strong id="confirm-email" style="color:var(--cream-dim)"></strong>.<br>Skriv den inn nedenfor for å starte turen.',
+    cfCodeLbl:'Din tilgangskode', cfNote:'Koden er også sendt til din e-post. Gyldig i 48 timer.',
+    cfStartBtn:'Start turen',
+    cfNoEmail:'Ikke fått e-post? Sjekk søppelpost eller <a href="#" onclick="show(\'s-order\');return false;" style="color:var(--gold);text-decoration:none;">prøv igjen</a>.',
+    mapPrefix:'Gå til: ', revealBtn:'🔑 Vis det skjulte tipset',
+    secretLbl:'Kun for deg', prevBtn:'← Forrige stopp',
+    doneTitleText:'Du har fullført<br>den skjulte ruten.',
+    doneSecretsText:(r,t)=>`${r} av ${t} hemmelige tips avdekket.`,
+    doneRewardLbl:'Din belønning venter',
+    doneRewardNote:'Vis denne skjermen ved ankomst<br>for en gratis velkomstdrink',
+    doneAnother:'Velg en ny rute', doneBack:'Tilbake til Bergen',
+    bmTitle:'Avbryte turen?',
+    bmBody:'Turen er låst opp i 48 timer. Fremgangen din er lagret — du kan fortsette der du slapp.',
+    bmLeave:'Gå tilbake til ruter', bmStay:'Fortsett turen',
+    codeShort:'Koden er for kort.', codeInvalid:'Ugyldig kode — sjekk e-posten din.',
+    codeOk:'✓ Kode godkjent — låser opp…', codeWrong:'Feil kode — kopier den fra skjermen over.',
+    codeUnlocking:'✓ Låst opp — starter turen…', processing:'Behandler…',
+    nextPrefix:'Neste stopp: ', nextSuffix:'... →', completeTour:'Fullfør turen →',
+  },
+  en: {
+    region:'Norway · Bergen',
+    iTitle:'The hidden<br><em style="font-style:italic;color:var(--gold)">city</em>',
+    iP1:'Bergen has been one of Europe\'s most important trading cities for 700 years. Along the wharves and in the narrow lanes lie stories that never made it into the guidebooks.',
+    iP2:'Choose a route. Walk at your own pace. Experience Bergen the way very few do.',
+    iInclHdr:'Included in every route',
+    ii1:'Real historical stories at every stop',
+    ii2:'Hidden insider tips — yours alone',
+    ii3:'Google Maps navigation between stops',
+    ii4:'Welcome drink at the final destination',
+    iQuote:'"We walked past that alley a hundred times. Lane Stories was the first time we actually stopped."',
+    iQuoteAttr:'— Pilot tester, Bergen',
+    iCta:'See available routes →',
+    resumeText:'You have a tour in progress — stop', resumeBtn:'Continue',
+    rTopbar:'Bergen — Choose route', rEyebrow:'Available routes',
+    rTitle:'Who do you want to follow?', rSub:'Each route opens a separate chapter of Bergen\'s hidden history.',
+    route1Name:'Hollendergaten & Hanseatic Secrets', route1Tag:'Merchants, intrigue and hidden cellars',
+    t1:'90 min', t2:'1.4 km', t3:'Easy', t4:'4 stops', rSoon:'Coming soon',
+    route2Name:'The Fires That Shaped Bergen', route2Tag:'Seven fires. Seven rebuildings. One city.',
+    r2t1:'2 hrs', r2t2:'2.1 km',
+    route3Name:'Secrets of the Fish Market', route3Tag:'From Viking fishing to Europe\'s table',
+    r3t1:'60 min', r3t2:'0.9 km',
+    oTopbar:'Book route', oEyebrow:'One payment · Access for 48 hours',
+    oSub:'You\'ll receive a unique access code by email immediately after payment.',
+    oBoxTitle:'One route · Bergen', oBoxPrice:'€7',
+    oi1:'4 historical stops with stories', oi2:'Hidden insider tip at every stop',
+    oi3:'Google Maps navigation between stops', oi4:'Welcome drink at Pergola',
+    oEmailLbl:'Your email address', oCardLbl:'Card details',
+    oCardExpPh:'MM / YY', oPayBtn:'Pay €7 and receive code',
+    oSecure:'🔒 Secure payment · Code sent to your email',
+    oOr:'or', oHaveCode:'Already have a code?', oUnlockBtn:'Unlock',
+    oTestHint:'TEST: use code BERGEN01 to try the full flow',
+    cfEyebrow:'Payment received', cfTitle:'Your code is ready.',
+    cfBody:'We\'ve sent your access code to <strong id="confirm-email" style="color:var(--cream-dim)"></strong>.<br>Enter it below to start the tour.',
+    cfCodeLbl:'Your access code', cfNote:'The code has also been sent to your email. Valid for 48 hours.',
+    cfStartBtn:'Start tour',
+    cfNoEmail:'No email? Check your spam folder or <a href="#" onclick="show(\'s-order\');return false;" style="color:var(--gold);text-decoration:none;">try again</a>.',
+    mapPrefix:'Navigate to: ', revealBtn:'🔑 Reveal the hidden tip',
+    secretLbl:'For your eyes only', prevBtn:'← Previous stop',
+    doneTitleText:'You\'ve completed<br>the hidden route.',
+    doneSecretsText:(r,t)=>`${r} of ${t} hidden tips revealed.`,
+    doneRewardLbl:'Your reward awaits',
+    doneRewardNote:'Show this screen on arrival<br>for a complimentary welcome drink',
+    doneAnother:'Choose another route', doneBack:'Back to Bergen',
+    bmTitle:'Leave the tour?',
+    bmBody:'Your tour is unlocked for 48 hours. Your progress is saved — you can continue where you left off.',
+    bmLeave:'Go back to routes', bmStay:'Continue tour',
+    codeShort:'Code too short — check your email.', codeInvalid:'Invalid code — check your email.',
+    codeOk:'✓ Code accepted — unlocking…', codeWrong:'Wrong code — copy it from the screen above.',
+    codeUnlocking:'✓ Unlocked — starting tour…', processing:'Processing…',
+    nextPrefix:'Next stop: ', nextSuffix:'... →', completeTour:'Complete the tour →',
+  }
+};
+
+// ── STOP DATA (bilingual) ─────────────────────────────────────────────────
+const STOPS = {
+  no: [
+    { icon:'🏚️', year:'1641', name:'Hollendergaten 3', sub:'Der handelen skjulte hemmeligheter',
+      map:'https://www.google.com/maps/search/Hollendergaten+3+Bergen', mapLbl:'Hollendergaten 3, Bergen',
+      story:['I dette huset bodde den nederlandske kjøpmannen Pieter van der Berg i over tjue år — men ingen i Bergen visste hvem han egentlig var.','Van der Berg ankom Bergen i 1641 med et skip lastet med nederlandsk lin og krydder. Men ifølge kirkebøkene fra Domkirken fantes han ikke. Ingen dåpsattest. Ingen hjemstavnsbevis.','Naboene visste at han aldri spiste middag uten å trekke for gardinene. At han mottok brev skrevet med sitronsaft — synlig bare over en flamme. En natt i november 1659 forsvant han like stille som han hadde kommet.','Huset sto tomt i tre år. Da de endelig åpnet kjelleren, fant de 47 forseglete brever adressert til den nederlandske ambassaden i København. Ingen vet hva de inneholdt.'],
+      secret:'Ser du det lille ankeremblemet øverst i vinduskarmen? Det var et hemmelig tegn til andre kjøpmenn — bare de innvidde kjente symbolet.' },
+    { icon:'🍷', year:'1516', name:'Dyvekes Vinkjeller', sub:'Kjærlighet, makt og gift',
+      map:'https://www.google.com/maps/search/Dyvekes+Vinkjeller+Bergen', mapLbl:'Dyvekes Vinkjeller, Bergen',
+      story:['Dyveke Sigbritsdatter var den vakreste kvinnen i Bergen — og den farligste å elske.','Hun ble kong Christian IIs elskerinne i 1507. Men historien som ikke fortelles: Dyveke og hennes mor Sigbrit drev en liten vinhandel her i Bergen før de forlot byen for alltid.','Mor Sigbrit lærte datterens kunst ikke bare i vin, men i urter. I ekstrakter. I det som kunne blandes i et beger uten å smakes.','Da Dyveke døde plutselig i 1517 — tilsynelatende av forgiftede kirsebær — mente mange at kongenes hoff hadde snudd kunsten tilbake mot henne.'],
+      secret:'Spør bartenderen om "Sigbrits utvalg" — det er ikke på menyen, men noen vet hva det betyr.' },
+    { icon:'🍺', year:'1887', name:'Den Skjulte Siderpuben', sub:'En pub som ikke vil bli funnet',
+      map:'https://www.google.com/maps/search/Hollendergaten+Bergen', mapLbl:'Hollendergaten, Bergen sentrum',
+      story:['Det er ingen skilt på døren. Adressen er teknisk sett feil — registrert som lager i kommunens bygningsregister fra 1887.','Puben oppsto i forbudstiden. Eieren, en fisker ved navn Olav Hanstveit, begynte å selge hjemmebryggd eplemost i 1919 — men mosen fikk gjære lenger enn loven tillot.','Det var en fast regel: tre bank, pause, to bank. Den regelen gjelder fortsatt.','Stamgjestene er ikke turister. De er håndverkere, sjøfolk og noen få forfattere — funnet stedet via en venn av en venn.'],
+      secret:'Tre bank, pause, to bank. Si at du kom fra "visitkortet". Ta kontanter — de tar ikke kort.' },
+    { icon:'🌿', year:'1923', name:'Pergola', sub:'Reisens slutt — og begynnelsen',
+      map:'https://www.google.com/maps/search/Pergola+Restaurant+Bergen', mapLbl:'Pergola Restaurant, Bergen',
+      story:['Pergola åpnet i 1923 i et bygg som opprinnelig var et privatbibliotek tilhørende bergens-legen Edvard Mohr.','Mohr samlet på reiseskildringer. Over 3.000 bøker, alle om steder han aldri kom til. Han kjente hver havn i verden via andres ord.','Da biblioteket ble til restaurant, beholdt de én vegg med originale bokhyller — bak baren, halvt skjult av vin og sprit.','En liten rød bok med tittelen «Bergen, 1891» av en ukjent forfatter. Ingen vet hvem som skrev den. Ingen har noen gang åpnet den.'],
+      secret:'Be om bordet ved vinduet i andre etasje. Derfra ser du nøyaktig den ruten du nettopp gikk. Vis skjermen for din gratis velkomstdrink.' }
+  ],
+  en: [
+    { icon:'🏚️', year:'1641', name:'Hollendergaten 3', sub:'Where trade concealed its secrets',
+      map:'https://www.google.com/maps/search/Hollendergaten+3+Bergen', mapLbl:'Hollendergaten 3, Bergen',
+      story:['A Dutch merchant named Pieter van der Berg lived in this house for over twenty years — yet according to the church records of Bergen Cathedral, he did not exist. No baptismal certificate. No certificate of origin.','Van der Berg arrived in Bergen in 1641 with a ship loaded with Dutch linen and spices. Neighbours noticed that he never ate dinner without first drawing the curtains — and that he received letters written in lemon juice, visible only over a flame.','One night in November 1659, he vanished as quietly as he had arrived. The house stood empty for three years.','When they finally opened the cellar, they found 47 sealed letters addressed to the Dutch Embassy in Copenhagen. No one knows what they contained.'],
+      secret:'Do you see the small anchor emblem at the top of the window frame? It was a secret sign to other merchants that this was a safe place to do business. Only the initiated recognised it.' },
+    { icon:'🍷', year:'1516', name:"Dyveke's Wine Cellar", sub:'Love, power and poison',
+      map:'https://www.google.com/maps/search/Dyvekes+Vinkjeller+Bergen', mapLbl:"Dyveke's Wine Cellar, Bergen",
+      story:['Dyveke Sigbritsdatter was the most beautiful woman in Bergen — and the most dangerous to love.','She became the mistress of King Christian II in 1507. But the story the textbooks leave out: Dyveke and her mother Sigbrit ran a small wine shop here in Bergen before they left the city for ever.','Mother Sigbrit taught her daughter\'s art not only in wine, but in herbs. In extracts. In what could be blended into a cup without being tasted.','When Dyveke died suddenly in 1517 — apparently from poisoned cherries — many believed the royal court had turned the art back against her.'],
+      secret:'Ask the bartender for "Sigbrit\'s selection" — it\'s not on the menu, but some of them know what it means.' },
+    { icon:'🍺', year:'1887', name:'The Hidden Cider Pub', sub:'A pub that does not want to be found',
+      map:'https://www.google.com/maps/search/Hollendergaten+Bergen', mapLbl:'Hollendergaten, Bergen centre',
+      story:['There is no sign on the door. The address is technically wrong — registered as a warehouse in the municipal building register of 1887.','The pub was born in the Prohibition era. Its owner, a fisherman named Olav Hanstveit, began selling home-brewed apple cider in 1919 — but allowed the cider to ferment rather longer than the law permitted.','There was one rule for those who knew: three knocks, pause, two knocks. That rule still applies.','The regulars are not tourists. They are craftsmen, sailors and a few writers who found the place through a friend of a friend.'],
+      secret:'Three knocks, pause, two knocks. Say you came from "the card". Bring cash — they do not take cards.' },
+    { icon:'🌿', year:'1923', name:'Pergola', sub:"The journey's end — and beginning",
+      map:'https://www.google.com/maps/search/Pergola+Restaurant+Bergen', mapLbl:'Pergola Restaurant, Bergen',
+      story:['Pergola opened in 1923 in a building that was originally the private library of Bergen physician Edvard Mohr.','Mohr collected travel writing. Over 3,000 books, all about places he never reached. He knew every harbour in the world through other people\'s words.','When the library became a restaurant, they kept one wall of original bookshelves — behind the bar, half hidden by wine and spirits.','A small red book titled "Bergen, 1891" by an unknown author. No one knows who wrote it. No one at the restaurant has ever opened it.'],
+      secret:'Ask for the table by the window on the second floor. From there you can see exactly the route you just walked. Show your screen to the bar staff for your complimentary welcome drink.' }
+  ]
+};
+
+// ── CONSTANTS ─────────────────────────────────────────────────────────────
+const VALID_CODES = new Set(['BERGEN01','DEMO1234']);
+const STORAGE_KEY = 'ls_bergen_hollender';
+const EXPIRY_H    = 48;
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let lang            = 'en';
+let currentStop     = 0;
+let secretsRevealed = 0;
+let secretShown     = false;
+
+// ── LANGUAGE ──────────────────────────────────────────────────────────────
+function detectLang() {
+  const saved = localStorage.getItem('ls_lang');
+  if (saved === 'no' || saved === 'en') return saved;
+  return navigator.language.startsWith('no') ? 'no' : 'en';
+}
+
+function applyLang(l) {
+  lang = l;
+  localStorage.setItem('ls_lang', l);
+  document.documentElement.lang = l;
+  const t = T[l];
+
+  // Intro
+  document.getElementById('i-region').textContent   = t.region;
+  document.getElementById('i-title').innerHTML      = t.iTitle;
+  document.getElementById('i-p1').textContent       = t.iP1;
+  document.getElementById('i-p2').textContent       = t.iP2;
+  document.getElementById('i-incl-hdr').textContent = t.iInclHdr;
+  document.getElementById('ii1').textContent        = t.ii1;
+  document.getElementById('ii2').textContent        = t.ii2;
+  document.getElementById('ii3').textContent        = t.ii3;
+  document.getElementById('ii4').textContent        = t.ii4;
+  document.getElementById('i-quote').textContent    = t.iQuote;
+  document.getElementById('i-quote-attr').textContent = t.iQuoteAttr;
+  document.getElementById('i-cta').textContent      = t.iCta;
+  document.getElementById('resume-btn').textContent = t.resumeBtn;
+
+  // Routes
+  document.getElementById('r-topbar').textContent  = t.rTopbar;
+  document.getElementById('r-eyebrow').textContent = t.rEyebrow;
+  document.getElementById('r-title').textContent   = t.rTitle;
+  document.getElementById('r-sub').textContent     = t.rSub;
+  document.getElementById('route1-name').textContent = t.route1Name;
+  document.getElementById('route1-tag').textContent  = t.route1Tag;
+  document.getElementById('route1-t1').textContent = t.t1;
+  document.getElementById('route1-t2').textContent = t.t2;
+  document.getElementById('route1-t3').textContent = t.t3;
+  document.getElementById('route1-t4').textContent = t.t4;
+  document.getElementById('r-soon').textContent    = t.rSoon;
+  document.getElementById('r-soon2').textContent   = t.rSoon;
+  document.getElementById('route2-name').textContent = t.route2Name;
+  document.getElementById('route2-tag').textContent  = t.route2Tag;
+  document.getElementById('route2-t1').textContent = t.r2t1;
+  document.getElementById('route2-t2').textContent = t.r2t2;
+  document.getElementById('route3-name').textContent = t.route3Name;
+  document.getElementById('route3-tag').textContent  = t.route3Tag;
+  document.getElementById('route3-t1').textContent = t.r3t1;
+  document.getElementById('route3-t2').textContent = t.r3t2;
+
+  // Order
+  document.getElementById('o-topbar').textContent     = t.oTopbar;
+  document.getElementById('o-eyebrow').textContent    = t.oEyebrow;
+  document.getElementById('o-sub').textContent        = t.oSub;
+  document.getElementById('o-box-title').textContent  = t.oBoxTitle;
+  document.getElementById('o-box-price').textContent  = t.oBoxPrice;
+  document.getElementById('oi1').textContent = t.oi1;
+  document.getElementById('oi2').textContent = t.oi2;
+  document.getElementById('oi3').textContent = t.oi3;
+  document.getElementById('oi4').textContent = t.oi4;
+  document.getElementById('o-email-lbl').textContent  = t.oEmailLbl;
+  document.getElementById('o-card-lbl').textContent   = t.oCardLbl;
+  document.getElementById('cardExp').placeholder      = t.oCardExpPh;
+  document.getElementById('payBtn').textContent       = t.oPayBtn;
+  document.getElementById('o-secure').textContent     = t.oSecure;
+  document.getElementById('o-or').textContent         = t.oOr;
+  document.getElementById('o-haveCode').textContent   = t.oHaveCode;
+  document.getElementById('o-unlock-btn').textContent = t.oUnlockBtn;
+  document.getElementById('o-test-hint').innerHTML    = `TEST: ${t.oTestHint}`;
+
+  // Confirm
+  document.getElementById('cf-eyebrow').textContent  = t.cfEyebrow;
+  document.getElementById('cf-title').textContent    = t.cfTitle;
+  document.getElementById('cf-code-lbl').textContent = t.cfCodeLbl;
+  document.getElementById('cf-note').textContent     = t.cfNote;
+  document.getElementById('cf-start-btn').textContent = t.cfStartBtn;
+  document.getElementById('codeInput2').placeholder  = l === 'no' ? 'Skriv inn koden' : 'Enter your code';
+
+  // Complete
+  document.getElementById('done-title').innerHTML      = t.doneTitleText;
+  document.getElementById('done-reward-lbl').textContent  = t.doneRewardLbl;
+  document.getElementById('done-reward-note').innerHTML   = t.doneRewardNote;
+  document.getElementById('done-another').textContent  = t.doneAnother;
+  document.getElementById('done-back').textContent     = t.doneBack;
+
+  // Back modal
+  document.getElementById('bm-title').textContent = t.bmTitle;
+  document.getElementById('bm-body').textContent  = t.bmBody;
+  document.getElementById('bm-leave').textContent = t.bmLeave;
+  document.getElementById('bm-stay').textContent  = t.bmStay;
+
+  // Check for resume
+  checkResume();
+
+  // Re-render stop if on tour
+  const active = document.querySelector('.screen.active');
+  if (active && active.id === 's-stop') renderStop();
+}
+
+// ── RESUME BANNER ─────────────────────────────────────────────────────────
+function checkResume() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY + '_progress') || '{}');
+    if (d.stop !== undefined && isUnlocked()) {
+      const t = T[lang];
+      const stopName = STOPS[lang][d.stop].name;
+      document.getElementById('resume-text').textContent =
+        `${t.resumeText} ${d.stop + 1}: ${stopName}`;
+      document.getElementById('resume-banner').style.display = 'flex';
+    } else {
+      document.getElementById('resume-banner').style.display = 'none';
+    }
+  } catch { document.getElementById('resume-banner').style.display = 'none'; }
+}
+
+function resumeTour() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY + '_progress') || '{}');
+    currentStop = d.stop || 0;
+    secretsRevealed = d.secrets || 0;
+    renderStop();
+    show('s-stop');
+  } catch { startTour(); }
+}
+
+function saveProgress() {
+  localStorage.setItem(STORAGE_KEY + '_progress',
+    JSON.stringify({ stop: currentStop, secrets: secretsRevealed }));
+}
+
+// ── ACCESS CONTROL ────────────────────────────────────────────────────────
+function isUnlocked() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    return d.ts && (Date.now() - d.ts) / 3600000 < EXPIRY_H;
+  } catch { return false; }
+}
+
+function saveUnlock(code) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ts: Date.now(), code }));
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+function formatCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+
+function formatExp(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
+  el.value = v;
+}
+
+function shake(id) {
+  const el = document.getElementById(id);
+  el.classList.add('err');
+  setTimeout(() => el.classList.remove('err'), 500);
+}
+
+function setMsg(id, type, text) {
+  const el = document.getElementById(id);
+  el.className = 'code-msg ' + type;
+  el.textContent = text;
+}
+
+// ── ROUTE SELECT ──────────────────────────────────────────────────────────
+function selectRoute() {
+  document.getElementById('order-route-name').textContent = T[lang].route1Name;
+  if (isUnlocked()) {
+    currentStop = 0; secretsRevealed = 0; renderStop(); show('s-stop');
+  } else { show('s-order'); }
+}
+
+// ── PAYMENT (simulated) ───────────────────────────────────────────────────
+function processPayment() {
+  const email = document.getElementById('emailInput').value.trim();
+  const card  = document.getElementById('cardNumber').value.replace(/\s/g,'');
+  const exp   = document.getElementById('cardExp').value;
+  const cvc   = document.getElementById('cardCvc').value;
+  const btn   = document.getElementById('payBtn');
+
+  if (!validEmail(email)) { shake('emailInput'); return; }
+  if (card.length < 16)   { shake('cardNumber'); return; }
+  if (exp.replace(/\s\/\s/,'').length < 4) { shake('cardExp'); return; }
+  if (cvc.length < 3)     { shake('cardCvc'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span>${T[lang].processing}`;
+
+  setTimeout(() => {
+    const code = generateCode();
+    VALID_CODES.add(code);
+
+    document.getElementById('cf-body').innerHTML =
+      T[lang].cfBody.replace('</strong>', `</strong>`);
+    const emailEl = document.getElementById('confirm-email');
+    if (emailEl) emailEl.textContent = email;
+    document.getElementById('confirm-code').textContent = code;
+    document.getElementById('codeInput2').value = '';
+    document.getElementById('codeMsg2').textContent = '';
+
+    btn.disabled = false;
+    btn.textContent = T[lang].oPayBtn;
+    show('s-confirm');
+  }, 1800);
+}
+
+function generateCode() {
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:8}, () => c[Math.floor(Math.random()*c.length)]).join('');
+}
+
+// ── CODE UNLOCK ───────────────────────────────────────────────────────────
+function checkCode() {
+  const val = document.getElementById('codeInput').value.trim().toUpperCase();
+  const t = T[lang];
+  if (val.length < 6) { setMsg('codeMsg','err',t.codeShort); shake('codeInput'); return; }
+  if (VALID_CODES.has(val)) {
+    setMsg('codeMsg','ok',t.codeOk);
+    saveUnlock(val);
+    setTimeout(() => { currentStop=0; secretsRevealed=0; renderStop(); show('s-stop'); }, 700);
+  } else { setMsg('codeMsg','err',t.codeInvalid); shake('codeInput'); }
+}
+
+function checkCode2() {
+  const val = document.getElementById('codeInput2').value.trim().toUpperCase();
+  const t = T[lang];
+  if (VALID_CODES.has(val)) {
+    setMsg('codeMsg2','ok',t.codeUnlocking);
+    saveUnlock(val);
+    setTimeout(() => { currentStop=0; secretsRevealed=0; renderStop(); show('s-stop'); }, 700);
+  } else { setMsg('codeMsg2','err',t.codeWrong); shake('codeInput2'); }
+}
+
+// ── TOUR ──────────────────────────────────────────────────────────────────
+function startTour() {
+  currentStop=0; secretsRevealed=0;
+  saveProgress();
+  renderStop(); show('s-stop');
+}
+
+function renderStop() {
+  const stops = STOPS[lang];
+  const stop  = stops[currentStop];
+  const total = stops.length;
+  const t     = T[lang];
+  secretShown = false;
+
+  document.getElementById('stop-count').textContent = `${currentStop+1} / ${total}`;
+
+  const pb = document.getElementById('prog-bar');
+  pb.innerHTML = stops.map((_,i) =>
+    `<div class="prog-seg ${i<currentStop?'done':i===currentStop?'active':''}"></div>`
+  ).join('');
+
+  document.getElementById('stop-icon').textContent = stop.icon;
+  document.getElementById('stop-year').textContent = stop.year;
+  document.getElementById('stop-name').textContent = stop.name;
+  document.getElementById('stop-sub').textContent  = stop.sub;
+  document.getElementById('stop-story').innerHTML  = stop.story.map(p=>`<p>${p}</p>`).join('');
+  document.getElementById('stop-map').href         = stop.map;
+  document.getElementById('stop-map-lbl').textContent = t.mapPrefix + stop.mapLbl;
+
+  document.getElementById('secret-area').innerHTML =
+    `<button class="btn-outline" onclick="revealSecret()">${t.revealBtn}</button>`;
+
+  // Next button
+  const nb = document.getElementById('next-btn');
+  nb.textContent = currentStop < total-1
+    ? `${t.nextPrefix}${stops[currentStop+1].name.split(' ')[0]}${t.nextSuffix}`
+    : t.completeTour;
+
+  // Prev button — hidden on first stop
+  const pb2 = document.getElementById('prev-btn');
+  pb2.style.display = currentStop > 0 ? 'block' : 'none';
+  pb2.textContent = t.prevBtn;
+
+  saveProgress();
+}
+
+function revealSecret() {
+  const stop = STOPS[lang][currentStop];
+  const t    = T[lang];
+  if (!secretShown) { secretShown=true; secretsRevealed++; saveProgress(); }
+  document.getElementById('secret-area').innerHTML = `
+    <div class="secret-box">
+      <span class="secret-lbl">${t.secretLbl}</span>
+      <div class="secret-txt">${stop.secret}</div>
+    </div>`;
+}
+
+function nextStop() {
+  const total = STOPS[lang].length;
+  if (currentStop < total-1) {
+    currentStop++; saveProgress(); renderStop(); window.scrollTo(0,0);
+  } else {
+    document.getElementById('secrets-count').textContent =
+      T[lang].doneSecretsText(secretsRevealed, total);
+    localStorage.removeItem(STORAGE_KEY + '_progress');
+    show('s-complete');
+  }
+}
+
+function prevStop() {
+  if (currentStop > 0) {
+    currentStop--; saveProgress(); renderStop(); window.scrollTo(0,0);
+  }
+}
+
+function confirmBack() {
+  document.getElementById('back-modal').style.display = 'flex';
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+applyLang(detectLang());
+</script>
+</body>
+</html>
