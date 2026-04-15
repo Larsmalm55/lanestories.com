@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Bergen — Lane Stories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;500&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --gold:#c9a96e; --gold-dim:rgba(201,169,110,0.4); --gold-faint:rgba(201,169,110,0.08);
+      --ink:#0d0a07; --ink2:#121008; --cream:#f0e6d0; --cream-dim:#c8b896;
+      --muted:#7a6a52; --border:rgba(232,220,200,0.11);
+      --green:rgba(80,180,100,0.12); --green-b:rgba(80,180,100,0.4);
+      --red:rgba(200,80,60,0.12); --red-b:rgba(200,80,60,0.4);
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--ink); color:var(--cream); font-family:'EB Garamond',Georgia,serif; line-height:1.6; overflow-x:hidden; }
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; }
+
+    .screen { display:none; min-height:100vh; flex-direction:column; max-width:480px; margin:0 auto; }
+    .screen.active { display:flex; animation:fadeUp 0.3s ease both; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes shake  { 0%,100%{transform:translateX(0)} 25%,75%{transform:translateX(-5px)} 50%{transform:translateX(5px)} }
+    @keyframes spin   { to{transform:rotate(360deg)} }
+    @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    .topbar { display:flex; align-items:center; padding:18px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .topbar-logo { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.3em; color:var(--gold); text-decoration:none; }
+    .topbar-back { background:none; border:none; color:var(--muted); cursor:pointer; font-size:18px; padding:0; margin-right:14px; }
+    .topbar-count { margin-left:auto; font-size:11px; letter-spacing:0.15em; color:#4a4030; }
+
+    .prog-wrap { display:flex; gap:4px; padding:10px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .prog-seg { flex:1; height:2px; border-radius:2px; background:rgba(232,220,200,0.1); transition:background 0.4s; }
+    .prog-seg.done   { background:var(--gold); }
+    .prog-seg.active { background:rgba(201,169,110,0.45); }
+
+    .body { flex:1; padding:0 24px 56px; overflow-y:auto; }
+    .eyebrow { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:8px; }
+    h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(34px,8vw,50px); font-weight:300; line-height:1.1; color:var(--cream); margin-bottom:12px; }
+    h2 { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:400; color:var(--cream); margin-bottom:6px; line-height:1.2; }
+    .sub { font-size:13px; font-style:italic; color:var(--muted); margin-bottom:20px; }
+    .rule { width:36px; height:2px; background:linear-gradient(90deg,var(--gold),rgba(201,169,110,0.15)); border-radius:1px; margin-bottom:28px; }
+    p { font-size:15px; color:var(--cream-dim); line-height:1.85; margin-bottom:1em; }
+
+    .btn { display:block; width:100%; padding:15px 20px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:11px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:opacity 0.2s,transform 0.2s; text-align:center; }
+    .btn:hover:not(:disabled) { opacity:0.88; transform:translateY(-1px); }
+    .btn:disabled { opacity:0.5; cursor:default; transform:none; }
+    .btn-outline { display:block; width:100%; padding:15px 20px; background:transparent; color:var(--gold); border:1px solid var(--gold-dim); border-radius:2px; font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:background 0.2s; text-align:center; }
+    .btn-outline:hover { background:var(--gold-faint); }
+    .btn-ghost { display:block; width:100%; padding:13px 20px; background:transparent; color:var(--muted); border:1px solid var(--border); border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:border-color 0.2s,color 0.2s; }
+    .btn-ghost:hover { border-color:var(--gold-dim); color:var(--cream-dim); }
+
+    .route-card { border:1px solid var(--border); border-radius:2px; padding:22px; margin-bottom:14px; cursor:pointer; background:rgba(255,255,255,0.015); transition:border-color 0.25s,background 0.2s,transform 0.2s; position:relative; }
+    .route-card:hover { border-color:var(--gold-dim); background:rgba(201,169,110,0.04); transform:translateY(-2px); }
+    .route-card.locked { opacity:0.35; cursor:default; }
+    .route-card.locked:hover { transform:none; border-color:var(--border); background:rgba(255,255,255,0.015); }
+    .r-emoji { font-size:30px; margin-bottom:12px; display:block; }
+    .r-name  { font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--cream); margin-bottom:3px; }
+    .r-tag   { font-size:12px; font-style:italic; color:var(--muted); margin-bottom:14px; }
+    .tags    { display:flex; flex-wrap:wrap; gap:6px; }
+    .tag     { display:inline-block; padding:3px 10px; border:1px solid var(--gold-dim); border-radius:20px; font-size:10px; color:var(--gold); }
+    .tag.dim { border-color:var(--border); color:var(--muted); }
+    .soon-badge { position:absolute; top:14px; right:14px; padding:3px 10px; background:rgba(13,10,7,0.8); border:1px solid var(--border); border-radius:20px; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); }
+
+    .order-box { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:24px; }
+    .order-hdr { background:var(--gold-faint); border-bottom:1px solid var(--border); padding:18px 22px; display:flex; justify-content:space-between; align-items:center; }
+    .order-title { font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.12em; color:var(--cream); }
+    .order-price { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:300; color:var(--gold); }
+    .order-body { padding:20px 22px; }
+    .order-item { display:flex; gap:10px; font-size:13px; color:var(--cream-dim); margin-bottom:9px; }
+    .order-item::before { content:'—'; color:var(--gold); flex-shrink:0; }
+
+    .form-label { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px; }
+    .form-input { width:100%; padding:13px 16px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:2px; color:var(--cream); font-family:'EB Garamond',serif; font-size:16px; outline:none; transition:border-color 0.2s; margin-bottom:16px; }
+    .form-input:focus { border-color:var(--gold-dim); }
+    .form-input.err { border-color:var(--red-b); background:var(--red); animation:shake 0.35s ease; }
+    .card-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .spinner { width:18px; height:18px; border:2px solid rgba(13,10,7,0.3); border-top-color:var(--ink); border-radius:50%; animation:spin 0.7s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+    .or { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(--muted); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; }
+    .or::before, .or::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    .code-row   { display:flex; gap:8px; margin-bottom:8px; }
+    .code-input { flex:1; padding:13px 16px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:2px; color:var(--cream); font-family:'Cinzel',serif; font-size:16px; letter-spacing:0.3em; text-transform:uppercase; text-align:center; outline:none; transition:border-color 0.2s; }
+    .code-input:focus { border-color:var(--gold-dim); }
+    .code-input.err { border-color:var(--red-b); background:var(--red); animation:shake 0.35s ease; }
+    .code-input.ok  { border-color:var(--gold); background:var(--gold-faint); }
+    .code-btn { padding:13px 18px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+    .code-msg     { font-size:12px; text-align:center; min-height:18px; }
+    .code-msg.err { color:rgba(220,90,70,0.9); }
+    .code-msg.ok  { color:var(--gold); }
+
+    .stop-icon  { text-align:center; font-size:52px; margin:24px 0 16px; }
+    .story-box  { background:rgba(255,255,255,0.022); border:1px solid var(--border); border-radius:2px; padding:22px 24px; margin-bottom:20px; font-size:15px; color:var(--cream-dim); line-height:1.85; }
+    .story-box p { margin-bottom:1em; }
+    .story-box p:last-child { margin-bottom:0; }
+    .secret-box { background:rgba(201,169,110,0.06); border:1px solid rgba(201,169,110,0.28); border-radius:2px; padding:20px 22px; margin-bottom:20px; }
+    .secret-lbl { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:10px; }
+    .secret-txt { font-size:14px; color:var(--gold); line-height:1.75; }
+
+    .map-wrap { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:20px; }
+    .map-canvas { width:100%; height:220px; background:#1a1208; position:relative; }
+    .map-canvas iframe { width:100%; height:100%; border:none; display:block; filter:sepia(0.15) contrast(1.05); }
+    .map-footer { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.02); border-top:1px solid var(--border); gap:10px; flex-wrap:wrap; }
+    .map-legend { display:flex; gap:14px; }
+    .map-legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); }
+    .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .legend-dot.you  { background:#4a9eff; box-shadow:0 0 0 3px rgba(74,158,255,0.25); }
+    .legend-dot.dest { background:#c9a96e; box-shadow:0 0 0 3px rgba(201,169,110,0.25); }
+    .map-nav-btn { padding:7px 14px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; text-decoration:none; display:inline-block; }
+    .map-gps-note { font-size:11px; color:var(--muted); padding:8px 14px; text-align:center; background:rgba(255,255,255,0.015); border-top:1px solid var(--border); display:none; }
+    .map-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; animation:pulse 2s infinite; }
+
+    .complete-wrap { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 24px 56px; }
+    .reward-box { background:var(--gold-faint); border:1px solid rgba(201,169,110,0.25); border-radius:2px; padding:22px 28px; margin:24px 0 32px; width:100%; }
+
+    .modal { display:none; position:fixed; inset:0; background:rgba(13,10,7,0.9); z-index:300; align-items:center; justify-content:center; padding:24px; }
+    .modal-box { background:var(--ink2); border:1px solid var(--border); border-radius:2px; padding:32px; max-width:340px; width:100%; text-align:center; }
+
+    .mail-icon { font-size:52px; text-align:center; margin:32px 0 20px; }
+    .confirm-box { background:var(--green); border:1px solid var(--green-b); border-radius:2px; padding:20px 22px; margin-bottom:24px; }
+    .confirm-code { font-family:'Cinzel',serif; font-size:28px; letter-spacing:0.3em; color:var(--gold); text-align:center; margin:12px 0 6px; }
+    .confirm-note { font-size:13px; color:var(--muted); text-align:center; line-height:1.65; }
+
+    .hero-vis { height:190px; background:linear-gradient(160deg,#1a1208,#2e1e0a,#1a1208); display:flex; align-items:center; justify-content:center; font-size:70px; position:relative; overflow:hidden; flex-shrink:0; }
+    .hero-vis::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 60%,rgba(201,169,110,0.14) 0%,transparent 70%); }
+    .hero-vis::after  { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(201,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.04) 1px,transparent 1px); background-size:40px 40px; }
+    .incl-item { display:flex; gap:12px; font-size:13px; color:var(--muted); margin-bottom:8px; }
+    .incl-item span:first-child { color:var(--gold); }
+
+    /* Resume banner */
+    .resume-banner { background:rgba(201,169,110,0.08); border:1px solid rgba(201,169,110,0.25); border-radius:2px; padding:14px 18px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .resume-text { font-size:13px; color:var(--cream-dim); }
+    .resume-btn { padding:7px 14px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+
+    /* TEST BANNER */
+    .test-banner { background:rgba(255,200,0,0.08); border:1px solid rgba(255,200,0,0.3); border-radius:2px; padding:10px 16px; margin-bottom:16px; display:flex; align-items:center; gap:10px; font-size:12px; color:rgba(255,210,0,0.85); }
+
+    /* ROUTE HEADER */
+    .route-header { background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:2px; padding:16px 20px; margin-bottom:20px; }
+    .route-header-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:400; color:var(--cream); margin-bottom:3px; }
+    .route-header-sub { font-size:12px; color:var(--muted); margin-bottom:14px; font-style:italic; }
+    .route-stops-row { display:flex; align-items:center; gap:4px; }
+    .rsp { display:flex; flex-direction:column; align-items:center; gap:3px; }
+    .rsp-num { width:24px; height:24px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; font-size:9px; color:var(--muted); background:var(--ink); transition:all 0.3s; flex-shrink:0; }
+    .rsp-num.done { background:var(--gold); border-color:var(--gold); color:var(--ink); }
+    .rsp-num.active { border-color:var(--gold); color:var(--gold); }
+    .rsp-lbl { font-size:9px; color:var(--muted); max-width:48px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .rsp-line { width:12px; height:1px; background:var(--border); margin-bottom:13px; flex-shrink:0; }
+
+    /* DRINK STATUS */
+    .drink-status { display:flex; align-items:center; gap:8px; padding:9px 14px; border:1px solid var(--border); border-radius:2px; margin-bottom:16px; font-size:12px; color:var(--muted); }
+    .drink-status.has-drink { border-color:rgba(201,169,110,0.3); background:rgba(201,169,110,0.05); color:var(--cream-dim); }
+
+    /* AUDIO GUIDE */
+    .audio-guide { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:20px; }
+    .audio-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:rgba(255,255,255,0.02); gap:12px; }
+    .audio-label { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); }
+    .audio-sublbl { font-size:11px; color:var(--muted); margin-top:2px; }
+    .audio-play-btn { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#c9a96e,#8a5a2a); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:opacity 0.2s; }
+    .audio-play-btn:hover { opacity:0.88; }
+    .audio-play-icon { width:0; height:0; border-style:solid; border-width:5px 0 5px 9px; border-color:transparent transparent transparent var(--ink); margin-left:2px; }
+    .audio-pause-icon { display:flex; gap:2px; }
+    .audio-pause-icon span { width:3px; height:10px; background:var(--ink); border-radius:1px; }
+    .audio-progress { height:2px; background:rgba(232,220,200,0.1); }
+    .audio-progress-bar { height:100%; background:var(--gold); width:0%; transition:width 0.3s; }
+    .voice-row { display:flex; align-items:center; gap:10px; padding:10px 14px; border-top:1px solid var(--border); background:rgba(255,255,255,0.015); }
+    .voice-row-label { font-size:11px; color:var(--muted); white-space:nowrap; }
+    .voice-select { flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:2px; color:var(--cream); font-family:'EB Garamond',serif; font-size:13px; padding:5px 8px; outline:none; cursor:pointer; }
+    .voice-select:focus { border-color:var(--gold-dim); }
+    .voice-select option { background:#1a1208; color:var(--cream); }
+
+    /* HISTORICAL BACKGROUND */
+    .hist-bg { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:20px; }
+    .hist-bg-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; cursor:pointer; background:rgba(255,255,255,0.02); }
+    .hist-bg-label { font-size:12px; color:var(--muted); }
+    .hist-bg-arrow { font-size:11px; color:var(--muted); transition:transform 0.25s; display:inline-block; }
+    .hist-bg-arrow.open { transform:rotate(180deg); }
+    .hist-bg-body { padding:0 16px; font-size:14px; color:var(--cream-dim); line-height:1.8; max-height:0; overflow:hidden; transition:max-height 0.4s ease, padding 0.3s; }
+    .hist-bg-body.open { max-height:600px; padding:16px; }
+    .hist-bg-body p { margin-bottom:0.85em; }
+    .hist-bg-body p:last-child { margin-bottom:0; }
+
+    /* DRINK TIP BOX */
+    .drink-tip { border:1px solid rgba(201,169,110,0.3); border-radius:2px; padding:18px 20px; margin-bottom:20px; background:rgba(201,169,110,0.05); }
+    .drink-tip-label { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:10px; }
+    .drink-tip-body { font-size:14px; color:var(--cream-dim); line-height:1.75; }
+
+    /* ORIENTATION NOTE */
+    .orient-note { display:flex; align-items:center; gap:8px; padding:9px 14px; border:1px solid rgba(100,150,255,0.2); background:rgba(100,150,255,0.05); border-radius:2px; margin-bottom:16px; font-size:12px; color:rgba(180,200,255,0.85); }
+  </style>
+</head>
+<body>
+
+<!-- ══ INTRO ══ -->
+<div class="screen active" id="s-intro">
+  <div class="hero-vis"><span style="position:relative;z-index:1">⚓</span></div>
+  <div class="topbar">
+    <a href="javascript:void(0)" onclick="goHome()" class="topbar-back">←</a>
+    <a href="javascript:void(0)" onclick="goHome()" class="topbar-logo">Lane Stories</a>
+  </div>
+  <div class="body">
+    <span class="eyebrow" style="margin-top:28px;" id="i-region"></span>
+    <h1 id="i-title"></h1>
+    <div class="rule"></div>
+    <p id="i-p1"></p>
+    <p style="margin-bottom:28px;" id="i-p2"></p>
+    <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:2px;padding:18px 20px;margin-bottom:28px;">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;" id="i-incl-hdr"></div>
+      <div class="incl-item"><span>—</span><span id="ii1"></span></div>
+      <div class="incl-item"><span>—</span><span id="ii2"></span></div>
+      <div class="incl-item"><span>—</span><span id="ii3"></span></div>
+      <div class="incl-item"><span>—</span><span id="ii4"></span></div>
+    </div>
+    <!-- Resume banner (shown if in-progress tour found) -->
+    <div class="resume-banner" id="resume-banner" style="display:none;">
+      <span class="resume-text" id="resume-text"></span>
+      <button class="resume-btn" id="resume-btn" onclick="resumeTour()"></button>
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;color:var(--cream-dim);line-height:1.5;margin-bottom:6px;" id="i-quote"></div>
+    <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:32px;" id="i-quote-attr"></div>
+    <button class="btn" id="i-cta" onclick="show('s-routes')"></button>
+  </div>
+</div>
+
+<!-- ══ ROUTES ══ -->
+<div class="screen" id="s-routes">
+  <div class="topbar">
+    <button class="topbar-back" onclick="show('s-intro')">←</button>
+    <span class="topbar-logo" id="r-topbar"></span>
+  </div>
+  <div class="body" style="padding-top:28px;">
+    <span class="eyebrow" id="r-eyebrow"></span>
+    <h2 style="margin-bottom:6px;" id="r-title"></h2>
+    <p class="sub" id="r-sub"></p>
+    <div class="route-card" onclick="selectRoute('hollender')">
+      <span class="r-emoji">⚓</span>
+      <div class="r-name" id="route1-name"></div>
+      <div class="r-tag"  id="route1-tag"></div>
+      <div class="tags"><span class="tag" id="route1-t1"></span><span class="tag" id="route1-t2"></span><span class="tag" id="route1-t3"></span><span class="tag" id="route1-t4"></span></div>
+    </div>
+    <div class="route-card locked">
+      <span class="soon-badge" id="r-soon"></span>
+      <span class="r-emoji">🔥</span>
+      <div class="r-name" id="route2-name"></div>
+      <div class="r-tag"  id="route2-tag"></div>
+      <div class="tags"><span class="tag dim" id="route2-t1"></span><span class="tag dim" id="route2-t2"></span></div>
+    </div>
+    <div class="route-card locked">
+      <span class="soon-badge" id="r-soon2"></span>
+      <span class="r-emoji">🐟</span>
+      <div class="r-name" id="route3-name"></div>
+      <div class="r-tag"  id="route3-tag"></div>
+      <div class="tags"><span class="tag dim" id="route3-t1"></span><span class="tag dim" id="route3-t2"></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ORDER ══ -->
+<div class="screen" id="s-order">
+  <div class="topbar">
+    <button class="topbar-back" onclick="show('s-routes')">←</button>
+    <span class="topbar-logo" id="o-topbar"></span>
+  </div>
+  <div class="body" style="padding-top:28px;">
+    <span class="eyebrow" id="o-eyebrow"></span>
+    <h2 id="order-route-name" style="margin-bottom:6px;"></h2>
+    <p class="sub" id="o-sub"></p>
+    <div class="order-box">
+      <div class="order-hdr"><div class="order-title" id="o-box-title"></div><div class="order-price" id="o-box-price"></div></div>
+      <div class="order-body">
+        <div class="order-item" id="oi1"></div>
+        <div class="order-item" id="oi2"></div>
+        <div class="order-item" id="oi3"></div>
+        <div class="order-item" id="oi4"></div>
+      </div>
+    </div>
+    <label class="form-label" id="o-email-lbl"></label>
+    <input class="form-input" id="emailInput" type="email" autocomplete="email" />
+    <label class="form-label" id="o-card-lbl"></label>
+    <input class="form-input" id="cardNumber" type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)" inputmode="numeric" />
+    <div class="card-row">
+      <input class="form-input" id="cardExp" type="text" maxlength="7" oninput="formatExp(this)" inputmode="numeric" />
+      <input class="form-input" id="cardCvc" type="text" placeholder="CVC" maxlength="3" inputmode="numeric" />
+    </div>
+    <button class="btn" id="payBtn" onclick="processPayment()"></button>
+    <p style="font-size:11px;color:#3a3028;text-align:center;margin-bottom:4px;" id="o-secure"></p>
+    <div class="or" id="o-or"></div>
+    <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;" id="o-haveCode"></div>
+    <div class="code-row">
+      <input class="code-input" id="codeInput" type="text" maxlength="8" placeholder="XXXXXXXX" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')" />
+      <button class="code-btn" id="o-unlock-btn" onclick="checkCode()"></button>
+    </div>
+    <div class="code-msg" id="codeMsg"></div>
+    <p style="font-size:10px;color:#2a2018;text-align:center;margin-top:20px;" id="o-test-hint"></p>
+  </div>
+</div>
+
+<!-- ══ CONFIRMATION ══ -->
+<div class="screen" id="s-confirm">
+  <div class="topbar"><span class="topbar-logo" style="margin:auto;">Lane Stories · Bergen</span></div>
+  <div class="body" style="padding-top:0;">
+    <div class="mail-icon">📬</div>
+    <span class="eyebrow" style="text-align:center;display:block;" id="cf-eyebrow"></span>
+    <h2 style="text-align:center;margin-bottom:16px;" id="cf-title"></h2>
+    <p style="text-align:center;color:var(--muted);margin-bottom:24px;" id="cf-body"></p>
+    <div class="confirm-box">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:4px;" id="cf-code-lbl"></div>
+      <div class="confirm-code" id="confirm-code"></div>
+      <div class="confirm-note" id="cf-note"></div>
+    </div>
+    <div class="code-row">
+      <input class="code-input" id="codeInput2" type="text" maxlength="8" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')" />
+      <button class="code-btn" id="cf-start-btn" onclick="checkCode2()"></button>
+    </div>
+    <div class="code-msg" id="codeMsg2"></div>
+    <p style="font-size:12px;color:#3a3028;text-align:center;margin-top:16px;" id="cf-noemail"></p>
+  </div>
+</div>
+
+<!-- ══ STOP ══ -->
+<div class="screen" id="s-stop">
+  <div class="topbar">
+    <button class="topbar-back" onclick="confirmBack()">←</button>
+    <span class="topbar-logo">Bergen</span>
+    <span class="topbar-count" id="stop-count"></span>
+  </div>
+  <div class="prog-wrap" id="prog-bar"></div>
+  <div class="body">
+
+    <!-- Test banner -->
+    <div class="test-banner" id="test-banner" style="display:none;">
+      <span>🧪</span>
+      <span id="test-banner-txt"></span>
+    </div>
+
+    <!-- Route header -->
+    <div class="route-header" id="route-header">
+      <div class="route-header-title" id="rh-title"></div>
+      <div class="route-header-sub" id="rh-sub"></div>
+      <div class="route-stops-row" id="rh-stops"></div>
+    </div>
+
+    <div class="stop-icon" id="stop-icon"></div>
+    <span class="eyebrow" id="stop-year"></span>
+    <h2 id="stop-name"></h2>
+    <p class="sub" id="stop-sub"></p>
+
+    <!-- Drink status -->
+    <div class="drink-status" id="drink-status">
+      <span id="drink-icon" style="font-size:14px;"></span>
+      <span id="drink-text"></span>
+    </div>
+
+    <!-- Orientation note (shown when stop has one) -->
+    <div class="orient-note" id="orient-note" style="display:none;">
+      <span id="orient-text"></span>
+    </div>
+
+    <!-- Audio guide -->
+    <div class="audio-guide" id="audio-guide">
+      <div class="audio-header">
+        <div>
+          <div class="audio-label" id="audio-label"></div>
+          <div class="audio-sublbl" id="audio-sublbl"></div>
+        </div>
+        <button class="audio-play-btn" id="audio-btn" onclick="toggleAudio()">
+          <div class="audio-play-icon" id="audio-icon"></div>
+        </button>
+      </div>
+      <div class="voice-row">
+        <span class="voice-row-label" id="voice-row-label">Voice</span>
+        <select class="voice-select" id="voice-select" onchange="onVoiceChange()"></select>
+      </div>
+      <div class="audio-progress"><div class="audio-progress-bar" id="audio-progress-bar"></div></div>
+    </div>
+
+    <div class="story-box" id="stop-story"></div>
+
+    <!-- Historical background -->
+    <div class="hist-bg" id="hist-bg" style="display:none;">
+      <div class="hist-bg-header" onclick="toggleHistBg()">
+        <span class="hist-bg-label" id="hist-bg-label"></span>
+        <span class="hist-bg-arrow" id="hist-bg-arrow">▼</span>
+      </div>
+      <div class="hist-bg-body" id="hist-bg-body"></div>
+    </div>
+
+    <!-- MAP WIDGET -->
+    <div class="map-wrap">
+      <div class="map-canvas" id="map-canvas">
+        <!-- Placeholder shown until user taps to load map -->
+        <div id="map-placeholder" onclick="activateMap()" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:8px;background:rgba(255,255,255,0.02);">
+          <div style="font-size:28px;">🗺️</div>
+          <div id="map-placeholder-txt" style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);"></div>
+          <div style="font-size:11px;color:var(--muted);" id="map-placeholder-sub"></div>
+        </div>
+        <iframe id="map-iframe" src="" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="display:none;width:100%;height:100%;border:none;filter:sepia(0.15) contrast(1.05);"></iframe>
+      </div>
+      <div class="map-footer">
+        <div class="map-legend">
+          <div class="map-legend-item"><span class="legend-dot you"></span><span id="map-lbl-you"></span></div>
+          <div class="map-legend-item"><span class="legend-dot dest"></span><span id="map-lbl-dest"></span></div>
+        </div>
+        <a class="map-nav-btn" id="map-nav-btn" href="#" target="_blank" rel="noopener"></a>
+      </div>
+      <div class="map-gps-note" id="map-gps-note"></div>
+    </div>
+    <div id="secret-area"></div>
+    <!-- Drink tip (shown when stop has one) -->
+    <div class="drink-tip" id="drink-tip-box" style="display:none;">
+      <span class="drink-tip-label" id="drink-tip-label"></span>
+      <div class="drink-tip-body" id="drink-tip-body"></div>
+    </div>
+    <button class="btn" id="next-btn" onclick="nextStop()"></button>
+    <button class="btn-ghost" id="prev-btn" onclick="prevStop()" style="display:none;"></button>
+  </div>
+</div>
+
+<!-- ══ COMPLETE ══ -->
+<div class="screen" id="s-complete">
+  <div class="topbar"><span class="topbar-logo" style="margin:auto;">Lane Stories · Bergen</span></div>
+  <div class="complete-wrap">
+    <div style="font-size:44px;margin-bottom:20px;">✦</div>
+    <h2 style="text-align:center;font-size:28px;margin-bottom:8px;" id="done-title"></h2>
+    <div style="width:36px;height:2px;background:linear-gradient(90deg,var(--gold),rgba(201,169,110,0.2));border-radius:1px;margin:14px auto;"></div>
+    <p style="color:var(--muted);text-align:center;" id="secrets-count"></p>
+    <div class="reward-box">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:8px;" id="done-reward-lbl"></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--cream);text-align:center;margin-bottom:4px;">Pergola</div>
+      <div style="font-size:12px;color:var(--muted);text-align:center;" id="done-reward-note"></div>
+    </div>
+    <button class="btn" id="done-another" onclick="show('s-routes')" style="width:100%;"></button>
+    <button class="btn-outline" id="done-back" onclick="show('s-intro')" style="width:100%;"></button>
+  </div>
+</div>
+
+<!-- ══ BACK MODAL ══ -->
+<div class="modal" id="back-modal">
+  <div class="modal-box">
+    <div style="font-size:28px;margin-bottom:16px;">🚶</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:22px;color:var(--cream);margin-bottom:10px;" id="bm-title"></h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.7;" id="bm-body"></p>
+    <button class="btn" id="bm-leave" onclick="document.getElementById('back-modal').style.display='none';show('s-routes')" style="margin-bottom:0;"></button>
+    <button class="btn-outline" id="bm-stay" onclick="document.getElementById('back-modal').style.display='none'" style="margin-top:8px;"></button>
+  </div>
+</div>
+
+<script>
+// ── TRANSLATIONS ─────────────────────────────────────────────────────────
+const T = {
+  no: {
+    region:'Norge · Bergen',
+    iTitle:'Den skjulte<br><em style="font-style:italic;color:var(--gold)">byen</em>',
+    iP1:'Bergen har vært en av Europas viktigste handelsbyer i 700 år. Langs bryggene og i de smale gatebakker skjuler det seg historier som aldri kom med i guidebøkene.',
+    iP2:'Velg en rute. Gå i ditt eget tempo. Opplev Bergen slik de færreste gjør.',
+    iInclHdr:'Inkludert i alle ruter',
+    ii1:'Ekte historiske fortellinger ved hvert stopp',
+    ii2:'Skjulte insidertips — kun for deg',
+    ii3:'Google Maps-navigasjon mellom stopp',
+    ii4:'Velkomstdrink på siste destinasjon',
+    iQuote:'"Vi gikk forbi det smuget hundre ganger. Lane Stories var første gang vi faktisk stoppet."',
+    iQuoteAttr:'— Pilottester, Bergen',
+    iCta:'Se tilgjengelige ruter →',
+    resumeText:'Du har en påbegynt tur — stopp', resumeBtn:'Fortsett',
+    rTopbar:'Bergen — Velg rute', rEyebrow:'Tilgjengelige ruter',
+    rTitle:'Hvem vil du følge?', rSub:'Hver rute åpner et eget kapittel av Bergens skjulte historie.',
+    route1Name:'Hollendergaten & Hanseatisk mystikk', route1Tag:'Kjøpmenn, intriger og hemmelige kjellere',
+    t1:'90 min', t2:'1.4 km', t3:'Lett', t4:'4 stopp', rSoon:'Kommer snart',
+    route2Name:'Brannene som formet Bergen', route2Tag:'Sju branner. Sju gjenoppbygginger. Én by.',
+    r2t1:'2 t', r2t2:'2.1 km',
+    route3Name:'Fisketorgets hemmeligheter', route3Tag:'Fra vikingfiske til Europas matbors',
+    r3t1:'60 min', r3t2:'0.9 km',
+    oTopbar:'Bestill rute', oEyebrow:'Én betaling · Tilgang i 48 timer',
+    oSub:'Du mottar en unik tilgangskode på e-post umiddelbart etter betaling.',
+    oBoxTitle:'Én rute · Bergen', oBoxPrice:'kr 45',
+    oi1:'4 historiske stopp med fortellinger', oi2:'Skjult insidertips ved hvert stopp',
+    oi3:'Google Maps mellom stopp', oi4:'Velkomstdrink på Pergola',
+    oEmailLbl:'Din e-postadresse', oCardLbl:'Kortopplysninger',
+    oCardExpPh:'MM / ÅÅ', oPayBtn:'Betal kr 45 og motta kode',
+    oSecure:'🔒 Sikker betaling · Koden sendes til din e-post',
+    oOr:'eller', oHaveCode:'Har du allerede en kode?', oUnlockBtn:'Lås opp',
+    oTestHint:'TEST: bruk kode BERGEN01 for å teste flyten',
+    cfEyebrow:'Betaling mottatt', cfTitle:'Koden din er klar.',
+    cfBody:'Vi har sendt tilgangskoden til <strong id="confirm-email" style="color:var(--cream-dim)"></strong>.<br>Skriv den inn nedenfor for å starte turen.',
+    cfCodeLbl:'Din tilgangskode', cfNote:'Koden er også sendt til din e-post. Gyldig i 48 timer.',
+    cfStartBtn:'Start turen',
+    cfNoEmail:'Ikke fått e-post? Sjekk søppelpost eller <a href="#" onclick="show(\'s-order\');return false;" style="color:var(--gold);text-decoration:none;">prøv igjen</a>.',
+    mapPrefix:'Gå til: ', revealBtn:'🔑 Vis det skjulte tipset',
+    secretLbl:'Kun for deg', prevBtn:'← Forrige stopp',
+    doneTitleText:'Du har fullført<br>den skjulte ruten.',
+    doneSecretsText:(r,t)=>`${r} av ${t} hemmelige tips avdekket.`,
+    doneRewardLbl:'Din belønning venter',
+    doneRewardNote:'Vis denne skjermen ved ankomst<br>for en gratis velkomstdrink',
+    doneAnother:'Velg en ny rute', doneBack:'Tilbake til Bergen',
+    bmTitle:'Avbryte turen?',
+    bmBody:'Turen er låst opp i 48 timer. Fremgangen din er lagret — du kan fortsette der du slapp.',
+    bmLeave:'Gå tilbake til ruter', bmStay:'Fortsett turen',
+    codeShort:'Koden er for kort.', codeInvalid:'Ugyldig kode — sjekk e-posten din.',
+    codeOk:'✓ Kode godkjent — låser opp…', codeWrong:'Feil kode — kopier den fra skjermen over.',
+    codeUnlocking:'✓ Låst opp — starter turen…', processing:'Behandler…',
+    nextPrefix:'Neste stopp: ', nextSuffix:'... →', completeTour:'Fullfør turen →',
+    mapYou:'Din posisjon', mapDest:'Destinasjon', mapNav:'Naviger', mapGpsOff:'Posisjon ikke tilgjengelig — slå på GPS for å se deg selv på kartet.',
+    mapTapToLoad:'Trykk for å åpne kart', mapTapSub:'Viser din posisjon og destinasjon',
+    testBanner:'🧪 Testmodus – gratis tilgang. Betaling deaktivert. Kun for testing.',
+    routeTitle:'Dyvekes kveld', routeSub:'Vin · Sider · Mat · 3–4 timer',
+    audioLabel:'Lydguide', audioSublbl:'Trykk for å høre historien — ca. 4 min',
+    histBgLabel:'📜 Historisk bakgrunn',
+    drinkTipLabel:'🍷 Drinktips for dette stoppet',
+  },
+  en: {
+    region:'Norway · Bergen',
+    iTitle:'The hidden<br><em style="font-style:italic;color:var(--gold)">city</em>',
+    iP1:'Bergen has been one of Europe\'s most important trading cities for 700 years. Along the wharves and in the narrow lanes lie stories that never made it into the guidebooks.',
+    iP2:'Choose a route. Walk at your own pace. Experience Bergen the way very few do.',
+    iInclHdr:'Included in every route',
+    ii1:'Real historical stories at every stop',
+    ii2:'Hidden insider tips — yours alone',
+    ii3:'Google Maps navigation between stops',
+    ii4:'Welcome drink at the final destination',
+    iQuote:'"We walked past that alley a hundred times. Lane Stories was the first time we actually stopped."',
+    iQuoteAttr:'— Pilot tester, Bergen',
+    iCta:'See available routes →',
+    resumeText:'You have a tour in progress — stop', resumeBtn:'Continue',
+    rTopbar:'Bergen — Choose route', rEyebrow:'Available routes',
+    rTitle:'Who do you want to follow?', rSub:'Each route opens a separate chapter of Bergen\'s hidden history.',
+    route1Name:'Hollendergaten & Hanseatic Secrets', route1Tag:'Merchants, intrigue and hidden cellars',
+    t1:'90 min', t2:'1.4 km', t3:'Easy', t4:'4 stops', rSoon:'Coming soon',
+    route2Name:'The Fires That Shaped Bergen', route2Tag:'Seven fires. Seven rebuildings. One city.',
+    r2t1:'2 hrs', r2t2:'2.1 km',
+    route3Name:'Secrets of the Fish Market', route3Tag:'From Viking fishing to Europe\'s table',
+    r3t1:'60 min', r3t2:'0.9 km',
+    oTopbar:'Book route', oEyebrow:'One payment · Access for 48 hours',
+    oSub:'You\'ll receive a unique access code by email immediately after payment.',
+    oBoxTitle:'One route · Bergen', oBoxPrice:'€4',
+    oi1:'4 historical stops with stories', oi2:'Hidden insider tip at every stop',
+    oi3:'Google Maps navigation between stops', oi4:'Welcome drink at Pergola',
+    oEmailLbl:'Your email address', oCardLbl:'Card details',
+    oCardExpPh:'MM / YY', oPayBtn:'Pay €4 and receive code',
+    oSecure:'🔒 Secure payment · Code sent to your email',
+    oOr:'or', oHaveCode:'Already have a code?', oUnlockBtn:'Unlock',
+    oTestHint:'TEST: use code BERGEN01 to try the full flow',
+    cfEyebrow:'Payment received', cfTitle:'Your code is ready.',
+    cfBody:'We\'ve sent your access code to <strong id="confirm-email" style="color:var(--cream-dim)"></strong>.<br>Enter it below to start the tour.',
+    cfCodeLbl:'Your access code', cfNote:'The code has also been sent to your email. Valid for 48 hours.',
+    cfStartBtn:'Start tour',
+    cfNoEmail:'No email? Check your spam folder or <a href="#" onclick="show(\'s-order\');return false;" style="color:var(--gold);text-decoration:none;">try again</a>.',
+    mapPrefix:'Navigate to: ', revealBtn:'🔑 Reveal the hidden tip',
+    secretLbl:'For your eyes only', prevBtn:'← Previous stop',
+    doneTitleText:'You\'ve completed<br>the hidden route.',
+    doneSecretsText:(r,t)=>`${r} of ${t} hidden tips revealed.`,
+    doneRewardLbl:'Your reward awaits',
+    doneRewardNote:'Show this screen on arrival<br>for a complimentary welcome drink',
+    doneAnother:'Choose another route', doneBack:'Back to Bergen',
+    bmTitle:'Leave the tour?',
+    bmBody:'Your tour is unlocked for 48 hours. Your progress is saved — you can continue where you left off.',
+    bmLeave:'Go back to routes', bmStay:'Continue tour',
+    codeShort:'Code too short — check your email.', codeInvalid:'Invalid code — check your email.',
+    codeOk:'✓ Code accepted — unlocking…', codeWrong:'Wrong code — copy it from the screen above.',
+    codeUnlocking:'✓ Unlocked — starting tour…', processing:'Processing…',
+    nextPrefix:'Next stop: ', nextSuffix:'... →', completeTour:'Complete the tour →',
+    mapYou:'Your position', mapDest:'Destination', mapNav:'Navigate', mapGpsOff:'Position unavailable — enable GPS to see yourself on the map.',
+    mapTapToLoad:'Tap to open map', mapTapSub:'Shows your position and destination',
+    testBanner:'🧪 Test mode – free access. Payment disabled. For testing only.',
+    routeTitle:"Dyveke's Evening", routeSub:'Wine · Cider · Food · 3–4 hours',
+    audioLabel:'Audio guide', audioSublbl:'Tap to hear the story — approx. 4 min',
+    histBgLabel:'📜 Historical background',
+    drinkTipLabel:'🍷 Drink tip for this stop',
+  }
+};
+
+// ── STOP DATA (bilingual) ─────────────────────────────────────────────────
+// Verified coordinates for each physical location in Bergen
+const STOP_COORDS = [
+  { lat: 60.395074, lon: 5.326751 }, // Hollendergaten 3
+  { lat: 60.395089, lon: 5.326901 }, // Dyvekes Vinkjeller — Hollendergaten 7
+  { lat: 60.395300, lon: 5.329300 }, // Siderbar Bergen — Kong Oscars gate 11
+  { lat: 60.3947387, lon: 5.3284345 }, // Pergola — Nedre Korskirkeallmenningen 9B
+];
+
+const STOPS = {
+  no: [
+    { icon:'🏚️', year:'1550–1650', name:'Hollendergaten', sub:'Startpunkt for ruten',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395074,5.326751',
+      drink: { icon:'🚶', text:'Startpunkt · Ingen drink ennå · Gå sakte', hasDrink: false },
+      audio: 'Se deg rundt. Gaten heter Hollendergaten — hollendernes gate. Det er ingen tilfeldighet. I hundre år, fra midten av 1500-tallet, var dette en av de mest internasjonale gatene i Norge. Da hanseatenes jerngrep om Bergen begynte å løsne, strømmet nederlandske kjøpmenn inn. De brakte vin fra Rhinen, silke fra Frankrike — og historier ingen har hørt siden. Men det viktigste sporet de nederlandske kjøpmennene etterlot seg her, var ikke klær eller krydder. Det var en ung pike ved navn Sigbrit — datter av en nederlandsk kjøpmannsfamilie — som holdt en liten butikk i dette området. Hennes datter skulle bli den mest omtalte kvinnen i 1500-tallets Skandinavia. Du møter henne om tolv minutter. Men før du går: legg merke til gatebredden. Den er nøyaktig den samme som på 1500-tallet. Bygningene er nye. Gaten er gammel. Du tråkker på den samme steinen som nederlandske kjøpmenn tråkket for fem hundre år siden.',
+      histbg: ['På 1500-tallet var Bergen den mest internasjonale byen i Nord-Europa. Tyskere, nederlendere, skotter, engelskmenn og dansker levde side om side i sine egne kvarterer.','Hollendergaten er den eneste gaten i Bergen som fortsatt bærer et nasjonalitetsnavn — en levende påminnelse om den flerkulturelle handelsbyen.','Men det viktigste sporet de nederlandske kjøpmennene etterlot seg her, var ikke klær eller krydder. Det var en ung pike ved navn Sigbrit — datter av en nederlandsk kjøpmannsfamilie — som holdt en liten butikk i dette området. Hennes datter skulle bli den mest omtalte kvinnen i 1500-tallets Skandinavia. Du møter henne om tolv minutter.','Legg merke til gatebredden. Den er nøyaktig den samme som på 1500-tallet. Bygningene er nye. Gaten er gammel.'],
+      story:['Se deg rundt. Gaten heter Hollendergaten — hollendernes gate. Det er ingen tilfeldighet. I hundre år, fra midten av 1500-tallet, var dette en av de mest internasjonale gatene i Norge.','Da hanseatenes jerngrep om Bergen begynte å løsne, strømmet nederlandske kjøpmenn inn. De brakte vin fra Rhinen, silke fra Frankrike — og historier ingen har hørt siden.','«Etter hvert som hanseatenes jerngrep på Bergen begynte å løsne, flommet nederlandske kjøpmenn inn. De brakte vin fra Rhinen, silke fra Frankrike — og historier ingen har hørt siden.»','De nederlandske kjøpmennene — «hollenderne» som nordmennene kalte dem — ble ikke ønsket velkommen av alle. Hansaligaen på Bryggen hadde hatt monopol på utenrikshandel i over to hundre år. Men fra 1550-tallet sprakk dette monopolet, og nederlandske kjøpmenn fylte raskt hullet.'],
+      secret:'Ser du det lille ankeremblemet øverst i vinduskarmen? Det var et hemmelig tegn til andre kjøpmenn — bare de innvidde kjente symbolet.' },
+    { icon:'🍷', year:'1516', name:'Dyvekes Vinkjeller', sub:'Kjærlighet, makt og gift',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395089,5.326901',
+      drink: { icon:'🍷', text:'Din drink her · Be om noe fra Rhinen — det er historisk korrekt', hasDrink: true },
+      audio: 'Baren er oppkalt etter henne. De fleste som bestiller vin her vet ikke hvem hun var. Du vet det. Hennes navn var Dyveke Sigritsdatter. Dyveke betyr "liten due" på nederlandsk. Hun ble født rundt 1490 — enten i Bergen eller Amsterdam, historikerne er ikke helt enige. Det de er enige om: hun var vakker, hun var klok, og hun forvandlet en kjedelig dansk prins til en forelsknet tosk. Da den unge kong Christian II red gjennom Bergen i 1507 og fikk øye på Dyveke, stoppet han. Han kom seg aldri helt videre. I 1517 var Dyveke omtrent 27 år. En dag spiste hun kirsebær — en gave fra en adelsmann som var kjent for å mislike henne. Dagen etter var hun syk. En uke senere var hun død. Gift, mente kongen. Mord, mente hoffet. Uheldig fordøyelse, sa kirken. Christian II gråt offentlig. Og han ble, ifølge alle samtidskilder, aldri den samme igjen.',
+      histbg: [
+        'Christian II ble senere en av Skandinavias mest kontroversielle konger — kjent for Stockholms blodbad i 1520 der han henrettet 80–90 svenske adelsmenn. Men før han ble en tyrann, var han forelsket i en nederlandsk-norsk pike fra Bergen.',
+        'Han tok henne med til Danmark, lot henne bo nær slottet, og nektet å gifte seg med henne til tross for press fra kirke og adel i årevis.',
+        'Dyvekes mor, Sigbrit Villoms, var alt annet enn en passiv forelder. Hun fulgte datteren til København og ble en av de mest innflytelsesrike rådgiverne i hele riket — nederlandsk og norsk handelskunnskap i én person, og kongen lyttet mer til henne enn til sine egne ministre.',
+        'I 1517 var Dyveke omtrent 27 år. En dag spiste hun kirsebær — en gave, sies det, fra en adelsmann ved navn Torben Oxe som var kjent for å mislike henne. Dagen etter var hun syk. En uke senere var hun død. Torben Oxe ble henrettet — om han var skyldig er aldri bevist.',
+        'Christian II gråt offentlig. Han betalte for en vakker grav. Og han ble, ifølge alle samtidskilder, aldri den samme igjen.'
+      ],
+      drinkTip: 'Be om noe fra Rhinen eller Mosel. På 1500-tallet var rhinskvin prestisjevalget i Bergen — den ankom med nederlandske handelsskip. En tørr Riesling fra Mosel eller en Spätburgunder fra Rhinen er så nært Dyvekes verden du kan komme i et glass.',
+      story:[
+        'Baren er oppkalt etter henne. De fleste som bestiller vin her vet ikke hvem hun var. Du vet det.',
+        'Hennes navn var Dyveke Sigritsdatter. «Dyveke» betyr «liten due» på nederlandsk. Hun ble født rundt 1490 — enten i Bergen eller Amsterdam, historikerne er ikke helt enige. Det de er enige om: hun var vakker, hun var klok, og hun forvandlet en kjedelig dansk prins til en forelsknet tosk.',
+        '«Da den unge kong Christian II red gjennom Bergen i 1507 og fikk øye på Dyveke, stoppet han. Han kom seg aldri helt videre.»',
+        'I 1517 var Dyveke omtrent 27 år. En dag spiste hun kirsebær — en gave fra en adelsmann ved navn Torben Oxe som var kjent for å mislike henne. Dagen etter var hun syk. En uke senere var hun død. Torben Oxe ble henrettet. Om han var skyldig er aldri bevist.',
+        'Nå vet du hvem baren er oppkalt etter. Den pike i profilen over bardisken — det er henne. Lille due fra Bergen. Kongens store kjærlighet. Et mysterium som aldri ble løst.'
+      ],
+      secret:'Spør bartenderen om "Sigbrits utvalg" — det er ikke på menyen, men noen vet hva det betyr.' },
+    { icon:'🍎', year:'c. 1110 – i dag', name:'Siderbar Bergen', sub:'Sju hundre år med norsk sider',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395300,5.329300',
+      drink: { icon:'🍎', text:'Din drink her · En tørr norsk sider — Hardanger hvis de har det', hasDrink: true },
+      audio: 'Før vinen kom til Bergen med skip. Før nederlandske kjøpmenn rullet rhinskfatene opp på bryggen. Lenge før det — fantes det sider. Munkene ved Munkeliv kloster, som lå noen hundre meter fra der du står nå, dyrket epler og presset sin egen sider. Klosteret brant i 1455. Tradisjonen overlevde. Hardanger — dalen bak fjellene øst for Bergen — er Norges epleland. Ikke fordi klimaet er spesielt gunstig, men fordi folk her aldri sluttet å dyrke. Sider var også demokratisk. Vin var for kjøpmenn og konger. Øl var for hverdagen. Men sider — frisk, fruktig, litt syrlig — var det bønder, tjenestepiker og reisende drakk. Det var Bergens eget alternativ til det som kom utenfra. Bergen hadde sider lenge før det hadde vin. Neste gang noen forteller deg at norsk drikkekultur er ny — minn dem på munkene fra Munkeliv og de sju hundre årene de har glemt.',
+      histbg: [
+        'Munkeliv kloster, grunnlagt rundt 1110, var ett av Bergens to store benediktinerklostere. Munkene var selvforsynte — de dyrket urter, grønnsaker og frukt. Eplehager er dokumentert. Sider var hverdagsdrikken, brukt både til mat og som medisin.',
+        'Da reformasjonen i 1537 oppløste klostrene, fortsatte bønder i Hardanger en tradisjon som er ubrutt den dag i dag.',
+        'Hardanger — dalen bak fjellene øst for Bergen — er Norges epleland. Ikke fordi klimaet er spesielt gunstig, men fordi folk her aldri sluttet å dyrke. I dag produserer Hardanger omtrent 40 % av all norsk frukt.',
+        'Produsenter som Store Naa Siderkompani holder i live tradisjoner som er sju hundre år gamle.',
+        'Sider var også demokratisk. Vin var for kjøpmenn og konger. Øl var for hverdagen. Men sider — frisk, fruktig, litt syrlig — var det bønder, tjenestepiker og reisende drakk. Det var Bergens eget alternativ til det som kom utenfra.'
+      ],
+      drinkTip: 'Be om «Brudeferd» fra Store Naa Siderkompani. En tørr, elegant sider fra Hardanger — nesten vinaktig, med ren syre og lang ettersmak. Nøyaktig slik munkene ved Munkeliv ville ha likt det. Hvis du ser den på menyen, er det det rette valget for dette stoppet.',
+      story: [
+        'Før vinen kom til Bergen med skip. Før nederlandske kjøpmenn rullet rhinskfatene opp på bryggen. Lenge før det — fantes det sider.',
+        '«Munkene ved Munkeliv kloster, som lå noen hundre meter fra der du står nå, dyrket epler og presset sin egen sider. Klosteret brant i 1455. Tradisjonen overlevde.»',
+        'Hardanger — dalen bak fjellene øst for Bergen — produserer omtrent 40 % av all norsk frukt. I dag holder produsenter som Store Naa Siderkompani i live tradisjoner som er sju hundre år gamle.',
+        'Sider var også demokratisk. Vin var for kjøpmenn og konger. Øl var for hverdagen. Men sider — frisk, fruktig, litt syrlig — var det bønder, tjenestepiker og reisende drakk.',
+        'Bergen hadde sider lenge før det hadde vin. Neste gang noen forteller deg at norsk drikkekultur er ny — minn dem på munkene fra Munkeliv og de sju hundre årene de har glemt.'
+      ],
+      secret: 'Tre bank, pause, to bank. Si at du kom fra "visitkortet". Ta kontanter — de tar ikke kort.' },
+    { icon:'🔥', year:'1702 · 1916 · i dag', name:'Pergola', sub:'Der byen brant — og åpnet seg',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.3947387,5.3284345',
+      orient: '🧭 Stå vendt mot Korskirken',
+      drink: { icon:'🍷', text:'Middag og velkomstdrink · Vis skjermen ved ankomst', hasDrink: true },
+      audio: 'Stå stille et øyeblikk. Se rundt deg. Dette åpne rommet — det var ikke ment å være her. Her stod det hus. Tett i tett. Trevegger. Smau så trange at to mennesker måtte snu seg sidelengs for å passere hverandre. Bak deg: arbeid. Foran deg: tro. Kirken var sentrum. Alt annet presset seg rundt den. Så kom ilden. Bybrannen i Bergen 1702 tok det første laget. Bybrannen i Bergen 1916 tok det neste. Husene forsvant. Smauene ble borte. Tomrommet ble igjen. Dette rommet er ikke laget for mennesker. Det er laget for å stoppe ild. En åpning. En pause i byen. Et sår som aldri ble bygget helt igjen. Og nå — sitter folk her. Med vin i glasset. Med tid de ikke hadde før. Se på bordene rundt deg. De står der husene en gang stod. Samtalene du hører ligger oppå lag av arbeid, tro og brann. Byen har ikke forsvunnet. Den har bare skiftet funksjon.',
+      histbg: [
+        'Bybrannen i 1702 var en av de verste i Bergens historie. Den startet på Strandsiden og la store deler av den tette trebebyggelsen i aske. Over 300 hus brant.',
+        'Bybrannen i 1916 rammet Nedre Korskirkeallmenningen hardt. Igjen var det trebebyggelsen som ikke klarte seg — og igjen ble området åpnet opp som branngater og allmenninger.',
+        'Korskirken foran deg ble bygget på 1100-tallet og har overlevd begge brannene. Den er en av de eldste kirkene i Bergen som fortsatt er i bruk.',
+        'Det du ser som "plass" i dag er egentlig et brannsår. Allmenningene i Bergen ble ikke planlagt som torg — de er åpninger etter hus som aldri ble gjenoppbygd, bevisst laget for å stoppe ildspredning.',
+        'Bergen hadde over tjue store bybranner mellom 1198 og 1916. Den fysiske formen på sentrum i dag er i stor grad et produkt av disse brannene.'
+      ],
+      drinkTip: null,
+      story: [
+        'Stå stille et øyeblikk. Se rundt deg. Dette åpne rommet — det var ikke ment å være her.',
+        'Her stod det hus. Tett i tett. Trevegger. Smau så trange at to mennesker måtte snu seg sidelengs for å passere hverandre. Bak deg: arbeid. Foran deg: tro. Kirken var sentrum. Alt annet presset seg rundt den.',
+        'Så kom ilden. Bybrannen i Bergen 1702 tok det første laget. Bybrannen i Bergen 1916 tok det neste. Husene forsvant. Smauene ble borte. Tomrommet ble igjen.',
+        'Dette rommet er ikke laget for mennesker. Det er laget for å stoppe ild. En åpning. En pause i byen. Et sår som aldri ble bygget helt igjen.',
+        'Og nå — sitter folk her. Med vin i glasset. Med tid de ikke hadde før. Se på bordene rundt deg. De står der husene en gang stod. Samtalene du hører ligger oppå lag av arbeid, tro og brann.',
+        'Byen har ikke forsvunnet. Den har bare skiftet funksjon. Når du er klar: gå videre inn i smauene. Der er byen fortsatt trang.'
+      ],
+      secret: 'Be om bordet ved vinduet i andre etasje. Derfra ser du nøyaktig den ruten du nettopp gikk. Vis skjermen for din gratis velkomstdrink.' }
+  ],
+  en: [
+    { icon:'🏚️', year:'1550–1650', name:'Hollendergaten', sub:'Starting point',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395074,5.326751',
+      drink: { icon:'🚶', text:'Starting point · No drink yet · Walk slowly', hasDrink: false },
+      audio: 'Look around you. The street is called Hollendergaten — the street of the Dutch. That is no accident. For a hundred years, from the mid-1500s, this was one of the most international streets in Norway. As the Hanseatic iron grip on Bergen began to loosen, Dutch merchants flooded in. They brought wine from the Rhine, silk from France — and stories no one has heard since. But the most important trace the Dutch left here was not cloth or spices. It was a young girl named Sigbrit — daughter of a Dutch merchant family — who kept a small shop in this area. Her daughter would become the most talked-about woman in sixteenth-century Scandinavia. You will meet her in twelve minutes. But before you go: notice the street width. It is exactly the same as in the 1500s. The buildings are new. The street is old. You are treading the same stone as Dutch merchants trod five hundred years ago.',
+      histbg: ['In the 1500s Bergen was the most international city in northern Europe. Germans, Dutch, Scots, English and Danes lived side by side in their own quarters.','Hollendergaten is the only street in Bergen that still carries a nationality name — a living reminder of the multiethnic trading city.','But the most important trace the Dutch left here was not cloth or spices. It was a young girl named Sigbrit — daughter of a Dutch merchant family. Her daughter would become the most talked-about woman in sixteenth-century Scandinavia. You will meet her in twelve minutes.','Notice the street width. It is exactly the same as in the 1500s. The buildings are new. The street is old.'],
+      story:['Look around you. The street is called Hollendergaten — the street of the Dutch. That is no accident. For a hundred years, from the mid-1500s, this was one of the most international streets in Norway.','As the Hanseatic iron grip on Bergen began to loosen, Dutch merchants flooded in. They brought wine from the Rhine, silk from France — and stories no one has heard since.','"As the Hanseatic iron grip on Bergen began to loosen, Dutch merchants flooded in. They brought wine from the Rhine, silk from France — and stories no one has heard since."','The Dutch — hollenderne as the Norwegians called them — were not welcomed by all. The Hanseatic League at Bryggen had held a monopoly on foreign trade for over two hundred years. But from the 1550s cracks appeared, and Dutch merchants quickly filled the gap.'],
+      secret:'Do you see the small anchor emblem at the top of the window frame? It was a secret sign to other merchants that this was a safe place to do business. Only the initiated recognised it.' },
+    { icon:'🍷', year:'1516', name:"Dyveke's Wine Cellar", sub:'Love, power and poison',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395089,5.326901',
+      drink: { icon:'🍷', text:'Your drink here · Ask for something from the Rhine — it is historically correct', hasDrink: true },
+      audio: "The bar is named after her. Most people ordering wine here do not know who she was. You do. Her name was Dyveke Sigritsdatter. Dyveke means little dove in Dutch. She was born around 1490 — either in Bergen or Amsterdam, historians are not entirely agreed. What they do agree on is this: she was beautiful, she was clever, and she turned a dull Danish prince into a lovesick fool. When the young king Christian II rode through Bergen in 1507 and caught sight of Dyveke, he stopped. He never quite moved on. In 1517 Dyveke was about 27 years old. One day she ate cherries — a gift from a nobleman who was known to dislike her. The next day she was ill. A week later she was dead. Poison, thought the king. Murder, thought the court. Unfortunate digestion, said the church. Christian II wept publicly. And he became, according to all contemporary sources, never the same again.",
+      histbg: [
+        'Christian II later became one of Scandinavia\'s most controversial kings — known for the Stockholm Bloodbath of 1520 in which he executed 80–90 Swedish noblemen. But before he became a tyrant, he was in love with a Dutch-Norwegian girl from Bergen.',
+        'He brought her to Denmark, let her live near the castle, and refused to marry her despite pressure from the church and nobility for years.',
+        'Dyveke\'s mother, Sigbrit Villoms, was anything but a passive parent. She followed her daughter to Copenhagen and became one of the most influential advisers in the entire realm — Dutch and Norwegian commercial knowledge in one person, and the king listened to her more than to his own ministers.',
+        'In 1517 Dyveke was about 27 years old. One day she ate cherries — a gift, it is said, from a nobleman named Torben Oxe who was known to dislike her. The next day she was ill. A week later she was dead. Torben Oxe was executed — whether he was guilty has never been proven.',
+        'Christian II wept publicly. He paid for a beautiful grave. And he became, according to all contemporary sources, never the same again.'
+      ],
+      drinkTip: 'Ask for something from the Rhine or Mosel. In the 1500s Rhine wine was the prestige choice in Bergen — it arrived on Dutch trading ships. A dry Riesling from the Mosel or a Spätburgunder from the Rhine is as close as you can get to Dyveke\'s world in a glass.',
+      story:[
+        'The bar is named after her. Most people ordering wine here do not know who she was. You do.',
+        'Her name was Dyveke Sigritsdatter. "Dyveke" means "little dove" in Dutch. She was born around 1490 — either in Bergen or Amsterdam, historians are not entirely agreed. What they do agree on: she was beautiful, she was clever, and she turned a dull Danish prince into a lovesick fool.',
+        '"When the young king Christian II rode through Bergen in 1507 and caught sight of Dyveke, he stopped. He never quite moved on."',
+        'In 1517 Dyveke was about 27 years old. One day she ate cherries — a gift from a nobleman named Torben Oxe who was known to dislike her. The next day she was ill. A week later she was dead. Torben Oxe was executed. Whether he was guilty has never been proven.',
+        'Now you know who the bar is named after. That girl in the profile above the bar counter — that is her. Little dove from Bergen. The king\'s great love. A mystery that was never solved.'
+      ],
+      secret:'Ask the bartender for "Sigbrit\'s selection" — it\'s not on the menu, but some of them know what it means.' },
+    { icon:'🍎', year:'c. 1110 – today', name:'Siderbar Bergen', sub:'Seven hundred years of Norwegian cider',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.395300,5.329300',
+      drink: { icon:'🍎', text:'Your drink here · A dry Norwegian cider — Hardanger if they have it', hasDrink: true },
+      audio: 'Before wine came to Bergen by ship. Before Dutch merchants rolled their Rhine barrels onto the wharf. Long before that — there was cider. The monks at Munkeliv Monastery, which stood a few hundred metres from where you stand now, cultivated apples and pressed their own cider. The monastery burned in 1455. The tradition survived. Hardanger — the valley behind the mountains to the east of Bergen — is Norway\'s apple country. Not because the climate is especially favourable, but because people here never stopped growing. Cider was also democratic. Wine was for merchants and kings. Beer was for everyday life. But cider — fresh, fruity, slightly tart — was what farmers, servant girls and travellers drank. It was Bergen\'s own alternative to what came from outside. Bergen had cider long before it had wine. Next time someone tells you Norwegian drinking culture is new — remind them of the monks of Munkeliv and the seven hundred years they have forgotten.',
+      histbg: [
+        'Munkeliv Monastery, founded around 1110, was one of Bergen\'s two great Benedictine monasteries. The monks were self-sufficient — they grew herbs, vegetables and fruit. Apple orchards are documented. Cider was the everyday drink, used both with food and as medicine.',
+        'When the Reformation in 1537 dissolved the monasteries, farmers in Hardanger continued a tradition unbroken to this day.',
+        'Hardanger — the valley behind the mountains to the east of Bergen — is Norway\'s apple country. Not because the climate is especially favourable, but because people here never stopped growing. Today Hardanger produces about 40% of all Norwegian fruit.',
+        'Producers like Store Naa Siderkompani keep alive traditions that are seven hundred years old.',
+        'Cider was also democratic. Wine was for merchants and kings. Beer was for everyday life. But cider — fresh, fruity, slightly tart — was what farmers, servant girls and travellers drank. It was Bergen\'s own alternative to what came from outside.'
+      ],
+      drinkTip: 'Ask for "Brudeferd" from Store Naa Siderkompani. A dry, elegant cider from Hardanger — almost wine-like, with clean acidity and a long finish. Exactly as the monks at Munkeliv would have liked it. If you see it on the menu, it is the right choice for this stop.',
+      story: [
+        'Before wine came to Bergen by ship. Before Dutch merchants rolled their Rhine barrels onto the wharf. Long before that — there was cider.',
+        '"The monks at Munkeliv Monastery, which stood a few hundred metres from where you stand now, cultivated apples and pressed their own cider. The monastery burned in 1455. The tradition survived."',
+        'Hardanger — the valley behind the mountains to the east of Bergen — produces about 40% of all Norwegian fruit. Today, producers like Store Naa Siderkompani keep alive traditions that are seven hundred years old.',
+        'Cider was also democratic. Wine was for merchants and kings. Beer was for everyday life. But cider — fresh, fruity, slightly tart — was what farmers, servant girls and travellers drank.',
+        'Bergen had cider long before it had wine. Next time someone tells you Norwegian drinking culture is new — remind them of the monks of Munkeliv and the seven hundred years they have forgotten.'
+      ],
+      secret: 'Three knocks, pause, two knocks. Say you came from "the card". Bring cash — they do not take cards.' },
+    { icon:'🔥', year:'1702 · 1916 · today', name:'Pergola', sub:'Where the city burned — and opened up',
+      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.3947387,5.3284345',
+      orient: '🧭 Face towards Korskirken church',
+      drink: { icon:'🍷', text:'Dinner and welcome drink · Show this screen on arrival', hasDrink: true },
+      audio: 'Stand still for a moment. Look around you. This open space — it was not meant to be here. Houses stood here. Tightly packed. Timber walls. Alleyways so narrow that two people had to turn sideways to pass each other. Behind you: work. In front of you: faith. The church was the centre. Everything else pressed around it. Then came the fire. The city fire of Bergen in 1702 took the first layer. The city fire of Bergen in 1916 took the next. The houses disappeared. The alleyways were gone. The empty space remained. This space was not made for people. It was made to stop fire. An opening. A pause in the city. A wound that was never fully rebuilt. And now — people sit here. With wine in their glasses. With time they did not have before. Look at the tables around you. They stand where the houses once stood. The conversations you hear are laid on top of layers of work, faith and fire. The city has not disappeared. It has simply changed its function.',
+      histbg: [
+        'The city fire of 1702 was one of the worst in Bergen\'s history. It started on Strandsiden and reduced large parts of the dense timber housing to ash. Over 300 houses burned.',
+        'The city fire of 1916 struck Nedre Korskirkeallmenningen hard. Again it was the timber buildings that could not be saved — and again the area was opened up as firebreaks and allmenninger.',
+        'Korskirken in front of you was built in the twelfth century and has survived both fires. It is one of the oldest churches in Bergen still in use.',
+        'What you see as a "square" today is really a fire scar. The allmenninger in Bergen were not planned as public spaces — they are openings left after houses that were never rebuilt, deliberately created to stop the spread of fire.',
+        'Bergen suffered more than twenty major city fires between 1198 and 1916. The physical form of the city centre today is largely a product of those fires.'
+      ],
+      drinkTip: null,
+      story: [
+        'Stand still for a moment. Look around you. This open space — it was not meant to be here.',
+        'Houses stood here. Tightly packed. Timber walls. Alleyways so narrow that two people had to turn sideways to pass each other. Behind you: work. In front of you: faith. The church was the centre. Everything else pressed around it.',
+        'Then came the fire. The city fire of Bergen in 1702 took the first layer. The city fire of Bergen in 1916 took the next. The houses disappeared. The alleyways were gone. The empty space remained.',
+        'This space was not made for people. It was made to stop fire. An opening. A pause in the city. A wound that was never fully rebuilt.',
+        'And now — people sit here. With wine in their glasses. With time they did not have before. Look at the tables around you. They stand where the houses once stood. The conversations you hear are laid on top of layers of work, faith and fire.',
+        'The city has not disappeared. It has simply changed its function. When you are ready: walk on into the alleyways. There the city is still narrow.'
+      ],
+      secret: 'Ask for the table by the window on the second floor. From there you can see exactly the route you just walked. Show your screen to the bar staff for your complimentary welcome drink.' }
+  ]
+};
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────
+function goHome() {
+  // Works on Netlify (relative URL) and locally (replaces filename)
+  const current = window.location.href;
+  if (current.includes('bergen.html')) {
+    window.location.href = current.replace('bergen.html', 'index.html');
+  } else {
+    // On Netlify with clean URLs
+    const base = current.split('/').slice(0, -1).join('/');
+    window.location.href = base.endsWith('/bergen') ? base.replace('/bergen', '/') : '/';
+  }
+}
+const VALID_CODES = new Set(['BERGEN01','DEMO1234']);
+const STORAGE_KEY = 'ls_bergen_hollender';
+const EXPIRY_H    = 48;
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let lang            = 'en';
+let currentStop     = 0;
+let secretsRevealed = 0;
+let secretShown     = false;
+
+// ── LANGUAGE ──────────────────────────────────────────────────────────────
+function detectLang() {
+  const saved = localStorage.getItem('ls_lang');
+  if (saved === 'no' || saved === 'en') return saved;
+  return navigator.language.startsWith('no') ? 'no' : 'en';
+}
+
+function applyLang(l) {
+  lang = l;
+  localStorage.setItem('ls_lang', l);
+  document.documentElement.lang = l;
+  const t = T[l];
+
+  // Intro
+  document.getElementById('i-region').textContent   = t.region;
+  document.getElementById('i-title').innerHTML      = t.iTitle;
+  document.getElementById('i-p1').textContent       = t.iP1;
+  document.getElementById('i-p2').textContent       = t.iP2;
+  document.getElementById('i-incl-hdr').textContent = t.iInclHdr;
+  document.getElementById('ii1').textContent        = t.ii1;
+  document.getElementById('ii2').textContent        = t.ii2;
+  document.getElementById('ii3').textContent        = t.ii3;
+  document.getElementById('ii4').textContent        = t.ii4;
+  document.getElementById('i-quote').textContent    = t.iQuote;
+  document.getElementById('i-quote-attr').textContent = t.iQuoteAttr;
+  document.getElementById('i-cta').textContent      = t.iCta;
+  document.getElementById('resume-btn').textContent = t.resumeBtn;
+
+  // Routes
+  document.getElementById('r-topbar').textContent  = t.rTopbar;
+  document.getElementById('r-eyebrow').textContent = t.rEyebrow;
+  document.getElementById('r-title').textContent   = t.rTitle;
+  document.getElementById('r-sub').textContent     = t.rSub;
+  document.getElementById('route1-name').textContent = t.route1Name;
+  document.getElementById('route1-tag').textContent  = t.route1Tag;
+  document.getElementById('route1-t1').textContent = t.t1;
+  document.getElementById('route1-t2').textContent = t.t2;
+  document.getElementById('route1-t3').textContent = t.t3;
+  document.getElementById('route1-t4').textContent = t.t4;
+  document.getElementById('r-soon').textContent    = t.rSoon;
+  document.getElementById('r-soon2').textContent   = t.rSoon;
+  document.getElementById('route2-name').textContent = t.route2Name;
+  document.getElementById('route2-tag').textContent  = t.route2Tag;
+  document.getElementById('route2-t1').textContent = t.r2t1;
+  document.getElementById('route2-t2').textContent = t.r2t2;
+  document.getElementById('route3-name').textContent = t.route3Name;
+  document.getElementById('route3-tag').textContent  = t.route3Tag;
+  document.getElementById('route3-t1').textContent = t.r3t1;
+  document.getElementById('route3-t2').textContent = t.r3t2;
+
+  // Order
+  document.getElementById('o-topbar').textContent     = t.oTopbar;
+  document.getElementById('o-eyebrow').textContent    = t.oEyebrow;
+  document.getElementById('o-sub').textContent        = t.oSub;
+  document.getElementById('o-box-title').textContent  = t.oBoxTitle;
+  document.getElementById('o-box-price').textContent  = t.oBoxPrice;
+  document.getElementById('oi1').textContent = t.oi1;
+  document.getElementById('oi2').textContent = t.oi2;
+  document.getElementById('oi3').textContent = t.oi3;
+  document.getElementById('oi4').textContent = t.oi4;
+  document.getElementById('o-email-lbl').textContent  = t.oEmailLbl;
+  document.getElementById('o-card-lbl').textContent   = t.oCardLbl;
+  document.getElementById('cardExp').placeholder      = t.oCardExpPh;
+  document.getElementById('payBtn').textContent       = t.oPayBtn;
+  document.getElementById('o-secure').textContent     = t.oSecure;
+  document.getElementById('o-or').textContent         = t.oOr;
+  document.getElementById('o-haveCode').textContent   = t.oHaveCode;
+  document.getElementById('o-unlock-btn').textContent = t.oUnlockBtn;
+  document.getElementById('o-test-hint').innerHTML    = `TEST: ${t.oTestHint}`;
+
+  // Confirm
+  document.getElementById('cf-eyebrow').textContent  = t.cfEyebrow;
+  document.getElementById('cf-title').textContent    = t.cfTitle;
+  document.getElementById('cf-code-lbl').textContent = t.cfCodeLbl;
+  document.getElementById('cf-note').textContent     = t.cfNote;
+  document.getElementById('cf-start-btn').textContent = t.cfStartBtn;
+  document.getElementById('codeInput2').placeholder  = l === 'no' ? 'Skriv inn koden' : 'Enter your code';
+
+  // Complete
+  document.getElementById('done-title').innerHTML      = t.doneTitleText;
+  document.getElementById('done-reward-lbl').textContent  = t.doneRewardLbl;
+  document.getElementById('done-reward-note').innerHTML   = t.doneRewardNote;
+  document.getElementById('done-another').textContent  = t.doneAnother;
+  document.getElementById('done-back').textContent     = t.doneBack;
+
+  // Back modal
+  document.getElementById('bm-title').textContent = t.bmTitle;
+  document.getElementById('bm-body').textContent  = t.bmBody;
+  document.getElementById('bm-leave').textContent = t.bmLeave;
+  document.getElementById('bm-stay').textContent  = t.bmStay;
+
+  // Check for resume
+  checkResume();
+
+  // Re-render stop if on tour
+  const active = document.querySelector('.screen.active');
+  if (active && active.id === 's-stop') renderStop();
+
+  // Reload voice list for new language
+  voicesLoaded = false;
+  setTimeout(loadVoices, 100);
+}
+
+// ── RESUME BANNER ─────────────────────────────────────────────────────────
+function checkResume() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY + '_progress') || '{}');
+    if (d.stop !== undefined && isUnlocked()) {
+      const t = T[lang];
+      const stopName = STOPS[lang][d.stop].name;
+      document.getElementById('resume-text').textContent =
+        `${t.resumeText} ${d.stop + 1}: ${stopName}`;
+      document.getElementById('resume-banner').style.display = 'flex';
+    } else {
+      document.getElementById('resume-banner').style.display = 'none';
+    }
+  } catch { document.getElementById('resume-banner').style.display = 'none'; }
+}
+
+function resumeTour() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY + '_progress') || '{}');
+    currentStop = d.stop || 0;
+    secretsRevealed = d.secrets || 0;
+    renderStop();
+    show('s-stop');
+  } catch { startTour(); }
+}
+
+function saveProgress() {
+  localStorage.setItem(STORAGE_KEY + '_progress',
+    JSON.stringify({ stop: currentStop, secrets: secretsRevealed }));
+}
+
+// ── ACCESS CONTROL ────────────────────────────────────────────────────────
+function isUnlocked() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    return d.ts && (Date.now() - d.ts) / 3600000 < EXPIRY_H;
+  } catch { return false; }
+}
+
+function saveUnlock(code) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ts: Date.now(), code }));
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+function formatCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+
+function formatExp(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
+  el.value = v;
+}
+
+function shake(id) {
+  const el = document.getElementById(id);
+  el.classList.add('err');
+  setTimeout(() => el.classList.remove('err'), 500);
+}
+
+function setMsg(id, type, text) {
+  const el = document.getElementById(id);
+  el.className = 'code-msg ' + type;
+  el.textContent = text;
+}
+
+// ── ROUTE SELECT ──────────────────────────────────────────────────────────
+function selectRoute() {
+  document.getElementById('order-route-name').textContent = T[lang].route1Name;
+  if (isUnlocked()) {
+    currentStop = 0; secretsRevealed = 0; renderStop(); show('s-stop');
+  } else { show('s-order'); }
+}
+
+// ── PAYMENT (simulated) ───────────────────────────────────────────────────
+function processPayment() {
+  const email = document.getElementById('emailInput').value.trim();
+  const card  = document.getElementById('cardNumber').value.replace(/\s/g,'');
+  const exp   = document.getElementById('cardExp').value;
+  const cvc   = document.getElementById('cardCvc').value;
+  const btn   = document.getElementById('payBtn');
+
+  if (!validEmail(email)) { shake('emailInput'); return; }
+  if (card.length < 16)   { shake('cardNumber'); return; }
+  if (exp.replace(/\s\/\s/,'').length < 4) { shake('cardExp'); return; }
+  if (cvc.length < 3)     { shake('cardCvc'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span>${T[lang].processing}`;
+
+  setTimeout(() => {
+    const code = generateCode();
+    VALID_CODES.add(code);
+
+    document.getElementById('cf-body').innerHTML =
+      T[lang].cfBody.replace('</strong>', `</strong>`);
+    const emailEl = document.getElementById('confirm-email');
+    if (emailEl) emailEl.textContent = email;
+    document.getElementById('confirm-code').textContent = code;
+    document.getElementById('codeInput2').value = '';
+    document.getElementById('codeMsg2').textContent = '';
+
+    btn.disabled = false;
+    btn.textContent = T[lang].oPayBtn;
+    show('s-confirm');
+  }, 1800);
+}
+
+function generateCode() {
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:8}, () => c[Math.floor(Math.random()*c.length)]).join('');
+}
+
+// ── CODE UNLOCK ───────────────────────────────────────────────────────────
+function checkCode() {
+  const val = document.getElementById('codeInput').value.trim().toUpperCase();
+  const t = T[lang];
+  if (val.length < 6) { setMsg('codeMsg','err',t.codeShort); shake('codeInput'); return; }
+  if (VALID_CODES.has(val)) {
+    setMsg('codeMsg','ok',t.codeOk);
+    saveUnlock(val);
+    setTimeout(() => { currentStop=0; secretsRevealed=0; renderStop(); show('s-stop'); }, 700);
+  } else { setMsg('codeMsg','err',t.codeInvalid); shake('codeInput'); }
+}
+
+function checkCode2() {
+  const val = document.getElementById('codeInput2').value.trim().toUpperCase();
+  const t = T[lang];
+  if (VALID_CODES.has(val)) {
+    setMsg('codeMsg2','ok',t.codeUnlocking);
+    saveUnlock(val);
+    setTimeout(() => { currentStop=0; secretsRevealed=0; renderStop(); show('s-stop'); }, 700);
+  } else { setMsg('codeMsg2','err',t.codeWrong); shake('codeInput2'); }
+}
+
+// ── TOUR ──────────────────────────────────────────────────────────────────
+function startTour() {
+  currentStop=0; secretsRevealed=0;
+  saveProgress();
+  renderStop(); show('s-stop');
+}
+
+function renderStop() {
+  const stops = STOPS[lang];
+  const stop  = stops[currentStop];
+  const total = stops.length;
+  const t     = T[lang];
+  secretShown = false;
+  stopAudio();
+
+  document.getElementById('stop-count').textContent = `${currentStop+1} / ${total}`;
+
+  const pb = document.getElementById('prog-bar');
+  pb.innerHTML = stops.map((_,i) =>
+    `<div class="prog-seg ${i<currentStop?'done':i===currentStop?'active':''}"></div>`
+  ).join('');
+
+  // Test banner — shown when using test codes
+  const isTest = localStorage.getItem(STORAGE_KEY)
+    ? JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}').code === 'BERGEN01' ||
+      JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}').code === 'DEMO1234'
+    : true;
+  document.getElementById('test-banner').style.display = isTest ? 'flex' : 'none';
+  document.getElementById('test-banner-txt').textContent = t.testBanner;
+
+  // Route header
+  document.getElementById('rh-title').textContent = t.routeTitle;
+  document.getElementById('rh-sub').textContent   = t.routeSub;
+  const rhStops = document.getElementById('rh-stops');
+  rhStops.innerHTML = stops.map((s,i) => `
+    <div class="rsp">
+      <div class="rsp-num ${i<currentStop?'done':i===currentStop?'active':''}">${i+1}</div>
+      <div class="rsp-lbl">${s.name.split(' ')[0]}</div>
+    </div>
+    ${i < total-1 ? '<div class="rsp-line"></div>' : ''}
+  `).join('');
+
+  // Content
+  document.getElementById('stop-icon').textContent = stop.icon;
+  document.getElementById('stop-year').textContent = stop.year;
+  document.getElementById('stop-name').textContent = stop.name;
+  document.getElementById('stop-sub').textContent  = stop.sub;
+  document.getElementById('stop-story').innerHTML  = stop.story.map(p=>`<p>${p}</p>`).join('');
+
+  // Drink status
+  const ds = document.getElementById('drink-status');
+  document.getElementById('drink-icon').textContent = stop.drink.icon;
+  document.getElementById('drink-text').textContent = stop.drink.text;
+  ds.className = 'drink-status' + (stop.drink.hasDrink ? ' has-drink' : '');
+
+  // Orientation note
+  const onEl = document.getElementById('orient-note');
+  if (stop.orient) {
+    onEl.style.display = 'flex';
+    document.getElementById('orient-text').textContent = stop.orient;
+  } else {
+    onEl.style.display = 'none';
+  }
+
+  // Audio guide
+  document.getElementById('audio-label').textContent  = t.audioLabel;
+  document.getElementById('audio-sublbl').textContent = t.audioSublbl;
+  document.getElementById('audio-progress-bar').style.width = '0%';
+  setAudioIcon(false);
+
+  // Historical background
+  const hbEl = document.getElementById('hist-bg');
+  if (stop.histbg) {
+    hbEl.style.display = 'block';
+    document.getElementById('hist-bg-label').textContent = t.histBgLabel;
+    document.getElementById('hist-bg-body').innerHTML = stop.histbg.map(p=>`<p>${p}</p>`).join('');
+    document.getElementById('hist-bg-body').className = 'hist-bg-body';
+    document.getElementById('hist-bg-arrow').className = 'hist-bg-arrow';
+  } else {
+    hbEl.style.display = 'none';
+  }
+
+  // Drink tip (shown after secret is revealed, or always if stop has one)
+  const dtBox = document.getElementById('drink-tip-box');
+  if (stop.drinkTip) {
+    dtBox.style.display = 'block';
+    document.getElementById('drink-tip-label').textContent = t.drinkTipLabel;
+    document.getElementById('drink-tip-body').textContent  = stop.drinkTip;
+  } else {
+    dtBox.style.display = 'none';
+  }
+
+  // Map
+  document.getElementById('map-lbl-you').textContent  = t.mapYou;
+  document.getElementById('map-lbl-dest').textContent = t.mapDest;
+  document.getElementById('map-nav-btn').textContent  = t.mapNav;
+  document.getElementById('map-nav-btn').href = stop.gmaps;
+  loadMap(currentStop);
+
+  document.getElementById('secret-area').innerHTML =
+    `<button class="btn-outline" onclick="revealSecret()">${t.revealBtn}</button>`;
+
+  const nb = document.getElementById('next-btn');
+  nb.textContent = currentStop < total-1
+    ? `${t.nextPrefix}${stops[currentStop+1].name.split(' ')[0]}${t.nextSuffix}`
+    : t.completeTour;
+
+  const pb2 = document.getElementById('prev-btn');
+  pb2.style.display = currentStop > 0 ? 'block' : 'none';
+  pb2.textContent = t.prevBtn;
+
+  saveProgress();
+}
+
+// ── AUDIO GUIDE ───────────────────────────────────────────────────────────
+let synth        = window.speechSynthesis;
+let utterance    = null;
+let audioPlaying = false;
+let selectedVoice = null;
+let voicesLoaded  = false;
+
+// Preferred voices in order — female British first, then other quality options
+const VOICE_PREFS_EN = [
+  'Google UK English Female',
+  'Microsoft Libby Online (Natural) - English (United Kingdom)',
+  'Microsoft Sonia Online (Natural) - English (United Kingdom)',
+  'Microsoft Mia Online (Natural) - English (United Kingdom)',
+  'Karen',
+  'Moira',
+  'Samantha',
+  'Tessa',
+  'Fiona',
+  'Google US English',
+];
+const VOICE_PREFS_NO = [
+  'Google norsk bokmål',
+  'Nora',
+  'Kari',
+];
+
+function getVoiceScore(v, prefs) {
+  const idx = prefs.findIndex(p => v.name.includes(p) || p.includes(v.name));
+  if (idx >= 0) return 1000 - idx;
+  // Prefer female, prefer en-GB, prefer online/natural
+  let score = 0;
+  if (/female|woman|girl|fiona|karen|moira|tessa|samantha|libby|sonia|mia|amy|emma/i.test(v.name)) score += 50;
+  if (v.lang === 'en-GB') score += 30;
+  if (v.lang.startsWith('en')) score += 10;
+  if (/online|natural/i.test(v.name)) score += 20;
+  if (v.default) score += 5;
+  return score;
+}
+
+function loadVoices() {
+  if (voicesLoaded) return;
+  const voices = synth.getVoices();
+  if (!voices.length) return;
+  voicesLoaded = true;
+
+  const isNo = lang === 'no';
+  const prefs = isNo ? VOICE_PREFS_NO : VOICE_PREFS_EN;
+  const langFilter = isNo ? (v) => v.lang.startsWith('nb') || v.lang.startsWith('no') || v.lang.startsWith('nn')
+                           : (v) => v.lang.startsWith('en');
+
+  // Get matching voices, sort by preference score
+  let pool = voices.filter(langFilter);
+  if (!pool.length) pool = voices; // fallback to all
+  pool = pool.slice().sort((a,b) => getVoiceScore(b, prefs) - getVoiceScore(a, prefs));
+
+  const sel = document.getElementById('voice-select');
+  if (!sel) return;
+  sel.innerHTML = '';
+
+  // Label groups
+  const female = pool.filter(v => /female|woman|girl|fiona|karen|moira|tessa|samantha|libby|sonia|mia|amy|emma|nora|kari/i.test(v.name));
+  const male   = pool.filter(v => !female.includes(v));
+
+  const addGroup = (label, list) => {
+    if (!list.length) return;
+    const g = document.createElement('optgroup');
+    g.label = label;
+    list.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v.name;
+      // Shorten display name
+      o.textContent = v.name
+        .replace('Microsoft ', '').replace(' Online (Natural)', '')
+        .replace('Google ', '').replace(' Female', ' ♀').replace(' Male', '');
+      g.appendChild(o);
+    });
+    sel.appendChild(g);
+  };
+
+  const femaleLabel = isNo ? 'Kvinnestemmer' : 'Female voices';
+  const maleLabel   = isNo ? 'Mannstemmer'   : 'Male voices';
+  addGroup(femaleLabel, female);
+  addGroup(maleLabel,   male);
+
+  // Select best voice by default (top of sorted pool)
+  selectedVoice = pool[0] || null;
+  if (selectedVoice) sel.value = selectedVoice.name;
+
+  // Update voice row label
+  const lbl = document.getElementById('voice-row-label');
+  if (lbl) lbl.textContent = isNo ? 'Stemme' : 'Voice';
+}
+
+function onVoiceChange() {
+  const sel = document.getElementById('voice-select');
+  const voices = synth.getVoices();
+  selectedVoice = voices.find(v => v.name === sel.value) || null;
+  if (audioPlaying) { stopAudio(); toggleAudio(); } // restart with new voice
+}
+
+// Load voices — they may arrive async
+if (synth.onvoiceschanged !== undefined) {
+  synth.onvoiceschanged = () => { voicesLoaded = false; loadVoices(); };
+}
+setTimeout(loadVoices, 400); // fallback for browsers that don't fire the event
+
+function setAudioIcon(playing) {
+  const icon = document.getElementById('audio-icon');
+  if (!icon) return;
+  if (playing) {
+    icon.className = 'audio-pause-icon';
+    icon.innerHTML = '<span></span><span></span>';
+  } else {
+    icon.className = 'audio-play-icon';
+    icon.innerHTML = '';
+  }
+}
+
+function toggleAudio() {
+  if (!synth) return;
+  if (audioPlaying) {
+    synth.cancel();
+    audioPlaying = false;
+    setAudioIcon(false);
+    document.getElementById('audio-progress-bar').style.width = '0%';
+    return;
+  }
+  // Ensure voices loaded
+  if (!voicesLoaded) loadVoices();
+
+  const text = STOPS[lang][currentStop].audio;
+  if (!text) return;
+
+  utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang  = lang === 'no' ? 'nb-NO' : 'en-GB';
+  utterance.rate  = 0.9;
+  utterance.pitch = 1.05;
+
+  // Apply selected voice
+  if (selectedVoice) utterance.voice = selectedVoice;
+
+  const words = text.split(' ').length;
+  let word = 0;
+  utterance.onboundary = () => {
+    word++;
+    const el = document.getElementById('audio-progress-bar');
+    if (el) el.style.width = `${Math.min(100, (word/words)*100)}%`;
+  };
+  utterance.onend = () => {
+    audioPlaying = false;
+    setAudioIcon(false);
+    const el = document.getElementById('audio-progress-bar');
+    if (el) el.style.width = '100%';
+  };
+  utterance.onerror = () => { audioPlaying = false; setAudioIcon(false); };
+
+  synth.speak(utterance);
+  audioPlaying = true;
+  setAudioIcon(true);
+}
+
+function stopAudio() {
+  if (synth && audioPlaying) { synth.cancel(); audioPlaying = false; setAudioIcon(false); }
+}
+
+// ── HISTORICAL BACKGROUND ─────────────────────────────────────────────────
+function toggleHistBg() {
+  const body  = document.getElementById('hist-bg-body');
+  const arrow = document.getElementById('hist-bg-arrow');
+  const open  = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  arrow.classList.toggle('open', !open);
+}
+
+// ── MAP SYSTEM ────────────────────────────────────────────────────────────
+let userLat = null, userLon = null;
+let gpsWatcher = null;
+
+let mapActivated = false;
+
+function loadMap(stopIndex) {
+  // Reset map to placeholder when switching stops
+  mapActivated = false;
+  document.getElementById('map-iframe').style.display = 'none';
+  document.getElementById('map-iframe').src = '';
+  document.getElementById('map-placeholder').style.display = 'flex';
+  const t = T[lang];
+  document.getElementById('map-placeholder-txt').textContent = t.mapTapToLoad || 'Tap to open map';
+  document.getElementById('map-placeholder-sub').textContent = t.mapTapSub || 'Shows your position + destination';
+  // Store current stop index for when user taps
+  loadMap._pendingStop = stopIndex;
+}
+
+function activateMap() {
+  if (mapActivated) return;
+  mapActivated = true;
+  document.getElementById('map-placeholder').style.display = 'none';
+  document.getElementById('map-iframe').style.display = 'block';
+
+  const stopIndex = loadMap._pendingStop || currentStop;
+  const dest = STOP_COORDS[stopIndex];
+  updateMapIframe(dest, userLat, userLon);
+
+  // Start GPS watching now that user has engaged with map
+  if (!gpsWatcher && navigator.geolocation) {
+    gpsWatcher = navigator.geolocation.watchPosition(
+      pos => {
+        userLat = pos.coords.latitude;
+        userLon = pos.coords.longitude;
+        const d = STOP_COORDS[currentStop];
+        if (mapActivated) updateMapIframe(d, userLat, userLon);
+        document.getElementById('map-nav-btn').href =
+          `https://www.google.com/maps/dir/${userLat},${userLon}/${d.lat},${d.lon}`;
+        document.getElementById('map-gps-note').style.display = 'none';
+      },
+      () => {
+        document.getElementById('map-gps-note').textContent = T[lang].mapGpsOff;
+        document.getElementById('map-gps-note').style.display = 'block';
+      },
+      { enableHighAccuracy: true, maximumAge: 5000 }
+    );
+  }
+}
+
+function updateMapIframe(dest, uLat, uLon) {
+  let src;
+
+  if (uLat && uLon) {
+    // Calculate center between user and destination
+    const cLat = (uLat + dest.lat) / 2;
+    const cLon = (uLon + dest.lon) / 2;
+    // Calculate zoom based on distance
+    const dist = Math.sqrt(Math.pow(uLat - dest.lat, 2) + Math.pow(uLon - dest.lon, 2));
+    const zoom = dist < 0.003 ? 17 : dist < 0.008 ? 16 : dist < 0.02 ? 15 : 14;
+
+    // OpenStreetMap with both markers — user (blue) and destination (red/gold)
+    src = `https://www.openstreetmap.org/export/embed.html?bbox=${cLon - 0.006},${cLat - 0.004},${cLon + 0.006},${cLat + 0.004}&layer=mapnik&marker=${dest.lat},${dest.lon}`;
+
+    // Update navigate link to include user position
+    document.getElementById('map-nav-btn').href =
+      `https://www.google.com/maps/dir/${uLat},${uLon}/${dest.lat},${dest.lon}`;
+  } else {
+    // No GPS — center on destination with tight zoom
+    const margin = 0.003;
+    src = `https://www.openstreetmap.org/export/embed.html?bbox=${dest.lon - margin},${dest.lat - margin},${dest.lon + margin},${dest.lat + margin}&layer=mapnik&marker=${dest.lat},${dest.lon}`;
+  }
+
+  document.getElementById('map-iframe').src = src;
+}
+
+function revealSecret() {
+  const stop = STOPS[lang][currentStop];
+  const t    = T[lang];
+  if (!secretShown) { secretShown=true; secretsRevealed++; saveProgress(); }
+  document.getElementById('secret-area').innerHTML = `
+    <div class="secret-box">
+      <span class="secret-lbl">${t.secretLbl}</span>
+      <div class="secret-txt">${stop.secret}</div>
+    </div>`;
+}
+
+function nextStop() {
+  const total = STOPS[lang].length;
+  if (currentStop < total-1) {
+    currentStop++; saveProgress(); renderStop(); window.scrollTo(0,0);
+  } else {
+    document.getElementById('secrets-count').textContent =
+      T[lang].doneSecretsText(secretsRevealed, total);
+    localStorage.removeItem(STORAGE_KEY + '_progress');
+    show('s-complete');
+  }
+}
+
+function prevStop() {
+  if (currentStop > 0) {
+    currentStop--; saveProgress(); renderStop(); window.scrollTo(0,0);
+  }
+}
+
+function confirmBack() {
+  document.getElementById('back-modal').style.display = 'flex';
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+applyLang(detectLang());
+</script>
+</body>
+</html>
