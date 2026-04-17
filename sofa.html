@@ -411,6 +411,21 @@
     .route-card[data-accent="green"] .route-card-bg { background:rgba(20,45,35,0.6); }
     .route-card[data-accent="purple"] .route-card-bg { background:rgba(40,25,70,0.6); }
     .route-card[data-accent="warm"] .route-card-bg { background:rgba(60,35,15,0.5); }
+    .route-card[data-accent="fjord"] .route-card-bg { background:rgba(15,40,55,0.7); }
+
+    .route-live-badge {
+      display:inline-block; font-family:'Cinzel',serif;
+      font-size:9px; letter-spacing:0.18em; text-transform:uppercase;
+      color:#10a37f; background:rgba(16,163,127,0.12);
+      padding:3px 8px; border-radius:3px; margin-bottom:8px;
+    }
+    .route-card.upcoming { opacity:0.38; pointer-events:none; cursor:default; }
+    .route-card.upcoming .route-arrow { display:none; }
+    .route-upcoming-label {
+      font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.15em;
+      text-transform:uppercase; color:var(--muted);
+      margin-top:10px; display:block; text-align:right;
+    }
   </style>
 </head>
 <body>
@@ -499,70 +514,71 @@
 
   <div class="routes-grid">
 
-    <!-- Route 1 -->
-    <div class="route-card reveal" data-accent="blue">
+    <!-- Route 1 — HARDANGER (live) — hardcoded, alltid synlig -->
+    <a href="sofatravel_hardanger.html" class="route-card" data-accent="fjord" style="opacity:1;transform:none;">
       <div class="route-card-bg"></div>
       <div class="route-card-inner">
         <div>
-          <div class="route-num" id="r1-num"></div>
-          <div class="route-name" id="r1-name"></div>
-          <div class="route-tagline" id="r1-tag"></div>
-        </div>
-        <div class="route-meta">
-          <div class="route-stops">7</div>
-          <div class="route-stops-label" id="stops-label"></div>
-          <span class="route-arrow"></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Route 2 -->
-    <div class="route-card reveal" data-accent="green">
-      <div class="route-card-bg"></div>
-      <div class="route-card-inner">
-        <div>
-          <div class="route-num" id="r2-num"></div>
-          <div class="route-name" id="r2-name"></div>
-          <div class="route-tagline" id="r2-tag"></div>
-        </div>
-        <div class="route-meta">
-          <div class="route-stops">5</div>
-          <div class="route-stops-label" id="stops-label2"></div>
-          <span class="route-arrow"></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Route 3 -->
-    <div class="route-card reveal" data-accent="purple">
-      <div class="route-card-bg"></div>
-      <div class="route-card-inner">
-        <div>
-          <div class="route-num" id="r3-num"></div>
-          <div class="route-name" id="r3-name"></div>
-          <div class="route-tagline" id="r3-tag"></div>
+          <div class="route-live-badge">● Tilgjengelig nå</div>
+          <div class="route-num">Rute 01 · Hardanger</div>
+          <div class="route-name">Fra bøddel <em>til blomstring</em></div>
+          <div class="route-tagline">Folgefonntunnel · Odda · Isberg · Bleie · Aga · Utne · ~40 km</div>
         </div>
         <div class="route-meta">
           <div class="route-stops">6</div>
-          <div class="route-stops-label" id="stops-label3"></div>
+          <div class="route-stops-label">stopp</div>
           <span class="route-arrow"></span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Route 2 — upcoming -->
+    <div class="route-card upcoming" data-accent="green">
+      <div class="route-card-bg"></div>
+      <div class="route-card-inner">
+        <div>
+          <div class="route-num">Rute 02</div>
+          <div class="route-name">Kongevei <em>Nord</em></div>
+          <div class="route-tagline">Fra Oslo til Trondheim · Pilegrimsleden · Middelalderkongene</div>
+        </div>
+        <div class="route-meta">
+          <div class="route-stops">5</div>
+          <div class="route-stops-label">stopp</div>
+          <span class="route-upcoming-label">Snart</span>
         </div>
       </div>
     </div>
 
-    <!-- Route 4 -->
-    <div class="route-card reveal" data-accent="warm">
+    <!-- Route 3 — upcoming -->
+    <div class="route-card upcoming" data-accent="purple">
       <div class="route-card-bg"></div>
       <div class="route-card-inner">
         <div>
-          <div class="route-num" id="r4-num"></div>
-          <div class="route-name" id="r4-name"></div>
-          <div class="route-tagline" id="r4-tag"></div>
+          <div class="route-num">Rute 03</div>
+          <div class="route-name">Sjøfarernes <em>natt</em></div>
+          <div class="route-tagline">Kystveien · Fiskerne · Stormen 1893 · De som aldri kom hjem</div>
+        </div>
+        <div class="route-meta">
+          <div class="route-stops">6</div>
+          <div class="route-stops-label">stopp</div>
+          <span class="route-upcoming-label">Snart</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Route 4 — upcoming -->
+    <div class="route-card upcoming" data-accent="warm">
+      <div class="route-card-bg"></div>
+      <div class="route-card-inner">
+        <div>
+          <div class="route-num">Rute 04</div>
+          <div class="route-name">Hanseatenes <em>hemmeligheter</em></div>
+          <div class="route-tagline">Bryggen i Bergen · Tyske kjøpmenn · Makt og svik · 400 år</div>
         </div>
         <div class="route-meta">
           <div class="route-stops">8</div>
-          <div class="route-stops-label" id="stops-label4"></div>
-          <span class="route-arrow"></span>
+          <div class="route-stops-label">stopp</div>
+          <span class="route-upcoming-label">Snart</span>
         </div>
       </div>
     </div>
@@ -609,17 +625,17 @@ const T = {
     s3t: 'Ta det med deg', s3d: 'Lagre ruten til senere eller del den med noen du vil reise med. Og neste gang du er i nærheten — gå den selv.',
 
     atmLabel: 'En smakebit',
-    atmQuote: 'I 1349 kom Svartedauden til Bergen med et skip fra England. Innen ett år var halvparten av byens befolkning borte. Gatene sto tomme. Men noen overlevde — og det de valgte å gjøre etterpå, forandret alt.',
-    atmAttr: '— Fra ruten «Pesten og de som ble igjen» · Bergen 1349',
+    atmQuote: 'Ser du opp til høyre når du kjører nordover fra Odda? Den veglause fjellgården Isberg henger i fjellsiden. Ingen vei ned. Der vokste Samson Isberg opp i 1795 — mannen som ble Norges eneste riksskarprettar i 19 år. Mellom reisene til Kautokeino og Christiania kom han hjem hit, til den tause gården med utsikt over alt.',
+    atmAttr: '— Fra ruten «Fra bøddel til blomstring» · Hardanger',
 
     routesLabel: 'Velg din rute',
     routesTitle: 'Fire ruter. Ukjente historier.',
-    routesSub: 'Alle ruter er tilgjengelige nå. Ingen betaling nødvendig — velg og reis.',
+    routesSub: 'Rute 01 er tilgjengelig nå. Tre nye ruter kommer snart.',
     stopsLabel: 'stopp',
 
-    r1Num: 'Rute 01',
-    r1Name: 'Pesten og de som ble igjen',
-    r1Tag: 'Bergen 1349 · Svartedauden · Overleverandøre · Det nye samfunnet',
+    r1Num: 'Rute 01 · Hardanger',
+    r1Name: 'Fra bøddel <em>til blomstring</em>',
+    r1Tag: 'Folgefonntunnelen · Odda · Isberg · Bleie · Aga · Utne · ~40 km',
 
     r2Num: 'Rute 02',
     r2Name: 'Kongevei <em>Nord</em>',
@@ -662,12 +678,12 @@ const T = {
 
     routesLabel: 'Choose your route',
     routesTitle: 'Four routes. Unknown stories.',
-    routesSub: 'All routes are available now. No payment needed — choose and travel.',
+    routesSub: 'Route 01 is available now. Three more routes coming soon.',
     stopsLabel: 'stops',
 
-    r1Num: 'Route 01',
-    r1Name: 'The Plague and Those Who Remained',
-    r1Tag: 'Bergen 1349 · The Black Death · Survivors · A new society',
+    r1Num: 'Route 01 · Hardanger',
+    r1Name: 'From Executioner <em>to Blossom</em>',
+    r1Tag: 'Folgefonntunnel · Odda · Isberg · Bleie · Aga · Utne · ~40 km',
 
     r2Num: 'Route 02',
     r2Name: 'Royal Road <em>North</em>',
