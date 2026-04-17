@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Sofa Travel · Lane Stories</title>
+  <meta name="description" content="Velg en rute. Reis fra sofaen. Ukjente historier langs Norges veier." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;500&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+    :root {
+      --gold:#c9a96e;
+      --gold-dim:rgba(201,169,110,0.35);
+      --gold-faint:rgba(201,169,110,0.08);
+      --night:#06080f;
+      --night2:#090c16;
+      --navy:#0c1020;
+      --slate:#1a2035;
+      --cream:#eee8d8;
+      --cream-dim:#a89f8a;
+      --muted:#5a5a72;
+      --silver:#8ca0c0;
+      --border:rgba(140,160,192,0.1);
+      --border-gold:rgba(201,169,110,0.2);
+    }
+
+    html { scroll-behavior:smooth; }
+
+    body {
+      background:var(--night);
+      color:var(--cream);
+      font-family:'EB Garamond',Georgia,serif;
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content:'';
+      position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:9999;
+    }
+
+    /* ── LANGUAGE TOGGLE ── */
+    .lang-toggle {
+      position:fixed; top:18px; right:20px; z-index:200;
+      display:flex; gap:6px;
+    }
+    .lang-btn {
+      padding:5px 12px; border:1px solid var(--border); border-radius:20px;
+      background:rgba(6,8,15,0.85); color:var(--muted);
+      font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em;
+      cursor:pointer; transition:border-color 0.2s,color 0.2s;
+      backdrop-filter:blur(8px);
+    }
+    .lang-btn.active { border-color:var(--gold-dim); color:var(--gold); }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      position:fixed; top:18px; left:20px; z-index:200;
+      display:flex; align-items:center; gap:8px;
+      font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.2em;
+      color:var(--muted); text-decoration:none;
+      transition:color 0.2s; backdrop-filter:blur(8px);
+    }
+    .back-link:hover { color:var(--gold); }
+    .back-link svg { width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:1.5; }
+
+    /* ── STARS CANVAS ── */
+    #stars { position:fixed; inset:0; pointer-events:none; z-index:0; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height:100vh;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; padding:80px 28px 80px;
+      position:relative; overflow:hidden;
+    }
+
+    .hero-glow {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 60%, rgba(60,80,160,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 30% 30% at 20% 30%, rgba(201,169,110,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 25% 40% at 80% 70%, rgba(80,60,160,0.06) 0%, transparent 60%);
+    }
+
+    /* Horizon line */
+    .hero-horizon {
+      position:absolute; bottom:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    }
+
+    .hero-eyebrow {
+      font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.45em;
+      text-transform:uppercase; color:var(--gold);
+      display:flex; align-items:center; gap:14px;
+      margin-bottom:32px; position:relative; z-index:1;
+      animation:fadeUp 0.7s ease both;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content:''; width:28px; height:1px; background:var(--gold-dim);
+    }
+
+    .hero-hook {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(36px,8.5vw,76px);
+      font-weight:300; line-height:1.05;
+      color:var(--cream); margin-bottom:18px;
+      position:relative; z-index:1;
+      animation:fadeUp 0.7s 0.1s ease both;
+    }
+    .hero-hook em { font-style:italic; color:var(--gold); }
+
+    .hero-sub {
+      font-size:clamp(16px,2.8vw,20px); font-style:italic;
+      color:var(--cream-dim); max-width:440px; line-height:1.65;
+      margin-bottom:48px; position:relative; z-index:1;
+      animation:fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-scroll {
+      position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      color:var(--muted); font-size:10px; letter-spacing:0.2em; text-transform:uppercase;
+      animation:fadeIn 1s 1.2s ease both; z-index:1;
+    }
+    .scroll-line {
+      width:1px; height:36px;
+      background:linear-gradient(var(--gold-dim),transparent);
+      animation:scrollPulse 2s infinite;
+    }
+
+    /* ── INTRO SECTION ── */
+    .intro {
+      padding:96px 28px 64px;
+      max-width:640px; margin:0 auto;
+      position:relative; z-index:1;
+    }
+
+    .section-eyebrow {
+      font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.4em;
+      text-transform:uppercase; color:var(--gold);
+      display:flex; align-items:center; gap:12px; margin-bottom:28px;
+    }
+    .section-eyebrow::after { content:''; flex:1; max-width:40px; height:1px; background:var(--gold-dim); }
+
+    .intro-text {
+      font-size:clamp(17px,2.5vw,21px); font-style:italic;
+      font-family:'Cormorant Garamond',serif; font-weight:300;
+      color:var(--cream-dim); line-height:1.75;
+    }
+
+    .intro-divider {
+      width:40px; height:1px; background:var(--gold-dim);
+      margin:32px 0;
+    }
+
+    .intro-body {
+      font-size:15px; color:var(--muted); line-height:1.8;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      padding:64px 28px 80px;
+      max-width:640px; margin:0 auto;
+      position:relative; z-index:1;
+    }
+
+    .how-steps {
+      display:flex; flex-direction:column; gap:0;
+      margin-top:36px;
+    }
+
+    .how-step {
+      display:grid; grid-template-columns:44px 1fr;
+      gap:20px; align-items:flex-start;
+      position:relative;
+    }
+    .how-step:not(:last-child)::before {
+      content:''; position:absolute;
+      left:21px; top:44px; bottom:-4px; width:1px;
+      background:linear-gradient(var(--border), transparent);
+    }
+
+    .step-num {
+      width:44px; height:44px; border-radius:50%;
+      border:1px solid var(--gold-dim);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Cinzel',serif; font-size:13px; color:var(--gold);
+      background:rgba(201,169,110,0.04);
+      flex-shrink:0; position:relative; z-index:1;
+    }
+
+    .step-body { padding:8px 0 36px; }
+    .step-title {
+      font-family:'Cinzel',serif; font-size:13px;
+      letter-spacing:0.06em; color:var(--cream); margin-bottom:6px;
+    }
+    .step-desc { font-size:14px; color:var(--muted); line-height:1.7; }
+
+    /* ── ROUTES ── */
+    .routes-section {
+      padding:32px 0 100px;
+      position:relative; z-index:1;
+    }
+
+    .routes-header {
+      padding:0 28px; max-width:640px; margin:0 auto 48px;
+    }
+
+    .routes-grid {
+      display:flex; flex-direction:column; gap:2px;
+      max-width:720px; margin:0 auto; padding:0;
+    }
+
+    .route-card {
+      position:relative; overflow:hidden;
+      cursor:pointer;
+      border-top:1px solid var(--border);
+      transition:background 0.3s;
+      text-decoration:none; color:inherit;
+      display:block;
+    }
+    .route-card:last-child { border-bottom:1px solid var(--border); }
+
+    .route-card-inner {
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:24px; align-items:center;
+      padding:28px 28px;
+      position:relative; z-index:1;
+    }
+
+    .route-card-bg {
+      position:absolute; inset:0;
+      background:var(--navy);
+      transform:scaleX(0); transform-origin:left;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .route-card:hover .route-card-bg { transform:scaleX(1); }
+
+    .route-num {
+      font-family:'Cinzel',serif; font-size:10px;
+      letter-spacing:0.3em; color:var(--muted); margin-bottom:8px;
+    }
+    .route-name {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(22px,3.5vw,30px); font-weight:300;
+      color:var(--cream); line-height:1.15; margin-bottom:6px;
+    }
+    .route-name em { font-style:italic; color:var(--gold); }
+    .route-tagline { font-size:13px; color:var(--muted); font-style:italic; line-height:1.5; }
+
+    .route-meta {
+      text-align:right; flex-shrink:0;
+    }
+    .route-stops {
+      font-family:'Cormorant Garamond',serif; font-size:32px;
+      color:var(--gold); font-weight:300; line-height:1;
+      margin-bottom:2px;
+    }
+    .route-stops-label {
+      font-size:10px; letter-spacing:0.15em;
+      text-transform:uppercase; color:var(--muted);
+    }
+    .route-arrow {
+      display:block; margin-top:12px; margin-left:auto;
+      width:24px; height:1px; background:var(--gold-dim);
+      position:relative; transition:width 0.3s;
+    }
+    .route-arrow::after {
+      content:''; position:absolute; right:0; top:-3px;
+      width:7px; height:7px;
+      border-right:1px solid var(--gold-dim);
+      border-top:1px solid var(--gold-dim);
+      transform:rotate(45deg);
+      transition:border-color 0.3s;
+    }
+    .route-card:hover .route-arrow { width:36px; background:var(--gold); }
+    .route-card:hover .route-arrow::after { border-color:var(--gold); }
+
+    /* Story teaser inside card */
+    .route-story {
+      padding:0 28px 24px; max-width:560px;
+      font-family:'Cormorant Garamond',serif;
+      font-size:16px; font-style:italic; font-weight:300;
+      color:rgba(168,159,138,0.65); line-height:1.7;
+      border-left:1px solid var(--gold-dim); margin:0 28px 0 calc(28px + 0px);
+      display:none; position:relative; z-index:1;
+    }
+
+    /* ── ATMOSPHERE / QUOTE ── */
+    .atmosphere {
+      background:var(--night2);
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      padding:80px 28px;
+      position:relative; overflow:hidden;
+      z-index:1;
+    }
+
+    .atm-inner { max-width:600px; margin:0 auto; }
+
+    .atm-quote {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(22px,4vw,32px); font-weight:300; font-style:italic;
+      color:var(--cream); line-height:1.6; margin:24px 0 20px;
+      padding-left:28px;
+      border-left:2px solid var(--gold);
+    }
+
+    .atm-attr {
+      font-family:'Cinzel',serif; font-size:10px;
+      letter-spacing:0.2em; text-transform:uppercase;
+      color:var(--muted); display:block; margin-top:14px;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding:80px 28px;
+      text-align:center; position:relative; z-index:1;
+    }
+
+    .cta-title {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(28px,5vw,46px); font-weight:300;
+      color:var(--cream); margin-bottom:12px;
+    }
+    .cta-title em { font-style:italic; color:var(--gold); }
+
+    .cta-sub {
+      font-size:15px; color:var(--muted); font-style:italic;
+      margin-bottom:40px; max-width:380px; margin-left:auto; margin-right:auto;
+    }
+
+    .cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+    .btn-gold {
+      display:inline-block; padding:16px 32px;
+      background:linear-gradient(135deg,#c9a96e,#8a5a2a);
+      color:#06080f; border:none; border-radius:2px;
+      font-family:'Cinzel',serif; font-size:12px;
+      letter-spacing:0.18em; text-transform:uppercase;
+      text-decoration:none; cursor:pointer;
+      transition:opacity 0.2s,transform 0.2s;
+    }
+    .btn-gold:hover { opacity:0.85; transform:translateY(-2px); }
+
+    .btn-ghost {
+      display:inline-block; padding:16px 28px;
+      background:transparent; color:var(--gold);
+      border:1px solid rgba(201,169,110,0.4); border-radius:2px;
+      font-family:'Cinzel',serif; font-size:12px;
+      letter-spacing:0.18em; text-transform:uppercase;
+      text-decoration:none; cursor:pointer;
+      transition:all 0.2s;
+    }
+    .btn-ghost:hover {
+      background:rgba(201,169,110,0.07);
+      border-color:var(--gold); color:var(--cream);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding:36px 28px;
+      border-top:1px solid var(--border);
+      display:flex; flex-wrap:wrap;
+      align-items:center; justify-content:space-between; gap:16px;
+      position:relative; z-index:1;
+    }
+    .footer-logo { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.2em; color:var(--gold); }
+    .footer-links { display:flex; gap:20px; }
+    .footer-links a {
+      font-size:12px; color:var(--muted); text-decoration:none;
+      letter-spacing:0.08em; transition:color 0.2s;
+    }
+    .footer-links a:hover { color:var(--cream); }
+    .footer-copy { font-size:11px; color:#2a2a3a; width:100%; text-align:center; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes scrollPulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+    @keyframes twinkle { 0%,100%{opacity:0.6} 50%{opacity:1} }
+    @keyframes drift { from{transform:translateY(0)} to{transform:translateY(-8px)} }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:520px){
+      .route-card-inner { grid-template-columns:1fr; }
+      .route-meta { text-align:left; display:flex; align-items:center; gap:20px; }
+      .route-arrow { margin-top:0; }
+      .cta-btns { flex-direction:column; align-items:center; }
+      footer { flex-direction:column; text-align:center; }
+      .footer-links { justify-content:center; }
+    }
+
+    /* scroll-reveal */
+    .reveal {
+      opacity:0; transform:translateY(16px);
+      transition:opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.in { opacity:1; transform:translateY(0); }
+
+    /* route accent colors */
+    .route-card[data-accent="blue"] .route-card-bg { background:rgba(30,45,90,0.6); }
+    .route-card[data-accent="green"] .route-card-bg { background:rgba(20,45,35,0.6); }
+    .route-card[data-accent="purple"] .route-card-bg { background:rgba(40,25,70,0.6); }
+    .route-card[data-accent="warm"] .route-card-bg { background:rgba(60,35,15,0.5); }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<!-- Back link -->
+<a href="index.html" class="back-link">
+  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  <span id="back-text">Lane Stories</span>
+</a>
+
+<!-- Language toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn" id="btn-no" onclick="setLang('no')">NO</button>
+  <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-horizon"></div>
+
+  <div class="hero-eyebrow" id="h-eyebrow">Sofa Travel</div>
+  <h1 class="hero-hook" id="h-hook"></h1>
+  <p class="hero-sub" id="h-sub"></p>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span id="h-scroll"></span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="intro reveal">
+  <div class="section-eyebrow" id="intro-label"></div>
+  <p class="intro-text" id="intro-text"></p>
+  <div class="intro-divider"></div>
+  <p class="intro-body" id="intro-body"></p>
+</section>
+
+<!-- ── HOW ── -->
+<section class="how">
+  <div class="section-eyebrow reveal" id="how-label"></div>
+  <div class="how-steps">
+    <div class="how-step reveal">
+      <div class="step-num">I</div>
+      <div class="step-body">
+        <div class="step-title" id="s1t"></div>
+        <p class="step-desc" id="s1d"></p>
+      </div>
+    </div>
+    <div class="how-step reveal">
+      <div class="step-num">II</div>
+      <div class="step-body">
+        <div class="step-title" id="s2t"></div>
+        <p class="step-desc" id="s2d"></p>
+      </div>
+    </div>
+    <div class="how-step reveal">
+      <div class="step-num">III</div>
+      <div class="step-body">
+        <div class="step-title" id="s3t"></div>
+        <p class="step-desc" id="s3d"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ATMOSPHERE QUOTE ── -->
+<section class="atmosphere">
+  <div class="atm-inner">
+    <div class="section-eyebrow reveal" id="atm-label"></div>
+    <blockquote class="atm-quote reveal" id="atm-quote"></blockquote>
+    <span class="atm-attr" id="atm-attr"></span>
+  </div>
+</section>
+
+<!-- ── ROUTES ── -->
+<section class="routes-section">
+  <div class="routes-header">
+    <div class="section-eyebrow reveal" id="routes-label"></div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,42px);font-weight:300;color:var(--cream);line-height:1.2;margin-bottom:8px;" class="reveal" id="routes-title"></h2>
+    <p style="font-size:14px;color:var(--muted);font-style:italic;" class="reveal" id="routes-sub"></p>
+  </div>
+
+  <div class="routes-grid">
+
+    <!-- Route 1 -->
+    <div class="route-card reveal" data-accent="blue">
+      <div class="route-card-bg"></div>
+      <div class="route-card-inner">
+        <div>
+          <div class="route-num" id="r1-num"></div>
+          <div class="route-name" id="r1-name"></div>
+          <div class="route-tagline" id="r1-tag"></div>
+        </div>
+        <div class="route-meta">
+          <div class="route-stops">7</div>
+          <div class="route-stops-label" id="stops-label"></div>
+          <span class="route-arrow"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Route 2 -->
+    <div class="route-card reveal" data-accent="green">
+      <div class="route-card-bg"></div>
+      <div class="route-card-inner">
+        <div>
+          <div class="route-num" id="r2-num"></div>
+          <div class="route-name" id="r2-name"></div>
+          <div class="route-tagline" id="r2-tag"></div>
+        </div>
+        <div class="route-meta">
+          <div class="route-stops">5</div>
+          <div class="route-stops-label" id="stops-label2"></div>
+          <span class="route-arrow"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Route 3 -->
+    <div class="route-card reveal" data-accent="purple">
+      <div class="route-card-bg"></div>
+      <div class="route-card-inner">
+        <div>
+          <div class="route-num" id="r3-num"></div>
+          <div class="route-name" id="r3-name"></div>
+          <div class="route-tagline" id="r3-tag"></div>
+        </div>
+        <div class="route-meta">
+          <div class="route-stops">6</div>
+          <div class="route-stops-label" id="stops-label3"></div>
+          <span class="route-arrow"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Route 4 -->
+    <div class="route-card reveal" data-accent="warm">
+      <div class="route-card-bg"></div>
+      <div class="route-card-inner">
+        <div>
+          <div class="route-num" id="r4-num"></div>
+          <div class="route-name" id="r4-name"></div>
+          <div class="route-tagline" id="r4-tag"></div>
+        </div>
+        <div class="route-meta">
+          <div class="route-stops">8</div>
+          <div class="route-stops-label" id="stops-label4"></div>
+          <span class="route-arrow"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <h2 class="cta-title reveal" id="cta-title"></h2>
+  <p class="cta-sub reveal" id="cta-sub"></p>
+  <div class="cta-btns reveal">
+    <a href="#" class="btn-ghost" onclick="history.back();return false;" id="cta-back"></a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Lane Stories</div>
+  <div class="footer-links">
+    <a href="index.html" id="f-home"></a>
+    <a href="mailto:hello@lanestories.com" id="f-contact"></a>
+  </div>
+  <div class="footer-copy" id="f-copy"></div>
+</footer>
+
+<script>
+/* ── TRANSLATIONS ── */
+const T = {
+  no: {
+    back: '← Lane Stories',
+    eyebrow: 'Sofa Travel',
+    hook: 'Velg en rute.<br><em>Historiene kommer til deg.</em>',
+    sub: 'Du trenger ikke gå ut for å oppdage det ukjente. Noen av de beste historiene fortelles best fra et mykt sete.',
+    scroll: 'Utforsk ruter',
+
+    introLabel: 'Hva er Sofa Travel',
+    introText: 'Norges veier, fjorder og gater skjuler historier som aldri fant veien til historieböker — eller turistskilt.',
+    introBody: 'Med Sofa Travel velger du en rute og reiser gjennom ukjente skjebner, glemte steder og forunderlige begivenheter — stopp for stopp, fra der du sitter. Hver rute er nøye satt sammen av lokale historikere og fortellere. Det er ikke en podcast og ikke en dokumentar — det er noe midt imellom. En reise du styrer selv.',
+
+    howLabel: 'Slik reiser du',
+    s1t: 'Velg din rute', s1d: 'Fire ruter. Fire verdener. Velg etter stemning — hav, kongemakt, vandring eller natt. Hver rute tar 45–90 minutter å lese gjennom.',
+    s2t: 'Stopp for stopp', s2d: 'Hvert stopp presenterer ett sted — en gate, en kai, en fjord — og en fortelling du aldri har hørt. Bilder, kart og kildetekster er inkludert.',
+    s3t: 'Ta det med deg', s3d: 'Lagre ruten til senere eller del den med noen du vil reise med. Og neste gang du er i nærheten — gå den selv.',
+
+    atmLabel: 'En smakebit',
+    atmQuote: 'I 1349 kom Svartedauden til Bergen med et skip fra England. Innen ett år var halvparten av byens befolkning borte. Gatene sto tomme. Men noen overlevde — og det de valgte å gjøre etterpå, forandret alt.',
+    atmAttr: '— Fra ruten «Pesten og de som ble igjen» · Bergen 1349',
+
+    routesLabel: 'Velg din rute',
+    routesTitle: 'Fire ruter. Ukjente historier.',
+    routesSub: 'Alle ruter er tilgjengelige nå. Ingen betaling nødvendig — velg og reis.',
+    stopsLabel: 'stopp',
+
+    r1Num: 'Rute 01',
+    r1Name: 'Pesten og de som ble igjen',
+    r1Tag: 'Bergen 1349 · Svartedauden · Overleverandøre · Det nye samfunnet',
+
+    r2Num: 'Rute 02',
+    r2Name: 'Kongevei <em>Nord</em>',
+    r2Tag: 'Fra Oslo til Trondheim · Pilegrimsleden · Middelalderkongene',
+
+    r3Num: 'Rute 03',
+    r3Name: 'Sjøfarernes natt',
+    r3Tag: 'Kystveien · Fiskerne · Stormen 1893 · De som aldri kom hjem',
+
+    r4Num: 'Rute 04',
+    r4Name: 'Hanseatenes hemmeligheter',
+    r4Tag: 'Bryggen i Bergen · Tyske kjøpmenn · Makt og svik · 400 år',
+
+    ctaTitle: 'Klar til å reise<br><em>uten å flytte deg?</em>',
+    ctaSub: 'Finn sofaen. Velg en rute. La historiene komme.',
+    ctaBack: '← Tilbake til Lane Stories',
+
+    fHome: 'Hjem', fContact: 'Kontakt',
+    fCopy: '© 2025 Lane Stories · Norske byer. Ekte historier.',
+  },
+  en: {
+    back: '← Lane Stories',
+    eyebrow: 'Sofa Travel',
+    hook: 'Choose a route.<br><em>The stories come to you.</em>',
+    sub: 'You don\'t need to go outside to discover the unknown. Some of the best stories are told best from a comfortable seat.',
+    scroll: 'Explore routes',
+
+    introLabel: 'What is Sofa Travel',
+    introText: 'Norway\'s roads, fjords and streets hide stories that never made it into history books — or tourist signs.',
+    introBody: 'With Sofa Travel you choose a route and travel through unknown fates, forgotten places and remarkable events — stop by stop, from wherever you are. Each route is carefully assembled by local historians and storytellers. It\'s not a podcast and not a documentary — it\'s something in between. A journey you steer yourself.',
+
+    howLabel: 'How you travel',
+    s1t: 'Choose your route', s1d: 'Four routes. Four worlds. Choose by mood — sea, royal power, pilgrimage or night. Each route takes 45–90 minutes to read through.',
+    s2t: 'Stop by stop', s2d: 'Each stop presents one place — a street, a quay, a fjord — and a story you\'ve never heard. Photos, maps and source texts included.',
+    s3t: 'Take it with you', s3d: 'Save the route for later or share it with someone you want to travel with. And next time you\'re nearby — walk it yourself.',
+
+    atmLabel: 'A taste',
+    atmQuote: 'In 1349 the Black Death arrived in Bergen on a ship from England. Within a year half the city\'s population was gone. The streets stood empty. But some survived — and what they chose to do next changed everything.',
+    atmAttr: '— From the route "The Plague and Those Who Remained" · Bergen 1349',
+
+    routesLabel: 'Choose your route',
+    routesTitle: 'Four routes. Unknown stories.',
+    routesSub: 'All routes are available now. No payment needed — choose and travel.',
+    stopsLabel: 'stops',
+
+    r1Num: 'Route 01',
+    r1Name: 'The Plague and Those Who Remained',
+    r1Tag: 'Bergen 1349 · The Black Death · Survivors · A new society',
+
+    r2Num: 'Route 02',
+    r2Name: 'Royal Road <em>North</em>',
+    r2Tag: 'Oslo to Trondheim · The Pilgrims\' Way · Medieval kings',
+
+    r3Num: 'Route 03',
+    r3Name: 'The Sailors\' Night',
+    r3Tag: 'The Coastal Road · Fishermen · The storm of 1893 · Those who never came home',
+
+    r4Num: 'Route 04',
+    r4Name: 'Secrets of the Hanseatic League',
+    r4Tag: 'Bryggen in Bergen · German merchants · Power and betrayal · 400 years',
+
+    ctaTitle: 'Ready to travel<br><em>without moving?</em>',
+    ctaSub: 'Find the sofa. Choose a route. Let the stories come.',
+    ctaBack: '← Back to Lane Stories',
+
+    fHome: 'Home', fContact: 'Contact',
+    fCopy: '© 2025 Lane Stories · Norwegian cities. Real stories.',
+  }
+};
+
+function detectLang() {
+  const saved = localStorage.getItem('ls_lang');
+  if (saved) return saved;
+  return navigator.language.startsWith('no') ? 'no' : 'en';
+}
+function setLang(lang) {
+  localStorage.setItem('ls_lang', lang);
+  applyLang(lang);
+}
+
+function setText(id, html, isHtml) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (isHtml) el.innerHTML = html; else el.textContent = html;
+}
+
+function applyLang(lang) {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+
+  setText('back-text', t.back);
+  document.querySelector('.back-link').textContent = '';
+  // rebuild back link
+  const bl = document.querySelector('.back-link');
+  bl.innerHTML = `<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5"><polyline points="15 18 9 12 15 6"/></svg> ${t.back.replace('← ','')}`;
+
+  setText('h-eyebrow', t.eyebrow);
+  setText('h-hook', t.hook, true);
+  setText('h-sub', t.sub);
+  setText('h-scroll', t.scroll);
+
+  setText('intro-label', t.introLabel);
+  setText('intro-text', t.introText);
+  setText('intro-body', t.introBody);
+
+  setText('how-label', t.howLabel);
+  setText('s1t', t.s1t); setText('s1d', t.s1d);
+  setText('s2t', t.s2t); setText('s2d', t.s2d);
+  setText('s3t', t.s3t); setText('s3d', t.s3d);
+
+  setText('atm-label', t.atmLabel);
+  setText('atm-quote', t.atmQuote);
+  setText('atm-attr', t.atmAttr);
+
+  setText('routes-label', t.routesLabel);
+  setText('routes-title', t.routesTitle);
+  setText('routes-sub', t.routesSub);
+
+  ['stops-label','stops-label2','stops-label3','stops-label4'].forEach(id => setText(id, t.stopsLabel));
+
+  setText('r1-num', t.r1Num); setText('r1-name', t.r1Name, true); setText('r1-tag', t.r1Tag);
+  setText('r2-num', t.r2Num); setText('r2-name', t.r2Name, true); setText('r2-tag', t.r2Tag);
+  setText('r3-num', t.r3Num); setText('r3-name', t.r3Name, true); setText('r3-tag', t.r3Tag);
+  setText('r4-num', t.r4Num); setText('r4-name', t.r4Name, true); setText('r4-tag', t.r4Tag);
+
+  setText('cta-title', t.ctaTitle, true);
+  setText('cta-sub', t.ctaSub);
+  setText('cta-back', t.ctaBack);
+
+  setText('f-home', t.fHome); setText('f-contact', t.fContact);
+  setText('f-copy', t.fCopy);
+
+  document.getElementById('btn-no').classList.toggle('active', lang === 'no');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+}
+
+applyLang(detectLang());
+
+/* ── STARS ── */
+(function(){
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars=[];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight * 2.5;
+  }
+
+  function makeStars(n) {
+    stars = [];
+    for (let i=0; i<n; i++) {
+      stars.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: Math.random()*1.1+0.2,
+        o: Math.random()*0.5+0.1,
+        speed: Math.random()*0.008+0.002,
+        phase: Math.random()*Math.PI*2
+      });
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s => {
+      const opacity = s.o * (0.6 + 0.4*Math.sin(t*s.speed*60 + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(180,200,240,${opacity})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  makeStars(220);
+  window.addEventListener('resize', () => { resize(); makeStars(220); });
+  requestAnimationFrame(draw);
+})();
+
+/* ── SCROLL REVEAL ── */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => {
+    if (e.isIntersecting) {
+      e.target.style.transitionDelay = (i * 0.04) + 's';
+      e.target.classList.add('in');
+    }
+  });
+}, { threshold:0.08 });
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+/* ── BACK LINK ── */
+document.querySelector('.back-link').addEventListener('click', function(e){
+  e.preventDefault();
+  const href = window.location.href;
+  if (href.includes('sofa.html')) {
+    window.location.href = href.replace('sofa.html','index.html');
+  } else {
+    history.back();
+  }
+});
+</script>
+</body>
+</html>

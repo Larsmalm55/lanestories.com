@@ -31,9 +31,13 @@
     .pills { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:44px; animation:fadeUp 0.7s 0.3s ease both; }
     .pill { display:flex; align-items:center; gap:8px; padding:9px 16px; border:1px solid rgba(201,169,110,0.25); border-radius:40px; font-size:13px; color:var(--cream-dim); background:rgba(201,169,110,0.05); }
     .pill-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
-    .hero-cta { animation:fadeUp 0.7s 0.4s ease both; display:flex; flex-direction:column; align-items:center; gap:12px; width:100%; max-width:340px; }
-    .btn-big { display:block; width:100%; padding:18px 32px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; text-decoration:none; transition:opacity 0.2s,transform 0.2s; }
+    .hero-cta { animation:fadeUp 0.7s 0.4s ease both; display:flex; flex-direction:column; align-items:center; gap:14px; width:100%; max-width:560px; }
+    .hero-btns { display:flex; flex-direction:row; gap:14px; width:100%; justify-content:center; flex-wrap:wrap; }
+    .btn-big { display:block; flex:1 1 220px; min-width:220px; padding:18px 28px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; text-decoration:none; text-align:center; transition:opacity 0.2s,transform 0.2s,background 0.2s; }
     .btn-big:hover { opacity:0.88; transform:translateY(-2px); }
+    .btn-secondary { background:transparent; color:var(--gold); border:1px solid rgba(201,169,110,0.5); }
+    .btn-secondary:hover { background:rgba(201,169,110,0.08); color:var(--cream); border-color:var(--gold); opacity:1; }
+    @media (max-width:520px) { .hero-btns { flex-direction:column; } .btn-big { min-width:0; } }
     .hero-price { font-size:13px; color:var(--muted); }
     .hero-price strong { color:var(--gold); font-weight:400; }
     .scroll-hint { position:absolute; bottom:32px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--muted); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; animation:fadeIn 1s 1.2s ease both; }
@@ -119,7 +123,10 @@
     <div class="pill"><span class="pill-dot"></span><span id="p3"></span></div>
   </div>
   <div class="hero-cta">
-    <a href="#cities" class="btn-big" id="h-cta"></a>
+    <div class="hero-btns">
+      <a href="#cities" class="btn-big" id="h-cta"></a>
+      <a href="javascript:void(0)" onclick="goSofa()" class="btn-big btn-secondary" id="h-cta2"></a>
+    </div>
     <span class="hero-price" id="h-price"></span>
   </div>
   <div class="scroll-hint"><div class="scroll-line"></div><span id="h-scroll"></span></div>
@@ -196,6 +203,7 @@ const T = {
     sub:      'En guidet vandring gjennom historier ingen guidebøker forteller. Kjellere, bakgater og skjebner som forsvant fra historien.',
     p1:'Gå i ditt eget tempo', p2:'Kun kr 45', p3:'Ingen app nødvendig',
     cta:      'Velg din by og start →',
+    ctaSofa:  'Sofa Travel →',
     price:    '<strong>kr 45</strong> per rute · Betal med kort',
     scroll:   'Se hvordan',
     howLabel: 'Slik fungerer det',
@@ -225,6 +233,7 @@ const T = {
     sub:      'A guided walk through stories no guidebook tells. Cellars, alleyways and fates that vanished from history.',
     p1:'Walk at your own pace', p2:'Only €4', p3:'No app needed',
     cta:      'Choose your city →',
+    ctaSofa:  'Sofa Travel →',
     price:    '<strong>€4</strong> per route · Pay once by card',
     scroll:   'See how',
     howLabel: 'How it works',
@@ -274,6 +283,7 @@ function applyLang(lang) {
   document.getElementById('p2').textContent     = t.p2;
   document.getElementById('p3').textContent     = t.p3;
   document.getElementById('h-cta').textContent  = t.cta;
+  document.getElementById('h-cta2').textContent = t.ctaSofa;
   document.getElementById('h-price').innerHTML  = t.price;
   document.getElementById('h-scroll').textContent = t.scroll;
 
@@ -336,6 +346,18 @@ function goBergen() {
     const clean = href.split('?')[0].split('#')[0];
     const base  = clean.endsWith('/') ? clean : clean + '/';
     window.location.href = base + 'bergen.html';
+  }
+}
+
+// Navigate to Sofa Travel
+function goSofa() {
+  const href = window.location.href;
+  if (href.includes('index.html')) {
+    window.location.href = href.replace('index.html', 'sofa.html');
+  } else {
+    const clean = href.split('?')[0].split('#')[0];
+    const base  = clean.endsWith('/') ? clean : clean + '/';
+    window.location.href = base + 'sofa.html';
   }
 }
 
