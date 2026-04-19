@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Annes kveld · Bergen · Lane Stories</title>
+  <meta name="description" content="To stopp. Én skjebne. 800 år med Bergen-historier som aldri kom med i guidebøkene." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --gold:#c9a96e; --gold-dim:rgba(201,169,110,0.4); --gold-faint:rgba(201,169,110,0.08);
+      --ink:#0d0a07; --ink2:#121008; --cream:#f0e6d0; --cream-dim:#c8b896;
+      --muted:#7a6a52; --border:rgba(232,220,200,0.11);
+      --red:rgba(200,80,60,0.12); --red-b:rgba(200,80,60,0.4);
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--ink); color:var(--cream); font-family:'EB Garamond',Georgia,serif; line-height:1.6; overflow-x:hidden; }
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; }
+
+    /* ── SCREENS ── */
+    .screen { display:none; min-height:100vh; flex-direction:column; max-width:480px; margin:0 auto; }
+    .screen.active { display:flex; animation:fadeUp 0.35s ease both; }
+
+    /* ── TOPBAR ── */
+    .topbar { display:flex; align-items:center; padding:18px 24px; border-bottom:1px solid var(--border); flex-shrink:0; gap:14px; }
+    .topbar-logo { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.3em; color:var(--gold); text-decoration:none; }
+    .topbar-back { background:none; border:none; color:var(--muted); cursor:pointer; font-size:18px; padding:0; line-height:1; }
+    .topbar-back:hover { color:var(--cream); }
+    .topbar-count { margin-left:auto; font-size:11px; letter-spacing:0.15em; color:#4a4030; font-family:'Cinzel',serif; }
+
+    /* ── PROGRESS ── */
+    .prog-wrap { display:flex; gap:4px; padding:10px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .prog-seg { flex:1; height:2px; border-radius:2px; background:rgba(232,220,200,0.1); transition:background 0.5s; }
+    .prog-seg.done   { background:var(--gold); }
+    .prog-seg.active { background:rgba(201,169,110,0.4); }
+
+    /* ── BODY ── */
+    .body { flex:1; padding:0 24px 64px; overflow-y:auto; }
+
+    /* ── TYPOGRAPHY ── */
+    .eyebrow { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:8px; }
+    h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,8vw,52px); font-weight:300; line-height:1.08; color:var(--cream); margin-bottom:12px; }
+    h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,6vw,36px); font-weight:300; color:var(--cream); margin-bottom:8px; line-height:1.15; }
+    .sub { font-size:14px; font-style:italic; color:var(--muted); margin-bottom:20px; line-height:1.7; }
+    .rule { width:36px; height:2px; background:linear-gradient(90deg,var(--gold),rgba(201,169,110,0.1)); border-radius:1px; margin-bottom:28px; }
+    p { font-size:15px; color:var(--cream-dim); line-height:1.9; margin-bottom:1em; }
+
+    /* ── HERO VISUAL ── */
+    .hero-vis { height:200px; background:linear-gradient(160deg,#120a0a,#2a1008,#120a0a); display:flex; align-items:center; justify-content:center; font-size:72px; position:relative; overflow:hidden; flex-shrink:0; }
+    .hero-vis::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 60%,rgba(201,169,110,0.12) 0%,transparent 70%); }
+    .hero-vis::after  { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(201,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.04) 1px,transparent 1px); background-size:40px 40px; }
+
+    /* ── ROUTE INFO ── */
+    .route-meta { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+    .route-meta-pill { display:flex; align-items:center; gap:6px; padding:6px 13px; border:1px solid var(--border); border-radius:20px; font-size:12px; color:var(--muted); background:rgba(255,255,255,0.015); }
+    .route-meta-pill span:first-child { color:var(--gold); font-size:13px; }
+
+    .tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:28px; }
+    .tag { display:inline-block; padding:3px 11px; border:1px solid var(--gold-dim); border-radius:20px; font-size:11px; color:var(--gold); letter-spacing:0.04em; }
+
+    /* ── BUTTONS ── */
+    .btn { display:block; width:100%; padding:16px 20px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:12px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:opacity 0.2s,transform 0.15s; text-align:center; }
+    .btn:hover { opacity:0.88; transform:translateY(-1px); }
+    .btn-outline { display:block; width:100%; padding:14px 20px; background:transparent; color:var(--gold); border:1px solid var(--gold-dim); border-radius:2px; font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:background 0.2s; text-align:center; text-decoration:none; }
+    .btn-outline:hover { background:var(--gold-faint); }
+
+    /* ── WHAT'S INCLUDED ── */
+    .incl-list { margin-bottom:28px; }
+    .incl-item { display:flex; gap:12px; font-size:14px; color:var(--muted); margin-bottom:10px; align-items:flex-start; }
+    .incl-item span:first-child { color:var(--gold); flex-shrink:0; margin-top:2px; }
+
+    /* ── STOP ICON ── */
+    .stop-icon { text-align:center; font-size:56px; margin:28px 0 18px; }
+    .stop-location { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); margin-bottom:20px; letter-spacing:0.05em; }
+    .stop-location::before { content:'📍'; font-size:13px; }
+
+    /* ── STORY BOX ── */
+    .story-box { background:rgba(255,255,255,0.022); border:1px solid var(--border); border-radius:2px; padding:24px 26px; margin-bottom:20px; }
+    .story-box p { font-size:15.5px; color:var(--cream-dim); line-height:1.92; margin-bottom:1.1em; }
+    .story-box p:last-child { margin-bottom:0; }
+    .story-box .pull-quote { font-family:'Cormorant Garamond',serif; font-size:clamp(18px,4vw,22px); font-style:italic; font-weight:300; color:var(--cream); line-height:1.55; border-left:2px solid var(--gold); padding-left:18px; margin:20px 0; }
+
+    /* ── SECRET / INSIDER TIP ── */
+    .secret-box { background:rgba(201,169,110,0.06); border:1px solid rgba(201,169,110,0.28); border-radius:2px; padding:20px 22px; margin-bottom:20px; }
+    .secret-lbl { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:10px; }
+    .secret-txt { font-size:14px; color:var(--gold); line-height:1.78; }
+
+    /* ── HISTORICAL BACKGROUND (collapsible) ── */
+    .hist-bg { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:20px; }
+    .hist-bg-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; cursor:pointer; background:rgba(255,255,255,0.02); user-select:none; }
+    .hist-bg-label { font-size:12px; color:var(--muted); letter-spacing:0.04em; }
+    .hist-bg-arrow { font-size:11px; color:var(--muted); transition:transform 0.25s; display:inline-block; }
+    .hist-bg-arrow.open { transform:rotate(180deg); }
+    .hist-bg-body { font-size:14px; color:var(--cream-dim); line-height:1.82; max-height:0; overflow:hidden; transition:max-height 0.45s ease, padding 0.3s; padding:0 16px; }
+    .hist-bg-body.open { max-height:800px; padding:16px; }
+    .hist-bg-body p { margin-bottom:0.85em; }
+    .hist-bg-body p:last-child { margin-bottom:0; }
+
+    /* ── AUDIO GUIDE ── */
+    .audio-guide { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:20px; }
+    .audio-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:rgba(255,255,255,0.02); gap:12px; }
+    .audio-label { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); }
+    .audio-sublbl { font-size:11px; color:var(--muted); margin-top:2px; }
+    .audio-play-btn { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#c9a96e,#8a5a2a); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:opacity 0.2s; }
+    .audio-play-btn:hover { opacity:0.85; }
+    .audio-play-icon { width:0; height:0; border-style:solid; border-width:5px 0 5px 9px; border-color:transparent transparent transparent var(--ink); margin-left:2px; }
+    .audio-progress { height:2px; background:rgba(232,220,200,0.1); }
+    .audio-progress-bar { height:100%; background:var(--gold); width:0%; transition:width 0.3s; }
+    .audio-note { font-size:11px; color:var(--muted); padding:8px 14px; text-align:center; border-top:1px solid var(--border); background:rgba(255,255,255,0.01); font-style:italic; }
+
+    /* ── MAP ── */
+    .map-wrap { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:20px; }
+    .map-canvas iframe { width:100%; height:210px; border:none; display:block; filter:sepia(0.2) contrast(1.05) brightness(0.85); }
+    .map-footer { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.02); border-top:1px solid var(--border); gap:10px; flex-wrap:wrap; }
+    .map-legend { display:flex; gap:14px; }
+    .map-legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); }
+    .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .legend-dot.dest { background:#c9a96e; box-shadow:0 0 0 3px rgba(201,169,110,0.25); }
+    .map-nav-btn { padding:7px 14px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; text-decoration:none; display:inline-block; }
+
+    /* ── DRINK TIP ── */
+    .drink-tip { border:1px solid rgba(201,169,110,0.3); border-radius:2px; padding:18px 20px; margin-bottom:20px; background:rgba(201,169,110,0.05); }
+    .drink-tip-label { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:10px; }
+    .drink-tip-body { font-size:14px; color:var(--cream-dim); line-height:1.78; }
+
+    /* ── ROUTE STOPS NAV ── */
+    .stop-nav { display:flex; align-items:center; gap:4px; margin-bottom:20px; }
+    .sn-item { display:flex; flex-direction:column; align-items:center; gap:3px; }
+    .sn-dot { width:26px; height:26px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; font-size:9px; color:var(--muted); background:var(--ink); transition:all 0.3s; flex-shrink:0; }
+    .sn-dot.done   { background:var(--gold); border-color:var(--gold); color:var(--ink); }
+    .sn-dot.active { border-color:var(--gold); color:var(--gold); }
+    .sn-label { font-size:9px; color:var(--muted); max-width:52px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; letter-spacing:0.04em; }
+    .sn-line { flex:1; height:1px; background:var(--border); margin-bottom:14px; }
+
+    /* ── COMPLETE ── */
+    .complete-wrap { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:48px 28px 64px; }
+    .complete-icon { font-size:64px; margin-bottom:24px; }
+    .reward-box { background:var(--gold-faint); border:1px solid rgba(201,169,110,0.25); border-radius:2px; padding:24px 28px; margin:24px 0 32px; width:100%; text-align:left; }
+    .reward-lbl { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:14px; }
+    .reward-place { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--cream); margin-bottom:4px; }
+    .reward-note { font-size:13px; color:var(--muted); line-height:1.7; }
+
+    /* ── LANG TOGGLE ── */
+    .lang-toggle { position:fixed; top:18px; right:20px; z-index:200; display:flex; gap:6px; }
+    .lang-btn { padding:5px 12px; border:1px solid var(--border); border-radius:20px; background:rgba(13,10,7,0.85); color:var(--muted); font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; cursor:pointer; transition:border-color 0.2s,color 0.2s; backdrop-filter:blur(8px); }
+    .lang-btn.active { border-color:var(--gold-dim); color:var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.45} }
+
+    @media(max-width:480px){ .body { padding-left:20px; padding-right:20px; } .topbar { padding:16px 20px; } }
+  </style>
+</head>
+<body>
+
+<!-- Language toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn" id="btn-no" onclick="setLang('no')">NO</button>
+  <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 0 · ROUTE INTRO
+══════════════════════════════════ -->
+<div class="screen active" id="s-intro">
+  <div class="hero-vis">🕯️</div>
+
+  <div class="topbar">
+    <button class="topbar-back" onclick="goBack()">←</button>
+    <a class="topbar-logo" href="bergen.html">Lane Stories · Bergen</a>
+  </div>
+
+  <div class="body" style="padding-top:28px;">
+    <span class="eyebrow" id="i-eyebrow"></span>
+    <h1 id="i-title"></h1>
+    <p class="sub" id="i-sub"></p>
+    <div class="rule"></div>
+
+    <div class="route-meta" id="i-meta">
+      <div class="route-meta-pill"><span>⏱</span><span id="i-duration"></span></div>
+      <div class="route-meta-pill"><span>📍</span><span id="i-stops"></span></div>
+      <div class="route-meta-pill"><span>🦶</span><span id="i-dist"></span></div>
+    </div>
+
+    <div class="tags" id="i-tags"></div>
+
+    <div class="incl-list" id="i-incl"></div>
+
+    <div class="story-box" style="margin-bottom:28px;">
+      <p id="i-teaser"></p>
+    </div>
+
+    <button class="btn" onclick="goToStop(1)" id="i-cta"></button>
+    <a href="bergen.html" class="btn-outline" id="i-back"></a>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 1 · STOPP 1: DOMKIRKEN
+══════════════════════════════════ -->
+<div class="screen" id="s-stop1">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goToIntro()">←</button>
+    <a class="topbar-logo" href="bergen.html">Lane Stories</a>
+    <span class="topbar-count" id="s1-count"></span>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-seg active" id="p1-1"></div>
+    <div class="prog-seg"        id="p1-2"></div>
+    <div class="prog-seg"        id="p1-3"></div>
+  </div>
+
+  <div class="body" style="padding-top:24px;">
+
+    <div class="stop-nav">
+      <div class="sn-item">
+        <div class="sn-dot active">1</div>
+        <div class="sn-label" id="s1-nav1"></div>
+      </div>
+      <div class="sn-line"></div>
+      <div class="sn-item">
+        <div class="sn-dot" id="sn2">2</div>
+        <div class="sn-label" id="s1-nav2"></div>
+      </div>
+      <div class="sn-line"></div>
+      <div class="sn-item">
+        <div class="sn-dot" id="sn3">🍷</div>
+        <div class="sn-label" id="s1-nav3"></div>
+      </div>
+    </div>
+
+    <span class="eyebrow" id="s1-eyebrow"></span>
+    <h2 id="s1-title"></h2>
+    <div class="stop-location" id="s1-loc"></div>
+    <div class="rule"></div>
+
+    <!-- MAP -->
+    <div class="map-wrap">
+      <div class="map-canvas">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=5.3245%2C60.3897%2C5.3345%2C60.3937&layer=mapnik&marker=60.3917%2C5.3295"
+          title="Kart – Bergen Domkirke"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="map-footer">
+        <div class="map-legend">
+          <div class="map-legend-item"><div class="legend-dot dest"></div><span id="s1-map-lbl"></span></div>
+        </div>
+        <a class="map-nav-btn" href="https://maps.google.com/?q=Bergen+Domkirke,Bergen" target="_blank" id="s1-nav-btn"></a>
+      </div>
+    </div>
+
+    <!-- AUDIO GUIDE -->
+    <div class="audio-guide">
+      <div class="audio-header">
+        <div>
+          <div class="audio-label" id="s1-audio-lbl"></div>
+          <div class="audio-sublbl" id="s1-audio-sub"></div>
+        </div>
+        <button class="audio-play-btn" id="s1-play-btn" onclick="toggleAudio('s1')">
+          <div class="audio-play-icon" id="s1-play-icon"></div>
+        </button>
+      </div>
+      <div class="audio-progress"><div class="audio-progress-bar" id="s1-progress"></div></div>
+      <div class="audio-note" id="s1-audio-note"></div>
+    </div>
+
+    <!-- STORY -->
+    <div class="story-box" id="s1-story"></div>
+
+    <!-- HISTORICAL BACKGROUND -->
+    <div class="hist-bg">
+      <div class="hist-bg-header" onclick="toggleHist('h1')">
+        <span class="hist-bg-label" id="s1-hist-lbl"></span>
+        <span class="hist-bg-arrow" id="h1-arrow">▼</span>
+      </div>
+      <div class="hist-bg-body" id="h1-body"></div>
+    </div>
+
+    <!-- SECRET TIP -->
+    <div class="secret-box">
+      <span class="secret-lbl" id="s1-secret-lbl"></span>
+      <div class="secret-txt" id="s1-secret"></div>
+    </div>
+
+    <!-- DRINK -->
+    <div class="drink-tip">
+      <span class="drink-tip-label" id="s1-drink-lbl"></span>
+      <div class="drink-tip-body" id="s1-drink"></div>
+    </div>
+
+    <button class="btn" onclick="goToStop(2)" id="s1-cta"></button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 2 · STOPP 2: HEKSESTEINEN
+══════════════════════════════════ -->
+<div class="screen" id="s-stop2">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goToStop(1)">←</button>
+    <a class="topbar-logo" href="bergen.html">Lane Stories</a>
+    <span class="topbar-count" id="s2-count"></span>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-seg done"   id="p2-1"></div>
+    <div class="prog-seg active" id="p2-2"></div>
+    <div class="prog-seg"        id="p2-3"></div>
+  </div>
+
+  <div class="body" style="padding-top:24px;">
+
+    <div class="stop-nav">
+      <div class="sn-item">
+        <div class="sn-dot done">✓</div>
+        <div class="sn-label" id="s2-nav1"></div>
+      </div>
+      <div class="sn-line"></div>
+      <div class="sn-item">
+        <div class="sn-dot active">2</div>
+        <div class="sn-label" id="s2-nav2"></div>
+      </div>
+      <div class="sn-line"></div>
+      <div class="sn-item">
+        <div class="sn-dot">🍷</div>
+        <div class="sn-label" id="s2-nav3"></div>
+      </div>
+    </div>
+
+    <span class="eyebrow" id="s2-eyebrow"></span>
+    <h2 id="s2-title"></h2>
+    <div class="stop-location" id="s2-loc"></div>
+    <div class="rule"></div>
+
+    <!-- MAP -->
+    <div class="map-wrap">
+      <div class="map-canvas">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=5.3040%2C60.3895%2C5.3140%2C60.3935&layer=mapnik&marker=60.3915%2C5.3090"
+          title="Kart – Heksesteinen, Nordnesparken"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="map-footer">
+        <div class="map-legend">
+          <div class="map-legend-item"><div class="legend-dot dest"></div><span id="s2-map-lbl"></span></div>
+        </div>
+        <a class="map-nav-btn" href="https://maps.google.com/?q=Nordnesparken+Bergen" target="_blank" id="s2-nav-btn"></a>
+      </div>
+    </div>
+
+    <!-- AUDIO GUIDE -->
+    <div class="audio-guide">
+      <div class="audio-header">
+        <div>
+          <div class="audio-label" id="s2-audio-lbl"></div>
+          <div class="audio-sublbl" id="s2-audio-sub"></div>
+        </div>
+        <button class="audio-play-btn" id="s2-play-btn" onclick="toggleAudio('s2')">
+          <div class="audio-play-icon" id="s2-play-icon"></div>
+        </button>
+      </div>
+      <div class="audio-progress"><div class="audio-progress-bar" id="s2-progress"></div></div>
+      <div class="audio-note" id="s2-audio-note"></div>
+    </div>
+
+    <!-- STORY -->
+    <div class="story-box" id="s2-story"></div>
+
+    <!-- HISTORICAL BACKGROUND -->
+    <div class="hist-bg">
+      <div class="hist-bg-header" onclick="toggleHist('h2')">
+        <span class="hist-bg-label" id="s2-hist-lbl"></span>
+        <span class="hist-bg-arrow" id="h2-arrow">▼</span>
+      </div>
+      <div class="hist-bg-body" id="h2-body"></div>
+    </div>
+
+    <!-- SECRET TIP -->
+    <div class="secret-box">
+      <span class="secret-lbl" id="s2-secret-lbl"></span>
+      <div class="secret-txt" id="s2-secret"></div>
+    </div>
+
+    <!-- DRINK -->
+    <div class="drink-tip">
+      <span class="drink-tip-label" id="s2-drink-lbl"></span>
+      <div class="drink-tip-body" id="s2-drink"></div>
+    </div>
+
+    <button class="btn" onclick="goToComplete()" id="s2-cta"></button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 3 · FULLFØRT
+══════════════════════════════════ -->
+<div class="screen" id="s-complete">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goToStop(2)">←</button>
+    <a class="topbar-logo" href="bergen.html">Lane Stories</a>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-seg done"></div>
+    <div class="prog-seg done"></div>
+    <div class="prog-seg done"></div>
+  </div>
+
+  <div class="complete-wrap">
+    <div class="complete-icon">🕯️</div>
+    <span class="eyebrow" id="c-eyebrow"></span>
+    <h2 id="c-title"></h2>
+    <p style="color:var(--muted);font-size:14px;max-width:340px;line-height:1.8;" id="c-sub"></p>
+
+    <div class="reward-box">
+      <span class="reward-lbl" id="c-reward-lbl"></span>
+      <div class="reward-place" id="c-place"></div>
+      <div class="reward-note" id="c-note"></div>
+    </div>
+
+    <button class="btn" onclick="window.location.href='bergen.html'" id="c-cta"></button>
+    <a href="index.html" class="btn-outline" id="c-home"></a>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     TRANSLATIONS + LOGIC
+══════════════════════════════════ -->
+<script>
+/* ── CONTENT ── */
+const T = {
+  no: {
+    /* INTRO */
+    i_eyebrow:   'Bergen · Historisk vandring',
+    i_title:     'Annes kveld',
+    i_sub:       'Prestekonen de brant. To stopp. Én skjebne. Bergen, 1590.',
+    i_duration:  'Ca. 60 minutter',
+    i_stops:     '2 stopp',
+    i_dist:      'Ca. 1,4 km',
+    i_tags:      ['Hekseprosess', 'Reformasjon', 'Kvinner & makt', '1590', 'Nordnes'],
+    i_incl: [
+      ['✦', 'Dyptgående historisk fortelling ved hvert stopp'],
+      ['✦', 'Lydguide med stemningsfullt opplesning'],
+      ['✦', 'Skjult insidertips ved hvert sted'],
+      ['✦', 'Avslutter med velkomstdrink på lokal bar'],
+    ],
+    i_teaser:    'I 1590 var Anne Pedersdotter en av Bergens fremste kvinner — gift med byens mest lærde mann, kjent av alle som hadde noe å si. Femten år etter hans død ble hun brent som heks. Dommen ble undertegnet av 37 av byens mektigste borgere. Historien din begynner der hun levde sitt offentlige liv. Den slutter der hun døde.',
+    i_cta:       'Start ruten →',
+    i_back:      '← Tilbake til Bergen',
+
+    /* STOPP 1 */
+    s1_count:     'Stopp 1 av 2',
+    s1_nav1:     'Domkirken',
+    s1_nav2:     'Nordnes',
+    s1_nav3:     'Avslutning',
+    s1_eyebrow:  'Stopp 1 · Domkirken',
+    s1_title:    'Kvinnen som kjente alle',
+    s1_loc:      'Kong Oscars gate 2 — Bergen Domkirke',
+    s1_map_lbl:  'Bergen Domkirke',
+    s1_nav_btn:  'Naviger hit',
+    s1_audio_lbl: 'Lydguide',
+    s1_audio_sub: 'Stopp 1 · ca. 4 minutter',
+    s1_audio_note: 'Lydguide kommer snart. Les historien nedenfor.',
+    s1_story: `
+      <p>Stå utenfor Domkirken og se opp. Bygningen er gammel nok til å ha vært der den kvelden — ikke i denne formen, men på dette stedet, med dette lyset, i denne gaten.</p>
+
+      <div class="pull-quote">"Absalon Pederssøn Beyer var Bergens mest lærde mann. Hans kone var ikke dum."</div>
+
+      <p>Anne Pedersdotter ble gift med Absalon Beyer en gang på 1560-tallet. Hun var ung. Han var allerede en anerkjent humanist, historiker og diakon — tilknyttet nettopp denne kirken. Sammen utgjorde de et av Bergens mest fremstående ektepar. De kjente rådsherrene og lagmennene. De ble invitert til de riktige middagene. Anne ble sett.</p>
+
+      <p>Det er viktig å forstå hvem Anne var <em>før</em> du forstår hva som skjedde. Hun hadde kunnskap om urter og helbredelse. Hun var kjent for å hjelpe syke mennesker. I Bergen på 1500-tallet var det en hårfin grense mellom klokskap og trolldom — og den grensen ble trukket av andre, ikke av deg selv.</p>
+
+      <p>Da Absalon døde i 1575, forsvant noe mer enn en ektemann. Det forsvant et vern. Bergenskvinnene som visste hvem Anne var, visste også at hun nå stod alene.</p>
+
+      <p>Det første anklageskriftet kom samme år som han døde. Hun ble frifunnet. Men Bergen hadde nå lagt merke til henne på en annen måte.</p>
+    `,
+    s1_hist_lbl: 'Historisk bakgrunn · Reformasjonen i Bergen',
+    s1_hist: `
+      <p>Reformasjonen kom til Bergen på 1530-tallet — ikke stille, men med ikonklasme, opptøyer og konfiskasjon av kirkegods. Absalon Pederssøn Beyer var en av reformasjonens menn: lærd, luthersk, og tett på den nye makten i byen.</p>
+      <p>Bergen Domkirke var i denne perioden sete for det nye protestantiske presteskapet. Den som hadde tilknytning til kirken, hadde makt. Den som mistet den tilknytningen, mistet også sitt forsvar mot anklagene som sirkulerte i bakgater og kjøkkener.</p>
+      <p>Anne Pedersdotter levde i skjæringspunktet mellom den gamle, katolske forståelsen av helbredelse og overnaturlige krefter — og den nye, lutherske ordenen der slike praksiser raskt kunne tolkes som pakt med djevelen.</p>
+    `,
+    s1_secret_lbl: 'Insidertips',
+    s1_secret:   'Absalon Pederssøn Beyers dagbok — <em>Bergens Kalvs</em> — er ett av de viktigste kildeskriftene vi har om Bergen på 1500-tallet. Den finnes digitalisert og er gratis tilgjengelig. Han beskriver byen med en kjærlighet og presisjon som gjør det lett å se gatene slik de var. Anne er aldri nevnt. Det sier kanskje noe.',
+    s1_drink_lbl: 'Anbefalt drikke ved dette stoppet',
+    s1_drink:    'Et glass tørr hvitvin eller eple-cider — lett og klart, som det juridiske argumentet som frifant henne første gang. Det finnes barer langs Nedre Korskirkeallmenning som passer godt.',
+    s1_cta:      'Gå til Stopp 2 · Nordnes →',
+
+    /* STOPP 2 */
+    s2_count:     'Stopp 2 av 2',
+    s2_nav1:     'Domkirken',
+    s2_nav2:     'Nordnes',
+    s2_nav3:     'Avslutning',
+    s2_eyebrow:  'Stopp 2 · Nordnesparken',
+    s2_title:    '7. april 1590',
+    s2_loc:      'Nordnesparken — ved Heksesteinen, mot Akvariet',
+    s2_map_lbl:  'Heksesteinen, Nordnesparken',
+    s2_nav_btn:  'Naviger hit',
+    s2_audio_lbl: 'Lydguide',
+    s2_audio_sub: 'Stopp 2 · ca. 5 minutter',
+    s2_audio_note: 'Lydguide kommer snart. Les historien nedenfor.',
+    s2_story: `
+      <p>Finn steinen. Den er nesten fem meter høy, laget av hardangerskifer, reist i 2002. Innskriften er enkel:</p>
+
+      <div class="pull-quote">"350 bålofre for justismord 1550–1700"</div>
+
+      <p>Anne Pedersdotter var ikke bare ett av disse tallene. Hun var den første. Det som skjedde her, på dette stedet, den 7. april 1590, satte i gang noe som ikke stoppet på generasjoner.</p>
+
+      <p>Femten år hadde gått siden første anklage. Absalon var lenge borte. Anklagene kom tilbake — denne gangen fra kvinner i Bergen. Noen sa hun hadde helbredet dem på overnaturlig vis. Andre sa hun hadde forgjort dem. Logikken var sirkulær: hvis du kurerte noen, var det trolldom. Hvis noen ble syk etter å ha besøkt deg, var det trolldom. Det fantes ingen handling du kunne gjøre deg uskyldig med.</p>
+
+      <p>Dommen ble undertegnet av 37 av Bergens mektigste menn — lagmannen, borgermesteren, byrådet. 37 segl. Det var ikke et lynsjemob som drepte Anne Pedersdotter. Det var det sivile samfunnet, i fullt dagslys, med all sin tyngde bak pennen.</p>
+
+      <p>Etterpå kom de andre. I Finnmark brant det i tiår. Hundrevis av kvinner. Anne var begynnelsen.</p>
+
+      <p style="margin-bottom:0;">I 1943 laget Carl Theodor Dreyer filmen <em>Vredens dag</em> basert på Hans Wiers-Jensens skuespill om Anne — en av de store filmene i europeisk kinohistorie. Den er mørk, langsom og uutholdelig presis. Som historien selv.</p>
+    `,
+    s2_hist_lbl: 'Historisk bakgrunn · Norske hekseprosesser',
+    s2_hist: `
+      <p>Norge hadde relativt sett færre heksebrenninger enn mange europeiske land, men de som skjedde var særlig konsentrert i Finnmark — det nordligste fylket, der samisk folkekultur og ny luthersk ortodoksi kolliderte med dramatisk konsekvens.</p>
+      <p>Historikere regner med at rundt 350 mennesker ble henrettet for trolldom i Norge mellom 1550 og 1700. De aller fleste var kvinner. Prosessene toppet seg i siste halvdel av 1600-tallet, særlig under danskekongens aktive oppmuntring av forfølgelsene.</p>
+      <p>Anne Pedersdotter skiller seg ut fordi hun kom fra toppen av det bergenske samfunnet — ikke fra periferien. Det at selv hun ikke var trygg, sendte et signal. Ingen var trygg.</p>
+    `,
+    s2_secret_lbl: 'Insidertips',
+    s2_secret:   'Steinen ble avduket 26. juni 2002, donert av Hardangerskifer AS fra Jondal. Lite kjent: det var lokalt engasjement fra bergensere — ikke staten — som finansierte minnesmerket. Det tok over 400 år fra henrettelsen til Norge offisielt erkjente hva som hadde skjedd her.',
+    s2_drink_lbl: 'Anbefalt drikke ved dette stoppet',
+    s2_drink:    'Mørk øl eller et glass rødvin — tungt, som historien. Kafé Kippers på Nordnes er en god avslutning, med utsikt mot fjorden og en stemning som passer til vandringen.',
+    s2_cta:      'Fullfør ruten →',
+
+    /* COMPLETE */
+    c_eyebrow:   'Ruten er fullført',
+    c_title:     'Du har gått Annes kveld.',
+    c_sub:       'To stopp. Én skjebne. Et minnesmerke som tok 412 år å reise.',
+    c_reward_lbl: 'Avslutt kvelden her',
+    c_place:     'Kafé Kippers · Nordnesparken',
+    c_note:      'Vis denne skjermen ved ankomst for en velkomstdrink. Kafeen ligger nær steinen, med utsikt mot Puddefjorden. Fortell gjerne hva du nettopp lærte.',
+    c_cta:       '← Tilbake til Bergen-ruter',
+    c_home:      'Tilbake til forsiden',
+  },
+
+  en: {
+    /* INTRO */
+    i_eyebrow:   'Bergen · Historical Walk',
+    i_title:     "Anne's Evening",
+    i_sub:       'The priest\'s wife they burned. Two stops. One fate. Bergen, 1590.',
+    i_duration:  'Approx. 60 minutes',
+    i_stops:     '2 stops',
+    i_dist:      'Approx. 1.4 km',
+    i_tags:      ['Witch Trial', 'Reformation', 'Women & Power', '1590', 'Nordnes'],
+    i_incl: [
+      ['✦', 'Deep historical narrative at each stop'],
+      ['✦', 'Audio guide with atmospheric narration'],
+      ['✦', 'Hidden insider tip at each location'],
+      ['✦', 'Ends with a welcome drink at a local bar'],
+    ],
+    i_teaser:    "In 1590, Anne Pedersdotter was one of Bergen's most prominent women — married to the city's most learned man, known to everyone who mattered. Fifteen years after his death, she was burned as a witch. The verdict was signed by 37 of the city's most powerful citizens. Your route begins where she lived her public life. It ends where she died.",
+    i_cta:       'Start the route →',
+    i_back:      '← Back to Bergen',
+
+    /* STOP 1 */
+    s1_count:     'Stop 1 of 2',
+    s1_nav1:     'Cathedral',
+    s1_nav2:     'Nordnes',
+    s1_nav3:     'End',
+    s1_eyebrow:  'Stop 1 · The Cathedral',
+    s1_title:    'The Woman Who Knew Everyone',
+    s1_loc:      'Kong Oscars gate 2 — Bergen Cathedral',
+    s1_map_lbl:  'Bergen Cathedral',
+    s1_nav_btn:  'Navigate here',
+    s1_audio_lbl: 'Audio Guide',
+    s1_audio_sub: 'Stop 1 · approx. 4 minutes',
+    s1_audio_note: 'Audio guide coming soon. Read the story below.',
+    s1_story: `
+      <p>Stand outside the Cathedral and look up. The building is old enough to have been here that evening — not in this exact form, but on this ground, in this light, in this street.</p>
+
+      <div class="pull-quote">"Absalon Pederssøn Beyer was Bergen's most learned man. His wife was not stupid."</div>
+
+      <p>Anne Pedersdotter married Absalon Beyer sometime in the 1560s. She was young. He was already a respected humanist, historian and deacon — attached to this very church. Together they formed one of Bergen's most prominent couples. They knew the city councillors and the judges. They were invited to the right dinners. Anne was seen.</p>
+
+      <p>It is important to understand who Anne was <em>before</em> you understand what happened to her. She had knowledge of herbs and healing. She was known for helping sick people. In Bergen in the 1500s, the line between wisdom and witchcraft was paper-thin — and it was drawn by others, not by you.</p>
+
+      <p>When Absalon died in 1575, something more than a husband disappeared. A protection disappeared. The women of Bergen who knew who Anne was, also knew that she now stood alone.</p>
+
+      <p>The first accusation came the same year he died. She was acquitted. But Bergen had now noticed her in a different way.</p>
+    `,
+    s1_hist_lbl: 'Historical background · The Reformation in Bergen',
+    s1_hist: `
+      <p>The Reformation came to Bergen in the 1530s — not quietly, but with iconoclasm, riots and the confiscation of church property. Absalon Pederssøn Beyer was one of the Reformation's men: learned, Lutheran, and close to the new power in the city.</p>
+      <p>Bergen Cathedral in this period was the seat of the new Protestant clergy. Those with a connection to the church had power. Those who lost that connection also lost their defence against accusations circulating in alleyways and kitchens.</p>
+      <p>Anne Pedersdotter lived at the intersection of the old, Catholic understanding of healing and supernatural forces — and the new Lutheran order, where such practices could quickly be interpreted as a pact with the devil.</p>
+    `,
+    s1_secret_lbl: 'Insider Tip',
+    s1_secret:   "Absalon Pederssøn Beyer's diary — <em>Bergens Kalvs</em> — is one of the most important source documents we have about Bergen in the 1500s. It has been digitised and is freely available. He describes the city with a love and precision that makes it easy to see the streets as they were. Anne is never mentioned. Perhaps that says something.",
+    s1_drink_lbl: 'Recommended drink at this stop',
+    s1_drink:    'A glass of dry white wine or apple cider — light and clear, like the legal argument that acquitted her the first time. There are bars along Nedre Korskirkeallmenning that work well.',
+    s1_cta:      'Walk to Stop 2 · Nordnes →',
+
+    /* STOP 2 */
+    s2_count:     'Stop 2 of 2',
+    s2_nav1:     'Cathedral',
+    s2_nav2:     'Nordnes',
+    s2_nav3:     'End',
+    s2_eyebrow:  'Stop 2 · Nordnesparken',
+    s2_title:    '7 April 1590',
+    s2_loc:      'Nordnesparken — by the Witch Stone, near the Aquarium',
+    s2_map_lbl:  'The Witch Stone, Nordnesparken',
+    s2_nav_btn:  'Navigate here',
+    s2_audio_lbl: 'Audio Guide',
+    s2_audio_sub: 'Stop 2 · approx. 5 minutes',
+    s2_audio_note: 'Audio guide coming soon. Read the story below.',
+    s2_story: `
+      <p>Find the stone. It is nearly five metres tall, made of Hardanger slate, erected in 2002. The inscription is simple:</p>
+
+      <div class="pull-quote">"350 bonfire victims to miscarriage of justice 1550–1700"</div>
+
+      <p>Anne Pedersdotter was not merely one of those numbers. She was the first. What happened here, on this ground, on 7 April 1590, set something in motion that did not stop for generations.</p>
+
+      <p>Fifteen years had passed since the first accusation. Absalon had long been gone. The accusations returned — this time from women in Bergen. Some said she had healed them by supernatural means. Others said she had cursed them. The logic was circular: if you cured someone, it was witchcraft. If someone fell ill after visiting you, it was witchcraft. There was no act by which you could prove your innocence.</p>
+
+      <p>The verdict was signed by 37 of Bergen's most powerful men — the judge, the mayor, the city council. 37 seals. It was not a mob that killed Anne Pedersdotter. It was civil society, in full daylight, with all its weight behind the pen.</p>
+
+      <p>Afterwards, the fires spread. In Finnmark they burned for decades. Hundreds of women. Anne was the beginning.</p>
+
+      <p style="margin-bottom:0;">In 1943, Carl Theodor Dreyer made the film <em>Day of Wrath</em> based on Hans Wiers-Jensen's play about Anne — one of the great films in European cinema history. It is dark, slow and unbearably precise. Like the history itself.</p>
+    `,
+    s2_hist_lbl: 'Historical background · Norwegian witch trials',
+    s2_hist: `
+      <p>Norway had relatively fewer witch burnings than many European countries, but those that occurred were particularly concentrated in Finnmark — the northernmost county, where Sami folk culture and new Lutheran orthodoxy collided with dramatic consequences.</p>
+      <p>Historians estimate that around 350 people were executed for witchcraft in Norway between 1550 and 1700. The vast majority were women. The trials peaked in the latter half of the 17th century, particularly under active encouragement from the Danish crown.</p>
+      <p>Anne Pedersdotter stands out because she came from the top of Bergen society — not from the margins. The fact that even she was not safe sent a signal. No one was safe.</p>
+    `,
+    s2_secret_lbl: 'Insider Tip',
+    s2_secret:   'The stone was unveiled on 26 June 2002, donated by Hardangerskifer AS from Jondal. Little known: it was local engagement from Bergen residents — not the state — that funded the memorial. It took over 400 years from the execution for Norway to formally acknowledge what had happened here.',
+    s2_drink_lbl: 'Recommended drink at this stop',
+    s2_drink:    'Dark beer or a glass of red wine — heavy, like the history. Kafé Kippers on Nordnes makes a good ending, with a view over the fjord and an atmosphere that suits the walk.',
+    s2_cta:      'Complete the route →',
+
+    /* COMPLETE */
+    c_eyebrow:   'Route complete',
+    c_title:     "You have walked Anne's Evening.",
+    c_sub:       'Two stops. One fate. A memorial that took 412 years to raise.',
+    c_reward_lbl: 'End your evening here',
+    c_place:     'Kafé Kippers · Nordnesparken',
+    c_note:      'Show this screen on arrival for a welcome drink. The café is near the stone, with a view over Puddefjorden. Tell them what you just learned.',
+    c_cta:       '← Back to Bergen routes',
+    c_home:      'Back to home',
+  }
+};
+
+/* ── LANG ── */
+function detectLang() {
+  const saved = localStorage.getItem('ls_lang');
+  if (saved) return saved;
+  return navigator.language.startsWith('no') ? 'no' : 'en';
+}
+function setLang(lang) {
+  localStorage.setItem('ls_lang', lang);
+  applyLang(lang);
+}
+
+function applyLang(lang) {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+
+  /* Intro */
+  set('i-eyebrow',  t.i_eyebrow);
+  set('i-title',    t.i_title);
+  set('i-sub',      t.i_sub);
+  set('i-duration', t.i_duration);
+  set('i-stops',    t.i_stops);
+  set('i-dist',     t.i_dist);
+  set('i-cta',      t.i_cta);
+  set('i-back',     t.i_back);
+  set('i-teaser',   t.i_teaser);
+
+  const tagsEl = document.getElementById('i-tags');
+  tagsEl.innerHTML = t.i_tags.map(tg => `<span class="tag">${tg}</span>`).join('');
+
+  const inclEl = document.getElementById('i-incl');
+  inclEl.innerHTML = t.i_incl.map(([icon, txt]) =>
+    `<div class="incl-item"><span>${icon}</span><span>${txt}</span></div>`
+  ).join('');
+
+  /* Stop 1 */
+  set('s1-count',      t.s1_count);
+  set('s1-nav1',       t.s1_nav1);
+  set('s1-nav2',       t.s1_nav2);
+  set('s1-nav3',       t.s1_nav3);
+  set('s1-eyebrow',    t.s1_eyebrow);
+  set('s1-title',      t.s1_title);
+  set('s1-loc',        t.s1_loc);
+  set('s1-map-lbl',    t.s1_map_lbl);
+  set('s1-nav-btn',    t.s1_nav_btn);
+  set('s1-audio-lbl',  t.s1_audio_lbl);
+  set('s1-audio-sub',  t.s1_audio_sub);
+  set('s1-audio-note', t.s1_audio_note);
+  setHTML('s1-story',      t.s1_story);
+  set('s1-hist-lbl',   t.s1_hist_lbl);
+  setHTML('h1-body',       '<p>' + t.s1_hist.trim().replace(/\n\s*/g,'</p><p>') + '</p>');
+  set('s1-secret-lbl', t.s1_secret_lbl);
+  setHTML('s1-secret',     t.s1_secret);
+  set('s1-drink-lbl',  t.s1_drink_lbl);
+  set('s1-drink',      t.s1_drink);
+  set('s1-cta',        t.s1_cta);
+
+  /* Stop 2 */
+  set('s2-count',      t.s2_count);
+  set('s2-nav1',       t.s2_nav1);
+  set('s2-nav2',       t.s2_nav2);
+  set('s2-nav3',       t.s2_nav3);
+  set('s2-eyebrow',    t.s2_eyebrow);
+  set('s2-title',      t.s2_title);
+  set('s2-loc',        t.s2_loc);
+  set('s2-map-lbl',    t.s2_map_lbl);
+  set('s2-nav-btn',    t.s2_nav_btn);
+  set('s2-audio-lbl',  t.s2_audio_lbl);
+  set('s2-audio-sub',  t.s2_audio_sub);
+  set('s2-audio-note', t.s2_audio_note);
+  setHTML('s2-story',      t.s2_story);
+  set('s2-hist-lbl',   t.s2_hist_lbl);
+  setHTML('h2-body',       '<p>' + t.s2_hist.trim().replace(/\n\s*/g,'</p><p>') + '</p>');
+  set('s2-secret-lbl', t.s2_secret_lbl);
+  setHTML('s2-secret',     t.s2_secret);
+  set('s2-drink-lbl',  t.s2_drink_lbl);
+  set('s2-drink',      t.s2_drink);
+  set('s2-cta',        t.s2_cta);
+
+  /* Complete */
+  set('c-eyebrow',    t.c_eyebrow);
+  set('c-title',      t.c_title);
+  set('c-sub',        t.c_sub);
+  set('c-reward-lbl', t.c_reward_lbl);
+  set('c-place',      t.c_place);
+  set('c-note',       t.c_note);
+  set('c-cta',        t.c_cta);
+  set('c-home',       t.c_home);
+
+  /* Lang buttons */
+  document.getElementById('btn-no').classList.toggle('active', lang === 'no');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+}
+
+function set(id, val)     { const el=document.getElementById(id); if(el) el.textContent=val||''; }
+function setHTML(id, val) { const el=document.getElementById(id); if(el) el.innerHTML=val||''; }
+
+/* ── NAVIGATION ── */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+}
+function goToIntro()   { showScreen('s-intro');    }
+function goToStop(n)   { showScreen('s-stop' + n); }
+function goToComplete(){ showScreen('s-complete'); }
+function goBack() {
+  const ref = document.referrer;
+  if (ref && ref.includes('bergen')) { window.history.back(); }
+  else { window.location.href = 'bergen.html'; }
+}
+
+/* ── COLLAPSIBLE HISTORY ── */
+function toggleHist(id) {
+  const body  = document.getElementById(id + '-body');
+  const arrow = document.getElementById(id + '-arrow');
+  if (!body) return;
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+/* ── AUDIO (placeholder — TTS to be added) ── */
+const audioState = {};
+function toggleAudio(stopId) {
+  if (!audioState[stopId]) audioState[stopId] = { playing: false, pct: 0 };
+  const st = audioState[stopId];
+  st.playing = !st.playing;
+  const icon = document.getElementById(stopId + '-play-icon');
+  if (st.playing) {
+    icon.outerHTML = '<div class="audio-pause-icon" id="' + stopId + '-play-icon"><span></span><span></span></div>';
+    // Simulate progress for demo
+    simulateProgress(stopId, st);
+  } else {
+    icon.outerHTML = '<div class="audio-play-icon" id="' + stopId + '-play-icon"></div>';
+    clearInterval(st.timer);
+  }
+}
+function simulateProgress(stopId, st) {
+  clearInterval(st.timer);
+  st.timer = setInterval(() => {
+    st.pct = Math.min(100, st.pct + 0.4);
+    const bar = document.getElementById(stopId + '-progress');
+    if (bar) bar.style.width = st.pct + '%';
+    if (st.pct >= 100) {
+      clearInterval(st.timer);
+      st.playing = false;
+      const icon = document.getElementById(stopId + '-play-icon');
+      if (icon) icon.outerHTML = '<div class="audio-play-icon" id="' + stopId + '-play-icon"></div>';
+    }
+  }, 200);
+}
+
+/* ── INIT ── */
+applyLang(detectLang());
+</script>
+</body>
+</html>
