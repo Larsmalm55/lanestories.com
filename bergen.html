@@ -242,7 +242,7 @@
       <div class="r-tag"  id="route1-tag"></div>
       <div class="tags"><span class="tag" id="route1-t1"></span><span class="tag" id="route1-t2"></span><span class="tag" id="route1-t3"></span><span class="tag" id="route1-t4"></span></div>
     </div>
-    <div class="route-card" onclick="selectRoute('anne')">
+    <div class="route-card" onclick="goAnne()">
       <span class="r-emoji">🕯</span>
       <div class="r-name" id="route4-name"></div>
       <div class="r-tag"  id="route4-tag"></div>
@@ -324,6 +324,30 @@
     </div>
     <div class="code-msg" id="codeMsg2"></div>
     <p style="font-size:12px;color:#3a3028;text-align:center;margin-top:16px;" id="cf-noemail"></p>
+  </div>
+</div>
+
+<!-- ══ NAVIGATE ══ -->
+<div class="screen" id="s-navigate">
+  <div class="topbar">
+    <span class="topbar-logo" style="margin:auto;">Lane Stories · Bergen</span>
+  </div>
+  <div class="body" style="padding-top:32px;">
+    <span class="eyebrow" id="nav-eyebrow"></span>
+    <h2 style="margin-bottom:4px;" id="nav-stop-name"></h2>
+    <p class="sub" style="margin-bottom:24px;" id="nav-address"></p>
+
+    <div class="map-wrap" style="margin-bottom:16px;">
+      <div class="map-canvas" style="height:280px;">
+        <iframe id="nav-map-iframe" src="" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width:100%;height:100%;border:none;filter:sepia(0.15) contrast(1.05);display:block;"></iframe>
+      </div>
+      <div class="map-footer" style="justify-content:center;">
+        <a class="map-nav-btn" id="nav-gmaps-btn" href="#" target="_blank" rel="noopener" style="padding:11px 24px;font-size:11px;letter-spacing:0.14em;"></a>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);text-align:center;line-height:1.7;margin-bottom:28px;" id="nav-hint"></p>
+    <button class="btn" id="nav-arrived-btn" onclick="startTourFromNav()"></button>
   </div>
 </div>
 
@@ -480,9 +504,8 @@ const T = {
     r2t1:'2 t', r2t2:'2.1 km',
     route3Name:'Fisketorgets hemmeligheter', route3Tag:'Fra vikingfiske til Europas matbors',
     r3t1:'60 min', r3t2:'0.9 km',
-    route4Name:'Annes aften', route4Tag:'En prestekone. To rettssaker. Ett bål.',
-    r4t1:'90 min', r4t2:'4 stopp', r4t3:'1590',
-    anneRouteTitle:'Annes aften', anneRouteSub:'Hekseprosess · Nordnes · 1590',
+    route4Name:'Fra prestekone til heks', route4Tag:'Bergen 1590 · Justismord · Nordnes',
+    r4t1:'90 min', r4t2:'4 stopp', r4t3:'Hekseprosess',
     oTopbar:'Bestill rute', oEyebrow:'Én betaling · Tilgang i 48 timer',
     oSub:'Du mottar en unik tilgangskode på e-post umiddelbart etter betaling.',
     oBoxTitle:'Én rute · Bergen', oBoxPrice:'kr 45',
@@ -519,6 +542,10 @@ const T = {
     audioLabel:'Lydguide', audioSublbl:'Trykk for å høre historien — ca. 4 min',
     histBgLabel:'📜 Historisk bakgrunn',
     drinkTipLabel:'🍷 Drinktips for dette stoppet',
+    navEyebrow:'Startpunkt',
+    navGmapsBtn:'🗺 Åpne i Google Maps',
+    navHint:'Gå til startpunktet. Trykk «Jeg er fremme» når du ankommer.',
+    navArrived:'Jeg er fremme — start turen →',
   },
   en: {
     region:'Norway · Bergen',
@@ -542,9 +569,8 @@ const T = {
     r2t1:'2 hrs', r2t2:'2.1 km',
     route3Name:'Secrets of the Fish Market', route3Tag:'From Viking fishing to Europe\'s table',
     r3t1:'60 min', r3t2:'0.9 km',
-    route4Name:"Anne's Evening", route4Tag:'A priest\'s wife. Two trials. One fire.',
-    r4t1:'90 min', r4t2:'4 stops', r4t3:'1590',
-    anneRouteTitle:"Anne's Evening", anneRouteSub:'Witch trial · Nordnes · 1590',
+    route4Name:"From Priest's Wife to Witch", route4Tag:'Bergen 1590 · Miscarriage of justice · Nordnes',
+    r4t1:'90 min', r4t2:'4 stops', r4t3:'Witch trial',
     oTopbar:'Book route', oEyebrow:'One payment · Access for 48 hours',
     oSub:'You\'ll receive a unique access code by email immediately after payment.',
     oBoxTitle:'One route · Bergen', oBoxPrice:'€4',
@@ -581,6 +607,10 @@ const T = {
     audioLabel:'Audio guide', audioSublbl:'Tap to hear the story — approx. 4 min',
     histBgLabel:'📜 Historical background',
     drinkTipLabel:'🍷 Drink tip for this stop',
+    navEyebrow:'Starting point',
+    navGmapsBtn:'🗺 Open in Google Maps',
+    navHint:"Make your way to the starting point. Tap \"I'm here\" when you arrive.",
+    navArrived:"I'm here — start the tour →",
   }
 };
 
@@ -738,202 +768,24 @@ const STOPS = {
   ]
 };
 
-// ── STOPS: ANNES AFTEN ───────────────────────────────────────────────────
-const STOPS_ANNE = {
-  no: [
-    // ── STOPP 1: DOMKIRKEN ──
-    { icon:'⛪', year:'1553–1575', name:'Bergen Domkirke', sub:'Der alt begynte — og endte',
-      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.39165,5.32569',
-      drink: { icon:'🚶', text:'Startpunkt · Ingen drink ennå · Gå sakte', hasDrink: false },
-      audio: 'Still deg foran Domkirken. Tenk deg Bergen i 1553. En by som ennå lukter av middelalderen, men som er i ferd med å bli noe annet. Reformasjonen er ny. Luther er ikke gammel. Og hit — til dette stedet — kommer en ung mann fra Sogn med en ryggsekk full av ideer. Han heter Absalon Pederssøn Beyer. Han har studert under Philipp Melanchthon i Wittenberg — reformasjonens intellektuelle hjerte, Luthers nærmeste mann. Han blir lektor ved katedralskolen. Kannik ved domkapitlet. Slottsprest på Bergenhus. Han kjente alle. Han var Bergen. Og han giftet seg med Anne. Absalon var ikke bare en prest — han var historiker. Hans dagbok fra 1552 til 1572 er fremdeles den viktigste kilden vi har til hverdagslivet i Bergen på 1500-tallet. Han noterte alt. Priser på fisk. Ryktene i gatene. Stormene ute i fjorden. Men en ting noterte han ikke: hva som ville skje med konen hans etter hans død. I 1575 døde Absalon. Og i Bergen, i 1575, var en enke uten beskyttelse sårbar på måter vi knapt kan forestille oss. Beskyttelsen forsvant da han forsvant. Det tok ikke lang tid. Samme år som Absalon ble gravlagt, ble Anne for første gang anklaget for hekseri. Hun møtte anklagen, forsvarte seg, og ble frikjent. Men anklagen satt. Som anklager gjerne gjør i små byer.',
-      histbg: [
-        'Absalon Pederssøn Beyer ble født på gården Skirdal ved Aurlandsfjorden i Sogn. Han mistet foreldrene tidlig og ble sendt til katedralskolen i Bergen av en onkel.',
-        'I 1549 reiste han til Wittenberg og studerte i to år under Philipp Melanchthon — reformasjonens fremste intellektuelle. Denne bakgrunnen gjorde ham til en av de mest lærde mennene i Bergen.',
-        'Hans dagbok fra 1552–72 er den viktigste kilden til hverdagslivet i Bergen på 1500-tallet. Den er digitalisert og kan leses gratis på bokselskap.no.',
-        'Anne Pedersdotter ble hans kone og representerte ham offentlig. En prestekone i 1500-tallets Bergen var en offentlig person — kjent, respektert, synlig.',
-        'Da Absalon døde i 1575, ble Anne stående alene uten den sosiale og juridiske beskyttelsen mannen ga henne. Det første anklageskriftet for hekseri kom samme år.'
-      ],
-      story: [
-        'Still deg foran Domkirken. Her underviste Absalon Pederssøn Beyer. Her forkynte han den nye lutherske troen til en by som fremdeles luktet av middelalderen.',
-        'Absalon var ikke hvem som helst. Han hadde studert i Wittenberg under Philipp Melanchthon — reformasjonens intellektuelle hjerte, Luthers nærmeste mann. Han kom hjem til Bergen som en av landets mest lærde menn.',
-        '«Hans dagbok fra 1552 til 1572 er fremdeles den viktigste kilden vi har til hverdagslivet i Bergen på 1500-tallet.»',
-        'Og han giftet seg med Anne. Anne Pedersdotter ble hans kone i en tid da en prestekone var noe mer enn en hustru — hun representerte mannen sin. Var synlig. Respektert. En av de fremste kvinnene i en av landets fremste byer.',
-        'I 1575 døde Absalon. Og i Bergen, i 1575, var en enke uten ektefelle sårbar på måter vi knapt kan forestille oss. Beskyttelsen forsvant da han forsvant.',
-        'Samme år som Absalon ble gravlagt, ble Anne for første gang anklaget for hekseri. Hun forsvarte seg og ble frikjent. Men anklagen satt — som anklager gjerne gjør i små byer.'
-      ],
-      secret:'Absalons dagbok er digitalisert og kan leses gratis på bokselskap.no. En av de merkeligste lesningene du kan gjøre — hverdagslivet i Bergen på 1500-tallet, skrevet av en mann som ikke visste at hans kone ville bli brent som heks femten år etter hans død.' },
-
-    // ── STOPP 2: STRANDGATEN ──
-    { icon:'⚖️', year:'1575 · 1590', name:'Strandgaten', sub:'To rettssaker · Én dom',
-      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.39370,5.32440',
-      drink: { icon:'🚶', text:'Fremdeles på vei · Ingen drink ennå', hasDrink: false },
-      audio: 'Her, i dette området, administrerte Bergen sin rettferdighet. Det var her byens lagmann og rådmenn møttes, her vedtak ble kunngjort, her skjebner ble forseglet med segl og tinte. Anne Pedersdotter var her to ganger. Første gang i 1575, året Absalon døde. En nabo hadde anklaget henne. Hadde sett noe. Visst noe. Det gikk ikke lenger å ha en hekserykte og en mektig mann på samme tid — men uten ham var ryktet hennes eneste identitet. Anne ble frikjent. Saken ble henlagt. Men femten år er en lang tid å bære på en anklage ingen har glemt. Den andre gangen kom i 1590. Anklageren het Adrian von Buskskott, barber av yrke. Sønnen hans hadde friddd til Annes datter Susanne. Familien nektet — ikke fordi de hadde noe mot ekteskapet i seg selv, men fordi de ikke ville at sønnen giftet seg inn i en slekt med hekserykte. Den enkleste løsningen var å gjøre ryktet om til fakta. 48 vitner møtte frem. Naboer. Venner. Folk som hadde kjent Anne i tiår. Og de fortalte: om sykdom som kom etter at hun hadde sett på dem. Om et lite barn som hadde dødd etter hennes besøk. Om rideaturer til Lyderhorn tre julekveld på rad, der hun og andre hekser planla å sette Bergen i brann. Les anklagene langsomt. Hva er de egentlig? Sykdom og tilfeldigheter omgjort til intensjon. Frykt omgjort til skyld. Og under det hele: en barber som ikke ville ha en hekse i slekten. Anne forsvarte seg. Rettsdokumentene beskriver henne som skarp, klar og bestemt — et menneske som kjempet med full bevissthet mot noe hun visste hun ikke kunne beseire. Dommen kom den syvende april 1590. Undertegnet med 37 segl. Fra livet til døden ved ilden. Trehundre og tretten år senere satt en ung dansk regissør og leste om henne. Carl Theodor Dreyer. Han var fascinert av mennesker som ble knust av systemer større enn dem selv — av ansikter under press. I 1943 laget han filmen Vredens dag, basert på skuespillet Hans Wiers-Jenssen hadde skrevet om Anne i 1908. Filmen ble en av filmhistoriens store mesterverk. Anne Pedersdotter, prestekone fra Bergen, brant på Nordnes i 1590. Og lever på film den dag i dag.',
-      histbg: [
-        'Den første anklagen mot Anne kom i 1575 — samme år som Absalon døde. Hun ble frikjent, men ryktet festnet seg.',
-        'Den andre anklagen i 1590 var drevet av barberen Adrian von Buskskott, hvis sønn ønsket å gifte seg med Annes datter. En familiærstrid ble omgjort til en heksesak.',
-        '48 vitner ble avhørt. Anklagene dekket alt fra å kaste sykdom på naboer, til å ha drept et lite barn og til å ha deltatt på heksemøter på Lyderhorn tre julekveld på rad.',
-        'Dommen ble avsagt 7. april 1590, undertegnet av lagmann, borgermester og byråd med 37 segl. Anne ble dømt «fra livet til døden ved ilden».',
-        'Dramatikeren Hans Wiers-Jenssen (1908) og filmregissøren Carl Theodor Dreyer (Vredens dag, 1943) brukte Annes skjebne som grunnlag for to av norsk og dansk kulturs varigste verker.'
-      ],
-      story: [
-        'Her administrerte Bergen sin rettferdighet. Anne Pedersdotter stod her to ganger — i 1575 og i 1590.',
-        'Den første gangen ble hun frikjent. Men i en liten by fester anklagen seg, selv etter at saken er henlagt. Femten år er en lang tid å bære på et rykte ingen har glemt.',
-        'Den andre anklagen kom fra en barber. Adrian von Buskskott ville ikke at sønnen hans giftet seg inn i en hekseslekt. Den enkleste løsningen var å gjøre ryktet om til fakta. 48 vitner møtte frem og fortalte om sykdom, om et lite barn som hadde dødd, om rideaturer til Lyderhorn tre julekveld på rad.',
-        '«Les anklagene langsomt. Hva er de egentlig? Tilfeldigheter omgjort til intensjon. Frykt omgjort til skyld. Og under det hele: en barber som ikke ville ha en hekse i slekten.»',
-        'Anne forsvarte seg — kildene beskriver henne som skarp og klar, fullt bevisst om hva som ventet. Dommen kom 7. april 1590. 37 segl. Fra livet til døden ved ilden.',
-        'Trehundre og tretten år senere satt Carl Theodor Dreyer og leste om henne. Filmen han laget — Vredens dag (1943) — regnes som et av filmhistoriens store mesterverk. Annes ansikt lever på lerret den dag i dag.'
-      ],
-      secret:'Vredens dag finnes på YouTube med norske undertitler. Se filmen etter vandringen. Dreyer filmet ansiktet til den anklagede prestekonen i lange, ubevegelige nærblikk — akkurat slik rettsdokumentene beskriver Anne: ubøyelig, til det siste.' },
-
-    // ── STOPP 3: HEKSESTEINEN ──
-    { icon:'🪨', year:'1590 · 2002', name:'Heksesteinen', sub:'Galgebakken · Nordnesparken',
-      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.39716,5.31122',
-      drink: { icon:'🚶', text:'Nesten fremme · Siste stopp er en pub', hasDrink: false },
-      audio: 'Steinen du står ved er fem meter høy og laget av hardangerskifer. Den ble reist i 2002 av Akademiet for de frieste tanker. Innskriften lyder: tre hundre og femti bålofre for justismord, 1550 til 1700. Anne Pedersdotter var ikke et tall. Men hun er grunnen til at dette tallet finnes. Det var hennes sak — i 1590, akkurat her på Galgebakken — som var startskuddet. Etter henne spredte hekseprosessene seg nordover langs kysten. Finnmark ble rammet hardest. I Vardø alene ble 91 mennesker brent mellom 1600 og 1692 — i en by med under tusen innbyggere. Stå stille et øyeblikk. Det er ikke mye å se. Ingen dramatisk plass. Ingen åpent rom. Bare en sti i en park, og en stein. Men bakken du står på bar vekten av det som skjedde her. Anne gikk opp denne bakken den syvende april 1590. Det er dokumentert. Datoen er kjent. Stedet er kjent. Og likevel ble det ingen stein her på fire hundre år. Minnesmerket kom i 2002. Til sammenligning: Bergen Domkirke har hatt gravstøtter i seks hundre år. Hva vi velger å minnes — og hva vi lar forsvinne — sier noe om hvem vi er.',
-      histbg: [
-        'Galgebakken var Bergens offentlige henrettelsessted, lokalisert på Nordnes. Her ble dommer effektuert offentlig, foran byens befolkning.',
-        'Heksesteinen ble avduket i 2002 av Akademiet for de frieste tanker. Den er laget av hardangerskifer donert av Hardangerskifer AS fra Jondal.',
-        'Innskriften «350 bålofre for justismord 1550–1700» viser til de norske hekseprosessenes samlede antall dødsdommer.',
-        'Finnmark ble hardest rammet av hekseforfølgelsene — særlig Vardø, der 91 mennesker ble brent mellom 1600 og 1692.',
-        'Steilneset minnested i Vardø, tegnet av Peter Zumthor og Louise Bourgeois, ble åpnet i 2011 som et nasjonalt minnesmerke over ofrene.'
-      ],
-      story: [
-        'Steinen er fem meter høy og laget av hardangerskifer. Reist i 2002. Innskriften: «350 bålofre for justismord 1550–1700.»',
-        'Anne Pedersdotter var ikke et tall. Men hun er grunnen til at dette tallet finnes. Det var hennes sak — her på Galgebakken — som var startskuddet for de norske hekseprosessene.',
-        'Etter henne spredte prosessene seg nordover. Finnmark ble hardest rammet. I Vardø alene ble 91 mennesker brent mellom 1600 og 1692 — i en by med under tusen innbyggere.',
-        '«Stå stille et øyeblikk. Det er ikke mye å se. Bare en sti i en park, og en stein. Men bakken du står på bar vekten av det som skjedde her.»',
-        'Anne gikk opp denne bakken den 7. april 1590. Datoen er kjent. Stedet er kjent. Likevel ble det ingen stein her på fire hundre år. Minnesmerket kom i 2002.',
-        'Hva vi velger å minnes — og hva vi lar forsvinne — sier noe om hvem vi er.'
-      ],
-      secret:'Steilneset minnested i Vardø — tegnet av arkitekt Peter Zumthor og kunstner Louise Bourgeois — er det nasjonale minnesmerket over heksebrenningens ofre. Det åpnet i 2011 og er verdt en egen reise.' },
-
-    // ── STOPP 4: PUB PÅ NORDNES ──
-    { icon:'🍺', year:'I dag', name:'Nordnes Pub', sub:'Siste stopp · Du har gått langt nok',
-      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.39810,5.31050',
-      drink: { icon:'🍺', text:'Velkomstdrink · Vis skjermen ved ankomst', hasDrink: true },
-      audio: 'Du er på Nordnes. Du har gått Annes rute — fra kirken der mannen hennes forkynte, til retten der hun ble dømt, til steinen der hun ble brent. Nå sitter du i en pub. Det er det rette stedet å avslutte. Bergen er en ølby. Det har den vært siden hanseatene ankom Bryggen og brakte tyske bryggerteknikker med seg på 1300-tallet. Lenge før det fantes det brygging her — hvert hus hadde sitt eget bryggeutstyr, og øl var hverdagsdrikke for alle. Vann var ikke alltid trygt. Øl var det. Og mjød — honningvin — var festdrikken, den som ble drukket ved store anledninger. Anne Pedersdotter kjente denne smaken. I 1500-tallets Bergen drakk folk øl til maten og mjød til festen. Ingenting er forandret. Si skål for henne. Hun forsvarte seg til det siste.',
-      histbg: [
-        'Ølbrygging har lange tradisjoner i Bergen. Hanseatene brakte tyske bryggerteknikker til Bryggen på 1300-tallet, men brygging eksisterte i Bergen lenge før det.',
-        'Mjød — honningvin — er Norges eldste dokumenterte alkoholholdige drikk, kjent fra vikingtiden og trolig langt tidligere.',
-        'Nordnes-halvøyen var lenge et arbeiderkvarter med tett bebyggelse. I dag er det et av Bergens mest populære boligområder, med kort vei til sjøen på alle sider.',
-        'Verftet — det gamle skipsverftområdet ved Nøstet, like sør for Nordnes — er i dag et kulturhus og serveringssted som beholder industrihistorien i veggene.'
-      ],
-      drinkTip: 'Be om en lokal Bergen-øl eller mjød hvis de har det. Haakon Bryggeri og Bergens Ølsenter er gode lokale navn å huske. Eller et glass vin — rødt og tungt, slik Anne ville kjent det fra vinskipene i Vågen.',
-      story: [
-        'Du er på Nordnes. Du har gått Annes rute.',
-        'Fra kirken der mannen hennes forkynte. Til gaten der hun ble dømt. Til steinen der hun ble brent. Og nå — en pub. Det er det rette stedet å avslutte.',
-        'Bergen er en ølby. Det har den vært siden hanseatene ankom Bryggen på 1300-tallet med tyske bryggerteknikker. Og mjød — honningvin — var festdrikken i 1500-tallets Bergen. Den smaken kjente Anne.',
-        '«Ingenting har forandret seg. Folk sitter fortsatt i mørke rom på Nordnes med noe å drikke. De snakker om hverdagen. Om rykter. Om naboer.»',
-        'Den eneste forskjellen er at anklagene ikke lenger ender på bålet.',
-        'Si skål for henne. Hun forsvarte seg til det siste.'
-      ],
-      secret:'Det sies at konene i nabolaget kom med anklagene mot Anne — ikke mennene. Rettsdokumentene er uklare på motivene. Men noen av vitnene kjente henne godt nok til å vite at anklagene ikke holdt. De vitnet likevel.' }
-  ],
-  en: [
-    // ── STOP 1: CATHEDRAL ──
-    { icon:'⛪', year:'1553–1575', name:'Bergen Cathedral', sub:'Where it all began — and ended',
-      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.39165,5.32569',
-      drink: { icon:'🚶', text:'Starting point · No drink yet · Walk slowly', hasDrink: false },
-      audio: "Stand in front of the cathedral. Imagine Bergen in 1553. A city that still smells of the Middle Ages, but is becoming something else. The Reformation is new. Luther is not old. And here — to this very place — comes a young man from Sogn with a head full of ideas. His name is Absalon Pederssøn Beyer. He has studied under Philipp Melanchthon in Wittenberg — the intellectual heart of the Reformation, Luther's closest man. He becomes a lecturer at the cathedral school. A canon at the chapter. Castle chaplain at Bergenhus. He knew everyone. He was Bergen. And he married Anne. Absalon was not only a priest — he was a historian. His diary from 1552 to 1572 remains the most important source we have for everyday life in Bergen in the sixteenth century. He noted everything. Fish prices. Street rumours. Storms in the fjord. But one thing he did not note: what would happen to his wife after his death. In 1575 Absalon died. And in Bergen, in 1575, a widow without protection was vulnerable in ways we can barely imagine. The protection disappeared when he disappeared. It did not take long. The same year Absalon was buried, Anne was accused of witchcraft for the first time. She faced the charge, defended herself, and was acquitted. But the accusation stuck. As accusations tend to do in small cities.",
-      histbg: [
-        'Absalon Pederssøn Beyer was born on the farm Skirdal at Aurlandsfjorden in Sogn. He lost his parents young and was sent to the cathedral school in Bergen by an uncle.',
-        'In 1549 he travelled to Wittenberg and studied for two years under Philipp Melanchthon — the leading intellectual of the Reformation. This background made him one of the most learned men in Bergen.',
-        'His diary from 1552–72 is the most important source for everyday life in Bergen in the 1500s. It has been digitised and can be read free at bokselskap.no.',
-        'Anne Pedersdotter became his wife and represented him publicly. A priest\'s wife in sixteenth-century Bergen was a public person — known, respected, visible.',
-        'When Absalon died in 1575, Anne was left without the social and legal protection her husband had provided. The first witchcraft charge came the same year.'
-      ],
-      story: [
-        'Stand in front of the cathedral. Here Absalon Pederssøn Beyer taught. Here he preached the new Lutheran faith to a city that still smelled of the Middle Ages.',
-        'Absalon was not just anyone. He had studied in Wittenberg under Philipp Melanchthon — the intellectual heart of the Reformation, Luther\'s closest companion. He returned to Bergen as one of the most learned men in the country.',
-        '"His diary from 1552 to 1572 remains the most important source we have for everyday life in Bergen in the sixteenth century."',
-        'And he married Anne. Anne Pedersdotter became his wife at a time when a priest\'s wife was more than a spouse — she represented her husband. Was visible. Respected. One of the leading women in one of the country\'s leading cities.',
-        'In 1575 Absalon died. And in Bergen, in 1575, a widow without a husband was vulnerable in ways we can barely imagine today.',
-        'The same year Absalon was buried, Anne was accused of witchcraft for the first time. She defended herself and was acquitted. But the accusation stuck — as accusations tend to do in small cities.'
-      ],
-      secret:"Absalon's diary has been digitised and can be read for free at bokselskap.no. One of the strangest reads you can undertake — everyday life in Bergen in the 1500s, written by a man who did not know his wife would be burned as a witch fifteen years after his death." },
-
-    // ── STOP 2: STRANDGATEN ──
-    { icon:'⚖️', year:'1575 · 1590', name:'Strandgaten', sub:'Two trials · One verdict',
-      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.39370,5.32440',
-      drink: { icon:'🚶', text:'Still walking · No drink yet', hasDrink: false },
-      audio: "Here, in this area, Bergen administered its justice. It was here that the city's lawspeaker and councillors met, here that verdicts were announced, here that fates were sealed with wax and lead. Anne Pedersdotter stood here twice. The first time in 1575 — the year Absalon died. A neighbour had made an accusation. Had seen something. Known something. It was no longer possible to carry a reputation for witchcraft and a powerful husband at the same time — but without him, the reputation was her only identity. Anne was acquitted. The case was dropped. But fifteen years is a long time to carry a charge nobody has forgotten. The second time came in 1590. The accuser's name was Adrian von Buskskott, a barber by trade. His son had proposed to Anne's daughter Susanne. The family refused — not because they had anything against the match itself, but because they did not want their son marrying into a family with a reputation for witchcraft. The simplest solution was to turn the rumour into fact. 48 witnesses came forward. Neighbours. Friends. People who had known Anne for decades. And they testified: about illness that came after she had looked at them. About a small child who had died after her visit. About rides to Lyderhorn on three consecutive Christmas nights, where she and other witches had planned to set Bergen ablaze. Read the charges slowly. What are they really? Illness and coincidence converted into intention. Fear converted into guilt. And beneath it all: a barber who did not want a witch in the family. Anne defended herself. The court records describe her as sharp, clear and resolute — a person fighting with full awareness against something she knew she could not defeat. The verdict came on the seventh of April 1590. Sealed with 37 seals. From life to death by fire. Three hundred and thirteen years later a young Danish director sat reading about her. Carl Theodor Dreyer. He was fascinated by people crushed by systems larger than themselves — by faces under pressure. In 1943 he made the film Day of Wrath, based on the play Hans Wiers-Jenssen had written about Anne in 1908. The film became one of the great masterworks of cinema. Anne Pedersdotter, priest's wife from Bergen, burned on Nordnes in 1590. And lives on film to this day.",
-      histbg: [
-        'The first charge against Anne came in 1575 — the same year Absalon died. She was acquitted, but the reputation stuck.',
-        'The second charge in 1590 was driven by the barber Adrian von Buskskott, whose son wished to marry Anne\'s daughter. A family dispute was converted into a witchcraft case.',
-        '48 witnesses were examined. The charges ranged from casting sickness on neighbours to killing a small child and attending witch gatherings on Lyderhorn on three consecutive Christmas nights.',
-        'The verdict was pronounced on 7 April 1590, sealed by the lawspeaker, mayor and city council with 37 seals. Anne was sentenced "from life to death by fire."',
-        'Playwright Hans Wiers-Jenssen (1908) and director Carl Theodor Dreyer (Day of Wrath, 1943) both used Anne\'s fate as the basis for lasting works of Norwegian and Danish culture.'
-      ],
-      story: [
-        'Here Bergen administered its justice. Anne Pedersdotter stood here twice — in 1575 and in 1590.',
-        'The first time she was acquitted. But in a small city the charge sticks, even after the case is dropped. Fifteen years is a long time to carry a rumour nobody has forgotten.',
-        'The second charge came from a barber. Adrian von Buskskott did not want his son marrying into a witch\'s family. The simplest solution was to turn the rumour into fact. 48 witnesses came forward and spoke of illness, of a small child who had died, of rides to Lyderhorn on three Christmas nights.',
-        '"Read the charges slowly. What are they really? Coincidences converted into intention. Fear converted into guilt. And beneath it all: a barber who did not want a witch in the family."',
-        'Anne defended herself — the records describe her as sharp and clear, fully aware of what awaited her. The verdict came on 7 April 1590. 37 seals. From life to death by fire.',
-        'Three hundred and thirteen years later, Carl Theodor Dreyer sat reading about her. The film he made — Day of Wrath (1943) — is counted among cinema\'s great masterworks. Anne\'s face lives on screen to this day.'
-      ],
-      secret:'Day of Wrath is available on YouTube with English subtitles. Watch it after the walk. Dreyer filmed the face of the accused priest\'s wife in long, motionless close-ups — exactly as the court records describe Anne: unbending, to the last.' },
-
-    // ── STOP 3: THE WITCH STONE ──
-    { icon:'🪨', year:'1590 · 2002', name:'The Witch Stone', sub:'Galgebakken · Nordnesparken',
-      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.39716,5.31122',
-      drink: { icon:'🚶', text:'Almost there · Last stop is a pub', hasDrink: false },
-      audio: "The stone you are standing by is five metres high and made of Hardanger slate. It was erected in 2002 by the Academy for the Freest Thoughts. The inscription reads: 350 bonfire victims to miscarriage of justice, 1550 to 1700. Anne Pedersdotter was not a number. But she is the reason this number exists. It was her case — in 1590, right here on Galgebakken — that was the starting shot. After her, the witch trials spread northward along the coast. Finnmark was hit hardest. In Vardø alone, 91 people were burned between 1600 and 1692 — in a town with fewer than a thousand inhabitants. Stand still for a moment. There is not much to see. No dramatic square. No open space. Just a path in a park, and a stone. But the ground you are standing on bore the weight of what happened here. Anne walked up this slope on the seventh of April 1590. The date is documented. The place is known. And yet there was no stone here for four hundred years. The memorial came in 2002. By comparison, Bergen Cathedral has had grave markers for six hundred years. What we choose to remember — and what we let disappear — says something about who we are.",
-      histbg: [
-        'Galgebakken was Bergen\'s public place of execution, located on the Nordnes peninsula. Verdicts were carried out publicly, in front of the city\'s population.',
-        'The Witch Stone was unveiled in 2002 by the Academy for the Freest Thoughts. It is made of Hardanger slate donated by Hardangerskifer AS from Jondal.',
-        'The inscription "350 bonfire victims to miscarriage of justice 1550–1700" refers to the total number of death sentences in the Norwegian witch trials.',
-        'Finnmark was the hardest-hit region — particularly Vardø, where 91 people were burned between 1600 and 1692.',
-        'Steilneset Memorial in Vardø, designed by Peter Zumthor and Louise Bourgeois, opened in 2011 as a national monument to the victims.'
-      ],
-      story: [
-        'The stone is five metres high and made of Hardanger slate. Erected in 2002. The inscription: "350 bonfire victims to miscarriage of justice 1550–1700."',
-        'Anne Pedersdotter was not a number. But she is the reason this number exists. It was her case — right here on Galgebakken — that was the starting shot for the Norwegian witch trials.',
-        'After her, the trials spread northward. Finnmark was hit hardest. In Vardø alone, 91 people were burned between 1600 and 1692 — in a town with fewer than a thousand inhabitants.',
-        '"Stand still for a moment. There is not much to see. Just a path in a park, and a stone. But the ground you are standing on bore the weight of what happened here."',
-        'Anne walked up this slope on 7 April 1590. The date is documented. The place is known. And yet there was no stone here for four hundred years. The memorial came in 2002.',
-        'What we choose to remember — and what we let disappear — says something about who we are.'
-      ],
-      secret:'Steilneset Memorial in Vardø — designed by architect Peter Zumthor and artist Louise Bourgeois — is the national memorial to the victims of the witch burnings. It opened in 2011 and is worth a separate journey.' },
-
-    // ── STOP 4: PUB ON NORDNES ──
-    { icon:'🍺', year:'Today', name:'Nordnes Pub', sub:'Last stop · You have walked far enough',
-      gmaps:'https://www.google.com/maps/dir/?api=1&destination=60.39810,5.31050',
-      drink: { icon:'🍺', text:'Welcome drink · Show this screen on arrival', hasDrink: true },
-      audio: "You are on Nordnes. You have walked Anne's route. From the church where her husband preached. To the street where she was sentenced. To the stone where she was burned. And now — a pub. This is the right place to end. Bergen is a beer city. It has been since the Hanseatic merchants arrived at Bryggen in the fourteenth century, bringing German brewing techniques with them. Long before that, brewing existed here — every household had its own equipment, and beer was the everyday drink for everyone. Water was not always safe. Beer was. And mead — honey wine — was the drink for celebrations, for large occasions. Anne Pedersdotter knew this taste. In sixteenth-century Bergen, people drank beer with food and mead at feasts. Nothing has changed. Raise a glass for her. She defended herself to the last.",
-      histbg: [
-        'Bergen has a long tradition of brewing. The Hanseatic merchants brought German brewing techniques to Bryggen in the fourteenth century, but brewing existed in Bergen long before that.',
-        'Mead — honey wine — is Norway\'s oldest documented alcoholic drink, known from the Viking Age and probably much earlier.',
-        'The Nordnes peninsula was long a working-class district with dense housing. Today it is one of Bergen\'s most popular residential areas, with short walks to the sea in all directions.',
-        'Verftet — the old shipyard area at Nøstet, just south of Nordnes — is now a cultural venue and restaurant that retains the industrial history in its walls.'
-      ],
-      drinkTip: 'Ask for a local Bergen beer or mead if they have it. Haakon Brewery and Bergen Ølsenter are good local names to remember. Or a glass of wine — red and full-bodied, as Anne would have known it from the wine ships in Vågen harbour.',
-      story: [
-        'You are on Nordnes. You have walked Anne\'s route.',
-        'From the church where her husband preached. To the street where she was sentenced. To the stone where she was burned. And now — a pub. This is the right place to end.',
-        'Bergen is a beer city. It has been since the fourteenth century. And mead — honey wine — was the drink for celebrations in sixteenth-century Bergen. That taste Anne knew.',
-        '"Nothing has changed. People still sit in dark rooms on Nordnes with something to drink. They talk about everyday life. About rumours. About neighbours."',
-        'The only difference is that the accusations no longer end at the stake.',
-        'Raise a glass for her. She defended herself to the last.'
-      ],
-      secret:'It is said that the women of the neighbourhood brought the charges against Anne — not the men. The court records are unclear about the motives. But some of the witnesses had known her well enough to know the charges would not hold. They testified anyway.' }
-  ]
-};
-
-function getStops() {
-  return currentRoute === 'anne' ? STOPS_ANNE[lang] : STOPS[lang];
-}
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────
 function goHome() {
-  // Works on Netlify (relative URL) and locally (replaces filename)
   const current = window.location.href;
   if (current.includes('bergen.html')) {
     window.location.href = current.replace('bergen.html', 'index.html');
   } else {
-    // On Netlify with clean URLs
     const base = current.split('/').slice(0, -1).join('/');
     window.location.href = base.endsWith('/bergen') ? base.replace('/bergen', '/') : '/';
+  }
+}
+function goAnne() {
+  const current = window.location.href;
+  if (current.includes('bergen.html')) {
+    window.location.href = current.replace('bergen.html', 'bergen-anne.html');
+  } else {
+    const base = current.split('/').slice(0, -1).join('/');
+    window.location.href = (base.endsWith('/') ? base : base + '/') + 'bergen-anne.html';
   }
 }
 const VALID_CODES = new Set(['BERGEN01','DEMO1234']);
@@ -943,7 +795,6 @@ const EXPIRY_H    = 48;
 // ── STATE ─────────────────────────────────────────────────────────────────
 let lang            = 'en';
 let currentStop     = 0;
-let currentRoute    = 'hollender';
 let secretsRevealed = 0;
 let secretShown     = false;
 
@@ -1061,7 +912,7 @@ function checkResume() {
     const d = JSON.parse(localStorage.getItem(STORAGE_KEY + '_progress') || '{}');
     if (d.stop !== undefined && isUnlocked()) {
       const t = T[lang];
-      const stopName = getStops()[d.stop].name;
+      const stopName = STOPS[lang][d.stop].name;
       document.getElementById('resume-text').textContent =
         `${t.resumeText} ${d.stop + 1}: ${stopName}`;
       document.getElementById('resume-banner').style.display = 'flex';
@@ -1131,13 +982,10 @@ function setMsg(id, type, text) {
 }
 
 // ── ROUTE SELECT ──────────────────────────────────────────────────────────
-function selectRoute(routeId) {
-  currentRoute = routeId || 'hollender';
-  const t = T[lang];
-  const routeName = currentRoute === 'anne' ? t.route4Name : t.route1Name;
-  document.getElementById('order-route-name').textContent = routeName;
+function selectRoute() {
+  document.getElementById('order-route-name').textContent = T[lang].route1Name;
   if (isUnlocked()) {
-    currentStop = 0; secretsRevealed = 0; renderStop(); show('s-stop');
+    currentStop = 0; secretsRevealed = 0; renderStop(); showNavScreen();
   } else { show('s-order'); }
 }
 
@@ -1188,7 +1036,7 @@ function checkCode() {
   if (VALID_CODES.has(val)) {
     setMsg('codeMsg','ok',t.codeOk);
     saveUnlock(val);
-    setTimeout(() => { currentStop=0; secretsRevealed=0; renderStop(); show('s-stop'); }, 700);
+    setTimeout(() => { currentStop=0; secretsRevealed=0; renderStop(); showNavScreen(); }, 700);
   } else { setMsg('codeMsg','err',t.codeInvalid); shake('codeInput'); }
 }
 
@@ -1198,8 +1046,37 @@ function checkCode2() {
   if (VALID_CODES.has(val)) {
     setMsg('codeMsg2','ok',t.codeUnlocking);
     saveUnlock(val);
-    setTimeout(() => { currentStop=0; secretsRevealed=0; renderStop(); show('s-stop'); }, 700);
+    setTimeout(() => { currentStop=0; secretsRevealed=0; renderStop(); showNavScreen(); }, 700);
   } else { setMsg('codeMsg2','err',t.codeWrong); shake('codeInput2'); }
+}
+
+// ── NAV SCREEN ────────────────────────────────────────────────────────────
+function showNavScreen() {
+  const stop  = STOPS[lang][0];
+  const coord = STOP_COORDS[0];
+  const t     = T[lang];
+
+  document.getElementById('nav-eyebrow').textContent     = t.navEyebrow;
+  document.getElementById('nav-stop-name').textContent   = stop.name;
+  document.getElementById('nav-address').textContent     = stop.sub;
+  document.getElementById('nav-gmaps-btn').textContent   = t.navGmapsBtn;
+  document.getElementById('nav-gmaps-btn').href          = stop.gmaps;
+  document.getElementById('nav-hint').textContent        = t.navHint;
+  document.getElementById('nav-arrived-btn').textContent = t.navArrived;
+
+  // Show screen first — iframe must be visible before src is set
+  show('s-navigate');
+
+  // Load map after screen is rendered
+  requestAnimationFrame(() => {
+    const margin = 0.004;
+    document.getElementById('nav-map-iframe').src =
+      `https://www.openstreetmap.org/export/embed.html?bbox=${coord.lon - margin},${coord.lat - margin},${coord.lon + margin},${coord.lat + margin}&layer=mapnik&marker=${coord.lat},${coord.lon}`;
+  });
+}
+
+function startTourFromNav() {
+  show('s-stop');
 }
 
 // ── TOUR ──────────────────────────────────────────────────────────────────
@@ -1210,7 +1087,7 @@ function startTour() {
 }
 
 function renderStop() {
-  const stops = getStops();
+  const stops = STOPS[lang];
   const stop  = stops[currentStop];
   const total = stops.length;
   const t     = T[lang];
@@ -1233,8 +1110,8 @@ function renderStop() {
   document.getElementById('test-banner-txt').textContent = t.testBanner;
 
   // Route header
-  document.getElementById('rh-title').textContent = currentRoute === 'anne' ? t.anneRouteTitle : t.routeTitle;
-  document.getElementById('rh-sub').textContent   = currentRoute === 'anne' ? t.anneRouteSub   : t.routeSub;
+  document.getElementById('rh-title').textContent = t.routeTitle;
+  document.getElementById('rh-sub').textContent   = t.routeSub;
   const rhStops = document.getElementById('rh-stops');
   rhStops.innerHTML = stops.map((s,i) => `
     <div class="rsp">
@@ -1446,7 +1323,7 @@ function toggleAudio() {
   // Ensure voices loaded
   if (!voicesLoaded) loadVoices();
 
-  const text = getStops()[currentStop].audio;
+  const text = STOPS[lang][currentStop].audio;
   if (!text) return;
 
   utterance = new SpeechSynthesisUtterance(text);
@@ -1567,7 +1444,7 @@ function updateMapIframe(dest, uLat, uLon) {
 }
 
 function revealSecret() {
-  const stop = getStops()[currentStop];
+  const stop = STOPS[lang][currentStop];
   const t    = T[lang];
   if (!secretShown) { secretShown=true; secretsRevealed++; saveProgress(); }
   document.getElementById('secret-area').innerHTML = `
@@ -1578,7 +1455,7 @@ function revealSecret() {
 }
 
 function nextStop() {
-  const total = getStops().length;
+  const total = STOPS[lang].length;
   if (currentStop < total-1) {
     currentStop++; saveProgress(); renderStop(); window.scrollTo(0,0);
   } else {
