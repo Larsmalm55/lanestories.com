@@ -11,7 +11,7 @@
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root {
-      --gold:#c9a96e; --gold-dim:rgba(201,169,110,0.4); --gold-faint:rgba(201,169,110,0.1);
+      --gold:#ffffff; --gold-dim:rgba(201,169,110,0.4); --gold-faint:rgba(201,169,110,0.1);
       --ink:#0d0a07; --ink2:#151008; --cream:#f0e6d0; --cream-dim:#c8b896;
       --muted:#7a6a52; --border:rgba(232,220,200,0.12);
     }
@@ -23,10 +23,10 @@
     .hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse 70% 50% at 50% 55%, rgba(201,169,110,0.09) 0%, transparent 70%), radial-gradient(ellipse 40% 60% at 15% 40%, rgba(201,169,110,0.04) 0%, transparent 60%); }
     .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(201,169,110,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.05) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 100%); }
 
-    .hero-logo { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.4em; text-transform:uppercase; color:var(--gold); margin-bottom:48px; display:flex; align-items:center; gap:14px; animation:fadeUp 0.7s ease both; }
+    .hero-logo { font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.4em; text-transform:uppercase; color:#ffffff; margin-bottom:48px; display:flex; align-items:center; gap:14px; animation:fadeUp 0.7s ease both; }
     .hero-logo::before, .hero-logo::after { content:''; width:32px; height:1px; background:var(--gold-dim); }
     .hero-hook { font-family:'Cormorant Garamond',serif; font-size:clamp(38px,9vw,72px); font-weight:300; line-height:1.08; color:var(--cream); margin-bottom:20px; animation:fadeUp 0.7s 0.1s ease both; }
-    .hero-hook em { font-style:italic; color:var(--gold); }
+    .hero-hook em { font-style:italic; color:#ffffff; }
     .hero-sub { font-size:clamp(16px,3vw,20px); font-style:italic; color:var(--cream-dim); max-width:420px; line-height:1.6; margin-bottom:40px; animation:fadeUp 0.7s 0.2s ease both; }
     .pills { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:44px; animation:fadeUp 0.7s 0.3s ease both; }
     .pill { display:flex; align-items:center; gap:8px; padding:9px 16px; border:1px solid rgba(201,169,110,0.25); border-radius:40px; font-size:13px; color:var(--cream-dim); background:rgba(201,169,110,0.05); }
@@ -35,16 +35,16 @@
     .hero-btns { display:flex; flex-direction:row; gap:14px; width:100%; justify-content:center; flex-wrap:wrap; }
     .btn-big { display:block; flex:1 1 220px; min-width:220px; padding:18px 28px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; text-decoration:none; text-align:center; transition:opacity 0.2s,transform 0.2s,background 0.2s; }
     .btn-big:hover { opacity:0.88; transform:translateY(-2px); }
-    .btn-secondary { background:transparent; color:var(--gold); border:1px solid rgba(201,169,110,0.5); }
+    .btn-secondary { background:transparent; color:#ffffff; border:1px solid rgba(201,169,110,0.5); }
     .btn-secondary:hover { background:rgba(201,169,110,0.08); color:var(--cream); border-color:var(--gold); opacity:1; }
     @media (max-width:520px) { .hero-btns { flex-direction:column; } .btn-big { min-width:0; } }
     .hero-price { font-size:13px; color:var(--muted); }
-    .hero-price strong { color:var(--gold); font-weight:400; }
-    .scroll-hint { position:absolute; bottom:32px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--muted); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; animation:fadeIn 1s 1.2s ease both; }
+    .hero-price strong { color:#ffffff; font-weight:400; }
+    .scroll-hint { position:absolute; bottom:32px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--muted); font-size:13px; letter-spacing:0.2em; text-transform:uppercase; animation:fadeIn 1s 1.2s ease both; }
     .scroll-line { width:1px; height:36px; background:linear-gradient(var(--gold-dim),transparent); animation:scrollPulse 2s infinite; }
 
     .how { padding:80px 28px; max-width:600px; margin:0 auto; }
-    .eyebrow { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.4em; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:14px; margin-bottom:32px; }
+    .eyebrow { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.4em; text-transform:uppercase; color:#ffffff; display:flex; align-items:center; gap:14px; margin-bottom:32px; }
     .eyebrow::after { content:''; flex:1; max-width:48px; height:1px; background:var(--gold-dim); }
     .steps-visual { display:flex; flex-direction:column; }
     .step-row { display:grid; grid-template-columns:48px 1fr; gap:20px; align-items:flex-start; position:relative; }
@@ -70,17 +70,17 @@
     .city-name { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--cream); line-height:1.2; margin-bottom:3px; }
     .city-tagline { font-size:12px; color:var(--muted); font-style:italic; }
     .city-right { text-align:right; flex-shrink:0; }
-    .city-price { font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--gold); }
-    .city-status { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-top:2px; }
-    .city-status.live { color:var(--gold); }
+    .city-price { font-family:'Cormorant Garamond',serif; font-size:20px; color:#ffffff; }
+    .city-status { font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-top:2px; }
+    .city-status.live { color:#ffffff; }
 
     /* Language switcher */
     .lang-toggle { position:fixed; top:18px; right:20px; z-index:200; display:flex; gap:6px; }
-    .lang-btn { padding:5px 12px; border:1px solid var(--border); border-radius:20px; background:rgba(13,10,7,0.8); color:var(--muted); font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; cursor:pointer; transition:border-color 0.2s,color 0.2s; backdrop-filter:blur(8px); }
-    .lang-btn.active { border-color:var(--gold-dim); color:var(--gold); }
+    .lang-btn { padding:5px 12px; border:1px solid var(--border); border-radius:20px; background:rgba(13,10,7,0.8); color:var(--muted); font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.1em; cursor:pointer; transition:border-color 0.2s,color 0.2s; backdrop-filter:blur(8px); }
+    .lang-btn.active { border-color:var(--gold-dim); color:#ffffff; }
 
     footer { padding:36px 28px; border-top:1px solid var(--border); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; }
-    .footer-logo { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.2em; color:var(--gold); }
+    .footer-logo { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.2em; color:#ffffff; }
     .footer-links { display:flex; gap:20px; }
     .footer-links a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:0.08em; transition:color 0.2s; }
     .footer-links a:hover { color:var(--cream); }
@@ -100,6 +100,70 @@
       .taste{padding:52px 20px} footer{flex-direction:column;text-align:center}
       .footer-links{justify-content:center}
     }
+
+    /* ── READABILITY OVERRIDES: white accent text + larger fonts ── */
+    :root { --gold: #ffffff; }
+
+    .hero-eyebrow, .section-eyebrow, .eyebrow, .topbar-logo,
+    .hero-logo, .back-link, .step-num, .tag, .secret-lbl,
+    .secret-txt, .audio-label, .drink-tip-label, .confirm-code,
+    .order-price, .order-item::before, .code-msg.ok,
+    .rsp-num.active, .incl-item span:first-child,
+    .loc-photo-caption, .nav-photo-caption, .footer-logo,
+    .city-price, .city-status.live, .hero-price strong,
+    .cta-eyebrow, .lang-btn.active, .map-placeholder-txt,
+    .btn-outline { color: #ffffff !important; }
+
+    /* Bump remaining tiny fonts */
+    .rsp-num   { font-size: 12px !important; }
+    .rsp-lbl   { font-size: 12px !important; }
+    .tag        { font-size: 12px !important; }
+    .soon-badge { font-size: 12px !important; }
+    .audio-sublbl { font-size: 13px !important; }
+    .eyebrow, .hero-eyebrow, .section-eyebrow { font-size: 13px !important; }
+    .topbar-logo, .hero-logo, .footer-logo { font-size: 14px !important; }
+    .btn-outline, .btn-ghost, .btn-big, .lang-btn { font-size: 13px !important; }
+    .secret-lbl, .drink-tip-label, .audio-label { font-size: 13px !important; }
+    .loc-photo-caption, .nav-photo-caption { font-size: 12px !important; }
+
+    /* Mobile-specific: even bigger for small screens */
+    @media (max-width: 480px) {
+      .rsp-lbl   { font-size: 11px !important; white-space: normal !important; max-width: 56px !important; }
+      .eyebrow, .hero-eyebrow, .section-eyebrow { font-size: 12px !important; letter-spacing: 0.25em !important; }
+      .topbar-logo, .hero-logo { font-size: 13px !important; letter-spacing: 0.2em !important; }
+    }
+
+    /* ── CREAM-DIM FIX: warm golden-cream → neutral white ── */
+    :root {
+      --cream-dim: #c8c4bc !important;
+      --cream:     #f2efea !important;
+      --muted:     #8a8a9a !important;
+    }
+    .order-item            { color: #d8d4cc !important; }
+    .order-item::before    { color: #ffffff !important; }
+    .secret-txt            { color: #e0dcd4 !important; }
+    p                      { color: #c4c0b8 !important; }
+    .story-box, .story-box p { color: #c4c0b8 !important; }
+    .intro-text            { color: #c8c4bc !important; }
+    .review-attr, .attr,
+    [id*="attr"], [id*="review"] { color: #a8a8b8 !important; }
+    .sub                   { color: #909098 !important; }
+    .r-tag, .step-desc,
+    .intro-body            { color: #909098 !important; }
+
+    /* ── INLINE STYLE OVERRIDES (id-specific) ── */
+    #i-quote      { color: #d8d4cc !important; }
+    #i-quote-attr { color: #9898a8 !important; }
+    #i-incl-hdr   { color: #ffffff !important; font-size: 13px !important; }
+    #cf-code-lbl  { color: #ffffff !important; font-size: 13px !important; }
+    #done-reward-lbl { color: #ffffff !important; font-size: 13px !important; }
+    #map-placeholder-txt { color: #ffffff !important; font-size: 13px !important; }
+    #m-label      { color: #ffffff !important; font-size: 13px !important; }
+
+    /* All inline warm-cream text elements */
+    [style*="color:var(--cream-dim)"] { color: #d8d4cc !important; }
+    [style*="color:var(--muted)"]     { color: #9898a8 !important; }
+    [style*="color:var(--gold)"]      { color: #ffffff !important; }
   </style>
 </head>
 <body>
@@ -189,10 +253,10 @@
 <div class="modal-overlay" id="contactModal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal">
     <button class="modal-close" onclick="document.getElementById('contactModal').classList.remove('open')">×</button>
-    <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.3em;color:var(--gold);margin-bottom:14px;text-transform:uppercase;" id="m-label"></div>
+    <div style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.3em;color:#ffffff;margin-bottom:14px;text-transform:uppercase;" id="m-label"></div>
     <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--cream);margin-bottom:12px;" id="m-title"></h3>
     <p style="font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:24px;" id="m-body"></p>
-    <a href="mailto:hello@lanestories.com" style="display:block;width:100%;padding:15px;background:linear-gradient(135deg,#c9a96e,#8a5a2a);color:var(--ink);border:none;border-radius:2px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;text-align:center;">hello@lanestories.com</a>
+    <a href="mailto:hello@lanestories.com" style="display:block;width:100%;padding:15px;background:linear-gradient(135deg,#c9a96e,#8a5a2a);color:var(--ink);border:none;border-radius:2px;font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;text-align:center;">hello@lanestories.com</a>
   </div>
 </div>
 

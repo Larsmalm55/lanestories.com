@@ -12,7 +12,7 @@
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
 
     :root {
-      --gold:#c9a96e;
+      --gold:#ffffff;
       --gold-dim:rgba(201,169,110,0.35);
       --gold-faint:rgba(201,169,110,0.08);
       --night:#06080f;
@@ -53,21 +53,21 @@
     .lang-btn {
       padding:5px 12px; border:1px solid var(--border); border-radius:20px;
       background:rgba(6,8,15,0.85); color:var(--muted);
-      font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em;
+      font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.1em;
       cursor:pointer; transition:border-color 0.2s,color 0.2s;
       backdrop-filter:blur(8px);
     }
-    .lang-btn.active { border-color:var(--gold-dim); color:var(--gold); }
+    .lang-btn.active { border-color:var(--gold-dim); color:#ffffff; }
 
     /* ── BACK LINK ── */
     .back-link {
       position:fixed; top:18px; left:20px; z-index:200;
       display:flex; align-items:center; gap:8px;
-      font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.2em;
+      font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.2em;
       color:var(--muted); text-decoration:none;
       transition:color 0.2s; backdrop-filter:blur(8px);
     }
-    .back-link:hover { color:var(--gold); }
+    .back-link:hover { color:#ffffff; }
     .back-link svg { width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:1.5; }
 
     /* ── STARS CANVAS ── */
@@ -96,8 +96,8 @@
     }
 
     .hero-eyebrow {
-      font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.45em;
-      text-transform:uppercase; color:var(--gold);
+      font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.45em;
+      text-transform:uppercase; color:#ffffff;
       display:flex; align-items:center; gap:14px;
       margin-bottom:32px; position:relative; z-index:1;
       animation:fadeUp 0.7s ease both;
@@ -114,7 +114,7 @@
       position:relative; z-index:1;
       animation:fadeUp 0.7s 0.1s ease both;
     }
-    .hero-hook em { font-style:italic; color:var(--gold); }
+    .hero-hook em { font-style:italic; color:#ffffff; }
 
     .hero-sub {
       font-size:clamp(16px,2.8vw,20px); font-style:italic;
@@ -126,7 +126,7 @@
     .hero-scroll {
       position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
       display:flex; flex-direction:column; align-items:center; gap:8px;
-      color:var(--muted); font-size:10px; letter-spacing:0.2em; text-transform:uppercase;
+      color:var(--muted); font-size:13px; letter-spacing:0.2em; text-transform:uppercase;
       animation:fadeIn 1s 1.2s ease both; z-index:1;
     }
     .scroll-line {
@@ -143,8 +143,8 @@
     }
 
     .section-eyebrow {
-      font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.4em;
-      text-transform:uppercase; color:var(--gold);
+      font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.4em;
+      text-transform:uppercase; color:#ffffff;
       display:flex; align-items:center; gap:12px; margin-bottom:28px;
     }
     .section-eyebrow::after { content:''; flex:1; max-width:40px; height:1px; background:var(--gold-dim); }
@@ -191,7 +191,7 @@
       width:44px; height:44px; border-radius:50%;
       border:1px solid var(--gold-dim);
       display:flex; align-items:center; justify-content:center;
-      font-family:'Cinzel',serif; font-size:13px; color:var(--gold);
+      font-family:'Cinzel',serif; font-size:13px; color:#ffffff;
       background:rgba(201,169,110,0.04);
       flex-shrink:0; position:relative; z-index:1;
     }
@@ -245,7 +245,7 @@
     .route-card:hover .route-card-bg { transform:scaleX(1); }
 
     .route-num {
-      font-family:'Cinzel',serif; font-size:10px;
+      font-family:'Cinzel',serif; font-size:13px;
       letter-spacing:0.3em; color:var(--muted); margin-bottom:8px;
     }
     .route-name {
@@ -253,7 +253,7 @@
       font-size:clamp(22px,3.5vw,30px); font-weight:300;
       color:var(--cream); line-height:1.15; margin-bottom:6px;
     }
-    .route-name em { font-style:italic; color:var(--gold); }
+    .route-name em { font-style:italic; color:#ffffff; }
     .route-tagline { font-size:13px; color:var(--muted); font-style:italic; line-height:1.5; }
 
     .route-meta {
@@ -261,11 +261,11 @@
     }
     .route-stops {
       font-family:'Cormorant Garamond',serif; font-size:32px;
-      color:var(--gold); font-weight:300; line-height:1;
+      color:#ffffff; font-weight:300; line-height:1;
       margin-bottom:2px;
     }
     .route-stops-label {
-      font-size:10px; letter-spacing:0.15em;
+      font-size:13px; letter-spacing:0.15em;
       text-transform:uppercase; color:var(--muted);
     }
     .route-arrow {
@@ -315,7 +315,7 @@
     }
 
     .atm-attr {
-      font-family:'Cinzel',serif; font-size:10px;
+      font-family:'Cinzel',serif; font-size:13px;
       letter-spacing:0.2em; text-transform:uppercase;
       color:var(--muted); display:block; margin-top:14px;
     }
@@ -331,7 +331,7 @@
       font-size:clamp(28px,5vw,46px); font-weight:300;
       color:var(--cream); margin-bottom:12px;
     }
-    .cta-title em { font-style:italic; color:var(--gold); }
+    .cta-title em { font-style:italic; color:#ffffff; }
 
     .cta-sub {
       font-size:15px; color:var(--muted); font-style:italic;
@@ -353,7 +353,7 @@
 
     .btn-ghost {
       display:inline-block; padding:16px 28px;
-      background:transparent; color:var(--gold);
+      background:transparent; color:#ffffff;
       border:1px solid rgba(201,169,110,0.4); border-radius:2px;
       font-family:'Cinzel',serif; font-size:12px;
       letter-spacing:0.18em; text-transform:uppercase;
@@ -373,7 +373,7 @@
       align-items:center; justify-content:space-between; gap:16px;
       position:relative; z-index:1;
     }
-    .footer-logo { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.2em; color:var(--gold); }
+    .footer-logo { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.2em; color:#ffffff; }
     .footer-links { display:flex; gap:20px; }
     .footer-links a {
       font-size:12px; color:var(--muted); text-decoration:none;
@@ -415,17 +415,81 @@
 
     .route-live-badge {
       display:inline-block; font-family:'Cinzel',serif;
-      font-size:9px; letter-spacing:0.18em; text-transform:uppercase;
+      font-size:13px; letter-spacing:0.18em; text-transform:uppercase;
       color:#10a37f; background:rgba(16,163,127,0.12);
       padding:3px 8px; border-radius:3px; margin-bottom:8px;
     }
     .route-card.upcoming { opacity:0.38; pointer-events:none; cursor:default; }
     .route-card.upcoming .route-arrow { display:none; }
     .route-upcoming-label {
-      font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.15em;
+      font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.15em;
       text-transform:uppercase; color:var(--muted);
       margin-top:10px; display:block; text-align:right;
     }
+
+    /* ── READABILITY OVERRIDES: white accent text + larger fonts ── */
+    :root { --gold: #ffffff; }
+
+    .hero-eyebrow, .section-eyebrow, .eyebrow, .topbar-logo,
+    .hero-logo, .back-link, .step-num, .tag, .secret-lbl,
+    .secret-txt, .audio-label, .drink-tip-label, .confirm-code,
+    .order-price, .order-item::before, .code-msg.ok,
+    .rsp-num.active, .incl-item span:first-child,
+    .loc-photo-caption, .nav-photo-caption, .footer-logo,
+    .city-price, .city-status.live, .hero-price strong,
+    .cta-eyebrow, .lang-btn.active, .map-placeholder-txt,
+    .btn-outline { color: #ffffff !important; }
+
+    /* Bump remaining tiny fonts */
+    .rsp-num   { font-size: 12px !important; }
+    .rsp-lbl   { font-size: 12px !important; }
+    .tag        { font-size: 12px !important; }
+    .soon-badge { font-size: 12px !important; }
+    .audio-sublbl { font-size: 13px !important; }
+    .eyebrow, .hero-eyebrow, .section-eyebrow { font-size: 13px !important; }
+    .topbar-logo, .hero-logo, .footer-logo { font-size: 14px !important; }
+    .btn-outline, .btn-ghost, .btn-big, .lang-btn { font-size: 13px !important; }
+    .secret-lbl, .drink-tip-label, .audio-label { font-size: 13px !important; }
+    .loc-photo-caption, .nav-photo-caption { font-size: 12px !important; }
+
+    /* Mobile-specific: even bigger for small screens */
+    @media (max-width: 480px) {
+      .rsp-lbl   { font-size: 11px !important; white-space: normal !important; max-width: 56px !important; }
+      .eyebrow, .hero-eyebrow, .section-eyebrow { font-size: 12px !important; letter-spacing: 0.25em !important; }
+      .topbar-logo, .hero-logo { font-size: 13px !important; letter-spacing: 0.2em !important; }
+    }
+
+    /* ── CREAM-DIM FIX: warm golden-cream → neutral white ── */
+    :root {
+      --cream-dim: #c8c4bc !important;
+      --cream:     #f2efea !important;
+      --muted:     #8a8a9a !important;
+    }
+    .order-item            { color: #d8d4cc !important; }
+    .order-item::before    { color: #ffffff !important; }
+    .secret-txt            { color: #e0dcd4 !important; }
+    p                      { color: #c4c0b8 !important; }
+    .story-box, .story-box p { color: #c4c0b8 !important; }
+    .intro-text            { color: #c8c4bc !important; }
+    .review-attr, .attr,
+    [id*="attr"], [id*="review"] { color: #a8a8b8 !important; }
+    .sub                   { color: #909098 !important; }
+    .r-tag, .step-desc,
+    .intro-body            { color: #909098 !important; }
+
+    /* ── INLINE STYLE OVERRIDES (id-specific) ── */
+    #i-quote      { color: #d8d4cc !important; }
+    #i-quote-attr { color: #9898a8 !important; }
+    #i-incl-hdr   { color: #ffffff !important; font-size: 13px !important; }
+    #cf-code-lbl  { color: #ffffff !important; font-size: 13px !important; }
+    #done-reward-lbl { color: #ffffff !important; font-size: 13px !important; }
+    #map-placeholder-txt { color: #ffffff !important; font-size: 13px !important; }
+    #m-label      { color: #ffffff !important; font-size: 13px !important; }
+
+    /* All inline warm-cream text elements */
+    [style*="color:var(--cream-dim)"] { color: #d8d4cc !important; }
+    [style*="color:var(--muted)"]     { color: #9898a8 !important; }
+    [style*="color:var(--gold)"]      { color: #ffffff !important; }
   </style>
 </head>
 <body>

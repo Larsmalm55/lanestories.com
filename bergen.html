@@ -10,7 +10,7 @@
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root {
-      --gold:#c9a96e; --gold-dim:rgba(201,169,110,0.4); --gold-faint:rgba(201,169,110,0.08);
+      --gold:#ffffff; --gold-dim:rgba(201,169,110,0.4); --gold-faint:rgba(201,169,110,0.08);
       --ink:#0d0a07; --ink2:#121008; --cream:#f0e6d0; --cream-dim:#c8b896;
       --muted:#7a6a52; --border:rgba(232,220,200,0.11);
       --green:rgba(80,180,100,0.12); --green-b:rgba(80,180,100,0.4);
@@ -29,9 +29,9 @@
     @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.5} }
 
     .topbar { display:flex; align-items:center; padding:18px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
-    .topbar-logo { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.3em; color:var(--gold); text-decoration:none; }
+    .topbar-logo { font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.3em; color:#ffffff; text-decoration:none; }
     .topbar-back { background:none; border:none; color:var(--muted); cursor:pointer; font-size:18px; padding:0; margin-right:14px; }
-    .topbar-count { margin-left:auto; font-size:11px; letter-spacing:0.15em; color:#4a4030; }
+    .topbar-count { margin-left:auto; font-size:14px; letter-spacing:0.15em; color:#4a4030; }
 
     .prog-wrap { display:flex; gap:4px; padding:10px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
     .prog-seg { flex:1; height:2px; border-radius:2px; background:rgba(232,220,200,0.1); transition:background 0.4s; }
@@ -39,19 +39,19 @@
     .prog-seg.active { background:rgba(201,169,110,0.45); }
 
     .body { flex:1; padding:0 24px 56px; overflow-y:auto; }
-    .eyebrow { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:8px; }
+    .eyebrow { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.35em; text-transform:uppercase; color:#ffffff; display:block; margin-bottom:8px; }
     h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(34px,8vw,50px); font-weight:300; line-height:1.1; color:var(--cream); margin-bottom:12px; }
     h2 { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:400; color:var(--cream); margin-bottom:6px; line-height:1.2; }
     .sub { font-size:13px; font-style:italic; color:var(--muted); margin-bottom:20px; }
     .rule { width:36px; height:2px; background:linear-gradient(90deg,var(--gold),rgba(201,169,110,0.15)); border-radius:1px; margin-bottom:28px; }
     p { font-size:15px; color:var(--cream-dim); line-height:1.85; margin-bottom:1em; }
 
-    .btn { display:block; width:100%; padding:15px 20px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:11px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:opacity 0.2s,transform 0.2s; text-align:center; }
+    .btn { display:block; width:100%; padding:15px 20px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:14px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:opacity 0.2s,transform 0.2s; text-align:center; }
     .btn:hover:not(:disabled) { opacity:0.88; transform:translateY(-1px); }
     .btn:disabled { opacity:0.5; cursor:default; transform:none; }
-    .btn-outline { display:block; width:100%; padding:15px 20px; background:transparent; color:var(--gold); border:1px solid var(--gold-dim); border-radius:2px; font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:background 0.2s; text-align:center; }
+    .btn-outline { display:block; width:100%; padding:15px 20px; background:transparent; color:#ffffff; border:1px solid var(--gold-dim); border-radius:2px; font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:background 0.2s; text-align:center; }
     .btn-outline:hover { background:var(--gold-faint); }
-    .btn-ghost { display:block; width:100%; padding:13px 20px; background:transparent; color:var(--muted); border:1px solid var(--border); border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:border-color 0.2s,color 0.2s; }
+    .btn-ghost { display:block; width:100%; padding:13px 20px; background:transparent; color:var(--muted); border:1px solid var(--border); border-radius:2px; font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; margin-bottom:10px; transition:border-color 0.2s,color 0.2s; }
     .btn-ghost:hover { border-color:var(--gold-dim); color:var(--cream-dim); }
 
     .route-card { border:1px solid var(--border); border-radius:2px; padding:22px; margin-bottom:14px; cursor:pointer; background:rgba(255,255,255,0.015); transition:border-color 0.25s,background 0.2s,transform 0.2s; position:relative; }
@@ -62,25 +62,25 @@
     .r-name  { font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--cream); margin-bottom:3px; }
     .r-tag   { font-size:12px; font-style:italic; color:var(--muted); margin-bottom:14px; }
     .tags    { display:flex; flex-wrap:wrap; gap:6px; }
-    .tag     { display:inline-block; padding:3px 10px; border:1px solid var(--gold-dim); border-radius:20px; font-size:10px; color:var(--gold); }
+    .tag     { display:inline-block; padding:3px 10px; border:1px solid var(--gold-dim); border-radius:20px; font-size:10px; color:#ffffff; }
     .tag.dim { border-color:var(--border); color:var(--muted); }
-    .soon-badge { position:absolute; top:14px; right:14px; padding:3px 10px; background:rgba(13,10,7,0.8); border:1px solid var(--border); border-radius:20px; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); }
+    .soon-badge { position:absolute; top:14px; right:14px; padding:3px 10px; background:rgba(13,10,7,0.8); border:1px solid var(--border); border-radius:20px; font-size:13px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); }
 
     .order-box { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:24px; }
     .order-hdr { background:var(--gold-faint); border-bottom:1px solid var(--border); padding:18px 22px; display:flex; justify-content:space-between; align-items:center; }
     .order-title { font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.12em; color:var(--cream); }
-    .order-price { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:300; color:var(--gold); }
+    .order-price { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:300; color:#ffffff; }
     .order-body { padding:20px 22px; }
     .order-item { display:flex; gap:10px; font-size:13px; color:var(--cream-dim); margin-bottom:9px; }
-    .order-item::before { content:'—'; color:var(--gold); flex-shrink:0; }
+    .order-item::before { content:'—'; color:#ffffff; flex-shrink:0; }
 
-    .form-label { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px; }
+    .form-label { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px; }
     .form-input { width:100%; padding:13px 16px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:2px; color:var(--cream); font-family:'EB Garamond',serif; font-size:16px; outline:none; transition:border-color 0.2s; margin-bottom:16px; }
     .form-input:focus { border-color:var(--gold-dim); }
     .form-input.err { border-color:var(--red-b); background:var(--red); animation:shake 0.35s ease; }
     .card-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     .spinner { width:18px; height:18px; border:2px solid rgba(13,10,7,0.3); border-top-color:var(--ink); border-radius:50%; animation:spin 0.7s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
-    .or { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(--muted); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; }
+    .or { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(--muted); font-size:14px; letter-spacing:0.2em; text-transform:uppercase; }
     .or::before, .or::after { content:''; flex:1; height:1px; background:var(--border); }
 
     .code-row   { display:flex; gap:8px; margin-bottom:8px; }
@@ -88,18 +88,18 @@
     .code-input:focus { border-color:var(--gold-dim); }
     .code-input.err { border-color:var(--red-b); background:var(--red); animation:shake 0.35s ease; }
     .code-input.ok  { border-color:var(--gold); background:var(--gold-faint); }
-    .code-btn { padding:13px 18px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+    .code-btn { padding:13px 18px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
     .code-msg     { font-size:12px; text-align:center; min-height:18px; }
     .code-msg.err { color:rgba(220,90,70,0.9); }
-    .code-msg.ok  { color:var(--gold); }
+    .code-msg.ok  { color:#ffffff; }
 
     .stop-icon  { text-align:center; font-size:52px; margin:24px 0 16px; }
     .story-box  { background:rgba(255,255,255,0.022); border:1px solid var(--border); border-radius:2px; padding:22px 24px; margin-bottom:20px; font-size:15px; color:var(--cream-dim); line-height:1.85; }
     .story-box p { margin-bottom:1em; }
     .story-box p:last-child { margin-bottom:0; }
     .secret-box { background:rgba(201,169,110,0.06); border:1px solid rgba(201,169,110,0.28); border-radius:2px; padding:20px 22px; margin-bottom:20px; }
-    .secret-lbl { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:10px; }
-    .secret-txt { font-size:14px; color:var(--gold); line-height:1.75; }
+    .secret-lbl { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.3em; text-transform:uppercase; color:#ffffff; display:block; margin-bottom:10px; }
+    .secret-txt { font-size:14px; color:#ffffff; line-height:1.75; }
 
     .map-wrap { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:20px; }
     .map-canvas { width:100%; height:220px; background:#1a1208; position:relative; }
@@ -110,7 +110,7 @@
     .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
     .legend-dot.you  { background:#4a9eff; box-shadow:0 0 0 3px rgba(74,158,255,0.25); }
     .legend-dot.dest { background:#c9a96e; box-shadow:0 0 0 3px rgba(201,169,110,0.25); }
-    .map-nav-btn { padding:7px 14px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; text-decoration:none; display:inline-block; }
+    .map-nav-btn { padding:7px 14px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; text-decoration:none; display:inline-block; }
     .map-gps-note { font-size:11px; color:var(--muted); padding:8px 14px; text-align:center; background:rgba(255,255,255,0.015); border-top:1px solid var(--border); display:none; }
     .map-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; animation:pulse 2s infinite; }
 
@@ -122,19 +122,19 @@
 
     .mail-icon { font-size:52px; text-align:center; margin:32px 0 20px; }
     .confirm-box { background:var(--green); border:1px solid var(--green-b); border-radius:2px; padding:20px 22px; margin-bottom:24px; }
-    .confirm-code { font-family:'Cinzel',serif; font-size:28px; letter-spacing:0.3em; color:var(--gold); text-align:center; margin:12px 0 6px; }
+    .confirm-code { font-family:'Cinzel',serif; font-size:28px; letter-spacing:0.3em; color:#ffffff; text-align:center; margin:12px 0 6px; }
     .confirm-note { font-size:13px; color:var(--muted); text-align:center; line-height:1.65; }
 
     .hero-vis { height:190px; background:linear-gradient(160deg,#1a1208,#2e1e0a,#1a1208); display:flex; align-items:center; justify-content:center; font-size:70px; position:relative; overflow:hidden; flex-shrink:0; }
     .hero-vis::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 60%,rgba(201,169,110,0.14) 0%,transparent 70%); }
     .hero-vis::after  { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(201,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.04) 1px,transparent 1px); background-size:40px 40px; }
     .incl-item { display:flex; gap:12px; font-size:13px; color:var(--muted); margin-bottom:8px; }
-    .incl-item span:first-child { color:var(--gold); }
+    .incl-item span:first-child { color:#ffffff; }
 
     /* Resume banner */
     .resume-banner { background:rgba(201,169,110,0.08); border:1px solid rgba(201,169,110,0.25); border-radius:2px; padding:14px 18px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
     .resume-text { font-size:13px; color:var(--cream-dim); }
-    .resume-btn { padding:7px 14px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+    .resume-btn { padding:7px 14px; background:linear-gradient(135deg,#c9a96e,#8a5a2a); color:var(--ink); border:none; border-radius:2px; font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
 
     /* TEST BANNER */
     .test-banner { background:rgba(255,200,0,0.08); border:1px solid rgba(255,200,0,0.3); border-radius:2px; padding:10px 16px; margin-bottom:16px; display:flex; align-items:center; gap:10px; font-size:12px; color:rgba(255,210,0,0.85); }
@@ -147,7 +147,7 @@
     .rsp { display:flex; flex-direction:column; align-items:center; gap:3px; }
     .rsp-num { width:24px; height:24px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; font-size:9px; color:var(--muted); background:var(--ink); transition:all 0.3s; flex-shrink:0; }
     .rsp-num.done { background:var(--gold); border-color:var(--gold); color:var(--ink); }
-    .rsp-num.active { border-color:var(--gold); color:var(--gold); }
+    .rsp-num.active { border-color:var(--gold); color:#ffffff; }
     .rsp-lbl { font-size:9px; color:var(--muted); max-width:48px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .rsp-line { width:12px; height:1px; background:var(--border); margin-bottom:13px; flex-shrink:0; }
 
@@ -158,7 +158,7 @@
     /* AUDIO GUIDE */
     .audio-guide { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:20px; }
     .audio-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:rgba(255,255,255,0.02); gap:12px; }
-    .audio-label { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); }
+    .audio-label { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:#ffffff; }
     .audio-sublbl { font-size:11px; color:var(--muted); margin-top:2px; }
     .audio-play-btn { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#c9a96e,#8a5a2a); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:opacity 0.2s; }
     .audio-play-btn:hover { opacity:0.88; }
@@ -186,11 +186,75 @@
 
     /* DRINK TIP BOX */
     .drink-tip { border:1px solid rgba(201,169,110,0.3); border-radius:2px; padding:18px 20px; margin-bottom:20px; background:rgba(201,169,110,0.05); }
-    .drink-tip-label { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:10px; }
+    .drink-tip-label { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.3em; text-transform:uppercase; color:#ffffff; display:block; margin-bottom:10px; }
     .drink-tip-body { font-size:14px; color:var(--cream-dim); line-height:1.75; }
 
     /* ORIENTATION NOTE */
     .orient-note { display:flex; align-items:center; gap:8px; padding:9px 14px; border:1px solid rgba(100,150,255,0.2); background:rgba(100,150,255,0.05); border-radius:2px; margin-bottom:16px; font-size:12px; color:rgba(180,200,255,0.85); }
+
+    /* ── READABILITY OVERRIDES: white accent text + larger fonts ── */
+    :root { --gold: #ffffff; }
+
+    .hero-eyebrow, .section-eyebrow, .eyebrow, .topbar-logo,
+    .hero-logo, .back-link, .step-num, .tag, .secret-lbl,
+    .secret-txt, .audio-label, .drink-tip-label, .confirm-code,
+    .order-price, .order-item::before, .code-msg.ok,
+    .rsp-num.active, .incl-item span:first-child,
+    .loc-photo-caption, .nav-photo-caption, .footer-logo,
+    .city-price, .city-status.live, .hero-price strong,
+    .cta-eyebrow, .lang-btn.active, .map-placeholder-txt,
+    .btn-outline { color: #ffffff !important; }
+
+    /* Bump remaining tiny fonts */
+    .rsp-num   { font-size: 12px !important; }
+    .rsp-lbl   { font-size: 12px !important; }
+    .tag        { font-size: 12px !important; }
+    .soon-badge { font-size: 12px !important; }
+    .audio-sublbl { font-size: 13px !important; }
+    .eyebrow, .hero-eyebrow, .section-eyebrow { font-size: 13px !important; }
+    .topbar-logo, .hero-logo, .footer-logo { font-size: 14px !important; }
+    .btn-outline, .btn-ghost, .btn-big, .lang-btn { font-size: 13px !important; }
+    .secret-lbl, .drink-tip-label, .audio-label { font-size: 13px !important; }
+    .loc-photo-caption, .nav-photo-caption { font-size: 12px !important; }
+
+    /* Mobile-specific: even bigger for small screens */
+    @media (max-width: 480px) {
+      .rsp-lbl   { font-size: 11px !important; white-space: normal !important; max-width: 56px !important; }
+      .eyebrow, .hero-eyebrow, .section-eyebrow { font-size: 12px !important; letter-spacing: 0.25em !important; }
+      .topbar-logo, .hero-logo { font-size: 13px !important; letter-spacing: 0.2em !important; }
+    }
+
+    /* ── CREAM-DIM FIX: warm golden-cream → neutral white ── */
+    :root {
+      --cream-dim: #c8c4bc !important;
+      --cream:     #f2efea !important;
+      --muted:     #8a8a9a !important;
+    }
+    .order-item            { color: #d8d4cc !important; }
+    .order-item::before    { color: #ffffff !important; }
+    .secret-txt            { color: #e0dcd4 !important; }
+    p                      { color: #c4c0b8 !important; }
+    .story-box, .story-box p { color: #c4c0b8 !important; }
+    .intro-text            { color: #c8c4bc !important; }
+    .review-attr, .attr,
+    [id*="attr"], [id*="review"] { color: #a8a8b8 !important; }
+    .sub                   { color: #909098 !important; }
+    .r-tag, .step-desc,
+    .intro-body            { color: #909098 !important; }
+
+    /* ── INLINE STYLE OVERRIDES (id-specific) ── */
+    #i-quote      { color: #d8d4cc !important; }
+    #i-quote-attr { color: #9898a8 !important; }
+    #i-incl-hdr   { color: #ffffff !important; font-size: 13px !important; }
+    #cf-code-lbl  { color: #ffffff !important; font-size: 13px !important; }
+    #done-reward-lbl { color: #ffffff !important; font-size: 13px !important; }
+    #map-placeholder-txt { color: #ffffff !important; font-size: 13px !important; }
+    #m-label      { color: #ffffff !important; font-size: 13px !important; }
+
+    /* All inline warm-cream text elements */
+    [style*="color:var(--cream-dim)"] { color: #d8d4cc !important; }
+    [style*="color:var(--muted)"]     { color: #9898a8 !important; }
+    [style*="color:var(--gold)"]      { color: #ffffff !important; }
   </style>
 </head>
 <body>
@@ -209,7 +273,7 @@
     <p id="i-p1"></p>
     <p style="margin-bottom:28px;" id="i-p2"></p>
     <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:2px;padding:18px 20px;margin-bottom:28px;">
-      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;" id="i-incl-hdr"></div>
+      <div style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.3em;text-transform:uppercase;color:#ffffff;margin-bottom:12px;" id="i-incl-hdr"></div>
       <div class="incl-item"><span>—</span><span id="ii1"></span></div>
       <div class="incl-item"><span>—</span><span id="ii2"></span></div>
       <div class="incl-item"><span>—</span><span id="ii3"></span></div>
@@ -221,7 +285,7 @@
       <button class="resume-btn" id="resume-btn" onclick="resumeTour()"></button>
     </div>
     <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;color:var(--cream-dim);line-height:1.5;margin-bottom:6px;" id="i-quote"></div>
-    <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:32px;" id="i-quote-attr"></div>
+    <div style="font-size:14px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:32px;" id="i-quote-attr"></div>
     <button class="btn" id="i-cta" onclick="show('s-routes')"></button>
   </div>
 </div>
@@ -293,15 +357,15 @@
       <input class="form-input" id="cardCvc" type="text" placeholder="CVC" maxlength="3" inputmode="numeric" />
     </div>
     <button class="btn" id="payBtn" onclick="processPayment()"></button>
-    <p style="font-size:11px;color:#3a3028;text-align:center;margin-bottom:4px;" id="o-secure"></p>
+    <p style="font-size:14px;color:#3a3028;text-align:center;margin-bottom:4px;" id="o-secure"></p>
     <div class="or" id="o-or"></div>
-    <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;" id="o-haveCode"></div>
+    <div style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;" id="o-haveCode"></div>
     <div class="code-row">
       <input class="code-input" id="codeInput" type="text" maxlength="8" placeholder="XXXXXXXX" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')" />
       <button class="code-btn" id="o-unlock-btn" onclick="checkCode()"></button>
     </div>
     <div class="code-msg" id="codeMsg"></div>
-    <p style="font-size:10px;color:#2a2018;text-align:center;margin-top:20px;" id="o-test-hint"></p>
+    <p style="font-size:13px;color:#2a2018;text-align:center;margin-top:20px;" id="o-test-hint"></p>
   </div>
 </div>
 
@@ -314,7 +378,7 @@
     <h2 style="text-align:center;margin-bottom:16px;" id="cf-title"></h2>
     <p style="text-align:center;color:var(--muted);margin-bottom:24px;" id="cf-body"></p>
     <div class="confirm-box">
-      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:4px;" id="cf-code-lbl"></div>
+      <div style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.3em;text-transform:uppercase;color:#ffffff;text-align:center;margin-bottom:4px;" id="cf-code-lbl"></div>
       <div class="confirm-code" id="confirm-code"></div>
       <div class="confirm-note" id="cf-note"></div>
     </div>
@@ -342,7 +406,7 @@
         <iframe id="nav-map-iframe" src="" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width:100%;height:100%;border:none;filter:sepia(0.15) contrast(1.05);display:block;"></iframe>
       </div>
       <div class="map-footer" style="justify-content:center;">
-        <a class="map-nav-btn" id="nav-gmaps-btn" href="#" target="_blank" rel="noopener" style="padding:11px 24px;font-size:11px;letter-spacing:0.14em;"></a>
+        <a class="map-nav-btn" id="nav-gmaps-btn" href="#" target="_blank" rel="noopener" style="padding:11px 24px;font-size:14px;letter-spacing:0.14em;"></a>
       </div>
     </div>
 
@@ -425,8 +489,8 @@
         <!-- Placeholder shown until user taps to load map -->
         <div id="map-placeholder" onclick="activateMap()" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:8px;background:rgba(255,255,255,0.02);">
           <div style="font-size:28px;">🗺️</div>
-          <div id="map-placeholder-txt" style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);"></div>
-          <div style="font-size:11px;color:var(--muted);" id="map-placeholder-sub"></div>
+          <div id="map-placeholder-txt" style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;color:#ffffff;"></div>
+          <div style="font-size:14px;color:var(--muted);" id="map-placeholder-sub"></div>
         </div>
         <iframe id="map-iframe" src="" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="display:none;width:100%;height:100%;border:none;filter:sepia(0.15) contrast(1.05);"></iframe>
       </div>
@@ -459,7 +523,7 @@
     <div style="width:36px;height:2px;background:linear-gradient(90deg,var(--gold),rgba(201,169,110,0.2));border-radius:1px;margin:14px auto;"></div>
     <p style="color:var(--muted);text-align:center;" id="secrets-count"></p>
     <div class="reward-box">
-      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:8px;" id="done-reward-lbl"></div>
+      <div style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.3em;text-transform:uppercase;color:#ffffff;text-align:center;margin-bottom:8px;" id="done-reward-lbl"></div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--cream);text-align:center;margin-bottom:4px;">Pergola</div>
       <div style="font-size:12px;color:var(--muted);text-align:center;" id="done-reward-note"></div>
     </div>
@@ -484,7 +548,7 @@
 const T = {
   no: {
     region:'Norge · Bergen',
-    iTitle:'Den skjulte<br><em style="font-style:italic;color:var(--gold)">byen</em>',
+    iTitle:'Den skjulte<br><em style="font-style:italic;color:#ffffff">byen</em>',
     iP1:'Bergen har vært en av Europas viktigste handelsbyer i 700 år. Langs bryggene og i de smale gatebakker skjuler det seg historier som aldri kom med i guidebøkene.',
     iP2:'Velg en rute. Gå i ditt eget tempo. Opplev Bergen slik de færreste gjør.',
     iInclHdr:'Inkludert i alle ruter',
@@ -520,7 +584,7 @@ const T = {
     cfBody:'Vi har sendt tilgangskoden til <strong id="confirm-email" style="color:var(--cream-dim)"></strong>.<br>Skriv den inn nedenfor for å starte turen.',
     cfCodeLbl:'Din tilgangskode', cfNote:'Koden er også sendt til din e-post. Gyldig i 48 timer.',
     cfStartBtn:'Start turen',
-    cfNoEmail:'Ikke fått e-post? Sjekk søppelpost eller <a href="#" onclick="show(\'s-order\');return false;" style="color:var(--gold);text-decoration:none;">prøv igjen</a>.',
+    cfNoEmail:'Ikke fått e-post? Sjekk søppelpost eller <a href="#" onclick="show(\'s-order\');return false;" style="color:#ffffff;text-decoration:none;">prøv igjen</a>.',
     mapPrefix:'Gå til: ', revealBtn:'🔑 Vis det skjulte tipset',
     secretLbl:'Kun for deg', prevBtn:'← Forrige stopp',
     doneTitleText:'Du har fullført<br>den skjulte ruten.',
@@ -549,7 +613,7 @@ const T = {
   },
   en: {
     region:'Norway · Bergen',
-    iTitle:'The hidden<br><em style="font-style:italic;color:var(--gold)">city</em>',
+    iTitle:'The hidden<br><em style="font-style:italic;color:#ffffff">city</em>',
     iP1:'Bergen has been one of Europe\'s most important trading cities for 700 years. Along the wharves and in the narrow lanes lie stories that never made it into the guidebooks.',
     iP2:'Choose a route. Walk at your own pace. Experience Bergen the way very few do.',
     iInclHdr:'Included in every route',
@@ -585,7 +649,7 @@ const T = {
     cfBody:'We\'ve sent your access code to <strong id="confirm-email" style="color:var(--cream-dim)"></strong>.<br>Enter it below to start the tour.',
     cfCodeLbl:'Your access code', cfNote:'The code has also been sent to your email. Valid for 48 hours.',
     cfStartBtn:'Start tour',
-    cfNoEmail:'No email? Check your spam folder or <a href="#" onclick="show(\'s-order\');return false;" style="color:var(--gold);text-decoration:none;">try again</a>.',
+    cfNoEmail:'No email? Check your spam folder or <a href="#" onclick="show(\'s-order\');return false;" style="color:#ffffff;text-decoration:none;">try again</a>.',
     mapPrefix:'Navigate to: ', revealBtn:'🔑 Reveal the hidden tip',
     secretLbl:'For your eyes only', prevBtn:'← Previous stop',
     doneTitleText:'You\'ve completed<br>the hidden route.',
